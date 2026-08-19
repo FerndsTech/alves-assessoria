@@ -7,6 +7,7 @@ Lugar para despejar ideia crua, a qualquer hora, sem decidir onde ela vai. **Nã
 Uma linha por ideia, com a data. Contexto é bem-vindo, capricho não é.
 
 ```
+Exemplo :
 - 2026-08-19 — e se o painel do advogado tivesse um áudio de apresentação?
 ```
 
@@ -14,11 +15,11 @@ Uma linha por ideia, com a data. Contexto é bem-vindo, capricho não é.
 
 Existem exatamente três destinos, e o que decide é o **destino do mapa**: um spec completo e implementável do site.
 
-| Destino | Quando | Onde fica |
-| --- | --- | --- |
-| **Ticket** | A ideia vira uma pergunta que você consegue formular com precisão **agora** — mesmo que não saiba responder | Issue nova, filha do mapa |
-| **Névoa** | Dá para ver que a questão vem aí, mas ainda não dá para formulá-la com precisão | Seção "Ainda não especificado" do mapa |
-| **Fora de escopo** | A ideia fica **depois** do site pronto, ou fora do que o spec cobre | Seção "Fora de escopo" do mapa |
+| Destino            | Quando                                                                                                      | Onde fica                              |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- | -------------------------------------- |
+| **Ticket**         | A ideia vira uma pergunta que você consegue formular com precisão **agora** — mesmo que não saiba responder | Issue nova, filha do mapa              |
+| **Névoa**          | Dá para ver que a questão vem aí, mas ainda não dá para formulá-la com precisão                             | Seção "Ainda não especificado" do mapa |
+| **Fora de escopo** | A ideia fica **depois** do site pronto, ou fora do que o spec cobre                                         | Seção "Fora de escopo" do mapa         |
 
 O teste entre ticket e névoa é **se você consegue enunciar a pergunta**, não se consegue respondê-la. Uma pergunta afiada e bloqueada ainda é ticket.
 
