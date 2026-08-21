@@ -7,8 +7,7 @@ Lugar para despejar ideia crua, a qualquer hora, sem decidir onde ela vai. **Nã
 Uma linha por ideia, com a data. Contexto é bem-vindo, capricho não é.
 
 ```
-Exemplo :
-- 2026-08-19 — e se o painel do advogado tivesse um áudio de apresentação?
+Exemplo da ideia : `ideia`
 ```
 
 ## Para onde cada ideia vai depois
