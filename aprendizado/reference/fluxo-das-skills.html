@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referência — O fluxo das skills</title>
+<link rel="stylesheet" href="../assets/estilo.css">
+<style>
+  .etapa {
+    border-left: 3px solid var(--linha);
+    padding: 0 0 0 1.15rem;
+    margin: 0 0 1.5rem;
+  }
+  .etapa.destaque { border-left-color: var(--marca); }
+  .etapa h4 {
+    font: 600 1rem/1.3 var(--mono);
+    margin: 0 0 0.3rem;
+    color: var(--marca);
+  }
+  .etapa p { font: 400 0.92rem/1.6 var(--sans); margin: 0 0 0.4rem; }
+  .fluxo-io {
+    font: 400 0.78rem/1.5 var(--sans);
+    color: var(--tinta-fraca);
+  }
+  .fluxo-io b { font-weight: 600; color: var(--tinta); }
+</style>
+</head>
+<body>
+
+<div class="chapeu">Referência · consulta rápida</div>
+<h1>O fluxo das skills</h1>
+<p class="linha-fina">O que cada etapa consome, o que ela devolve, e onde limpar contexto.</p>
+
+<h2>O caminho principal</h2>
+
+<div class="etapa destaque">
+  <h4>/wayfinder</h4>
+  <p>Para o esforço grande e nebuloso, grande demais para uma sessão. Charta um mapa de
+  tickets no rastreador e os resolve um por vez. Produz <strong>decisões, não entregáveis</strong>.</p>
+  <p class="fluxo-io"><b>Consome:</b> uma ideia solta &nbsp;·&nbsp; <b>Produz:</b> um mapa com decisões registradas</p>
+</div>
+
+<div class="etapa">
+  <h4>/grill-with-docs · /grill-me</h4>
+  <p>Afia a ideia por entrevista implacável, uma pergunta por vez. A versão
+  <code>with-docs</code> tem estado e deixa rastro em <code>CONTEXT.md</code> e ADRs; a
+  <code>grill-me</code> não guarda nada e serve quando não há repositório.</p>
+  <p class="fluxo-io"><b>Consome:</b> uma ideia que cabe numa sessão &nbsp;·&nbsp; <b>Produz:</b> entendimento compartilhado</p>
+</div>
+
+<div class="etapa destaque">
+  <h4>/to-spec</h4>
+  <p><strong>Não entrevista.</strong> Sintetiza a conversa que já aconteceu num documento de
+  sete seções e publica no rastreador com o rótulo <code>ready-for-agent</code>. Proibido
+  caminho de arquivo e trecho de código — envelhecem.</p>
+  <p class="fluxo-io"><b>Consome:</b> a conversa inteira &nbsp;·&nbsp; <b>Produz:</b> o spec</p>
+</div>
+
+<div class="etapa destaque">
+  <h4>/to-tickets</h4>
+  <p>Quebra o spec em <em>tracer bullets</em>: fatias verticais que atravessam todas as
+  camadas de uma vez e são demonstráveis sozinhas. Cada uma declara quem a bloqueia.
+  Refactor amplo é a exceção — vai por expand–contract.</p>
+  <p class="fluxo-io"><b>Consome:</b> o spec &nbsp;·&nbsp; <b>Produz:</b> tickets com arestas de bloqueio</p>
+</div>
+
+<div class="etapa">
+  <h4>/implement</h4>
+  <p>Constrói um ticket, dirigindo o <code>/tdd</code> por dentro — uma fatia
+  vermelho-verde por vez — e fecha rodando o <code>/code-review</code> antes do commit.</p>
+  <p class="fluxo-io"><b>Consome:</b> um ticket &nbsp;·&nbsp; <b>Produz:</b> código revisado e commitado</p>
+</div>
+
+<div class="regra">
+<p><strong>Higiene de contexto.</strong> Mantenha grilling, <code>/to-spec</code> e
+<code>/to-tickets</code> numa <strong>única janela sem compactar</strong> — os três precisam do
+mesmo raciocínio. Depois, <strong>contexto limpo antes de cada <code>/implement</code></strong>.
+O limite é a <em>smart zone</em>: ~120k tokens dentro dos quais o modelo ainda raciocina bem.
+Chegando perto antes do <code>/to-tickets</code>, use <code>/handoff</code> em vez de insistir.</p>
+</div>
+
+<h2>Rampas de entrada</h2>
+
+<div class="etapa">
+  <h4>/triage</h4>
+  <p>Para bug e pedido que <strong>chegaram de fora</strong>. Move as issues pelos papéis de
+  triagem até virarem prontas para agente. Ticket que o <code>/to-tickets</code> produziu já
+  nasce pronto — <strong>não triar</strong>.</p>
+</div>
+
+<div class="etapa">
+  <h4>/diagnosing-bugs</h4>
+  <p>Para o bug difícil, o intermitente, a regressão. Recusa-se a teorizar antes de ter um
+  laço de feedback apertado — um comando que já falha <em>neste</em> bug — e fecha com teste
+  de regressão.</p>
+</div>
+
+<h2>Fora do caminho</h2>
+
+<div class="rolagem">
+<table>
+<thead><tr><th>Skill</th><th>Quando</th></tr></thead>
+<tbody>
+<tr><td><code>/prototype</code></td><td>A pergunta precisa de resposta executável — modelo de estado, comportamento de UI. Descartável desde o primeiro dia: guarde a resposta, apague o código</td></tr>
+<tr><td><code>/research</code></td><td>Delegar leitura a um agente de fundo, contra fontes primárias. Devolve um markdown citado no repositório</td></tr>
+<tr><td><code>/handoff</code></td><td>Comprimir a conversa num arquivo para <strong>abrir sessão nova</strong> sem perder o contexto. Bifurca; o <code>/compact</code> continua</td></tr>
+<tr><td><code>/domain-modeling</code></td><td>O problema são as <strong>palavras</strong>: termo vago, palavra fazendo três trabalhos, decisão difícil de reverter que merece ADR</td></tr>
+<tr><td><code>/codebase-design</code></td><td>O problema é a <strong>forma</strong> de um módulo: muito comportamento atrás de interface pequena, no seam certo</td></tr>
+<tr><td><code>/ask-vini</code></td><td>Você não lembra qual skill usar. É este mapa, com o autor junto</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="rodape">
+  <h3>Fontes</h3>
+  <p>Tudo aqui vem das skills instaladas em <code>~/.claude/skills/</code>. Em dúvida, a
+  <code>SKILL.md</code> de cada uma é a autoridade — esta página é resumo, não substituto.</p>
+  <div class="navegacao">
+    <a href="../lessons/0001-o-que-e-um-spec.html">← Lição 01 — O que é um spec</a>
+    <a href="../GLOSSARY.md">Glossário →</a>
+  </div>
+</div>
+
+</body>
+</html>

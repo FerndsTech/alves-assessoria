@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lição 01 — O que é um spec</title>
+<link rel="stylesheet" href="../assets/estilo.css">
+</head>
+<body>
+
+<div class="chapeu">Lição 01 · O fluxo ideia → ship</div>
+<h1>O que é um spec</h1>
+<p class="linha-fina">E como saber que o seu mapa já está escrevendo um.</p>
+
+<p>Você está no meio de um <code>/wayfinder</code> cujo destino, escrito por você mesmo,
+é <em>“um spec completo e implementável do site do escritório”</em>. Faz sentido querer
+saber o que exatamente é essa coisa em que você vai desembocar.</p>
+
+<h2>A definição</h2>
+
+<p>Um <strong>spec</strong> é o documento que carrega todas as decisões de uma feature,
+escrito de um jeito que sobreviva ao código mudando debaixo dele. Você talvez conheça
+esse documento por outro nome — PRD.</p>
+
+<blockquote>
+<p>“This skill takes the current conversation context and codebase understanding and
+produces a spec (you may know this document as a PRD). <strong>Do NOT interview the
+user</strong> — just synthesize what you already know.”</p>
+<span class="fonte">Fonte primária: <code>~/.claude/skills/to-spec/SKILL.md</code></span>
+</blockquote>
+
+<p>Repare no que essa frase exclui. O <code>/to-spec</code> <strong>não te entrevista</strong>.
+Ele não descobre nada. Ele só organiza o que já foi decidido antes — no wayfinder, no
+grilling, nos protótipos. Se a decisão não foi tomada, ela não aparece no spec: ela
+aparece como buraco.</p>
+
+<h2>As sete seções</h2>
+
+<p>O template é fixo. Estas são as seções, na ordem, e o que cada uma carrega:</p>
+
+<div class="rolagem">
+<table>
+<thead><tr><th>Seção</th><th>O que carrega</th></tr></thead>
+<tbody>
+<tr><td><strong>Problem Statement</strong></td><td>O problema, da perspectiva de quem usa — não da sua</td></tr>
+<tr><td><strong>Solution</strong></td><td>A solução, também da perspectiva de quem usa</td></tr>
+<tr><td><strong>User Stories</strong></td><td>Lista <em>longa</em> e numerada: “como &lt;ator&gt;, quero &lt;X&gt;, para &lt;benefício&gt;”</td></tr>
+<tr><td><strong>Implementation Decisions</strong></td><td>Módulos, interfaces, contratos, esquema, decisões de arquitetura</td></tr>
+<tr><td><strong>Testing Decisions</strong></td><td>O que testar, onde, e o que faz um teste ser bom aqui</td></tr>
+<tr><td><strong>Out of Scope</strong></td><td>O que este spec conscientemente não cobre</td></tr>
+<tr><td><strong>Further Notes</strong></td><td>O resto que importa</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Pronto o documento, ele é publicado no rastreador de issues com o rótulo
+<code>ready-for-agent</code> — sem passar por triagem, porque já nasce especificado.</p>
+
+<h2>A regra que explica todas as outras</h2>
+
+<p>Se você memorizar uma única frase desta lição, memorize esta:</p>
+
+<div class="regra">
+<p>“Do NOT include specific file paths or code snippets. <strong>They may end up being
+outdated very quickly.</strong>”</p>
+<span class="fonte">Fonte primária: <code>~/.claude/skills/to-spec/SKILL.md</code></span>
+</div>
+
+<p>Essa proibição parece um detalhe de formatação. Não é — ela revela a natureza do
+documento. Um spec é um <strong>registro de decisões</strong>, não um manual de instruções.
+Caminho de arquivo e trecho de código são fatos sobre o código <em>de hoje</em>. A decisão
+que os produziu continua verdadeira depois que o arquivo mudar de lugar; o caminho, não.</p>
+
+<p>Existe <strong>uma</strong> exceção declarada: quando um protótipo produziu um trecho que
+codifica a decisão com mais precisão do que a prosa consegue — uma máquina de estados, um
+reducer, um formato de dado. Aí o trecho entra, aparado só na parte que carrega decisão,
+com a nota de que veio de um protótipo.</p>
+
+<h3>O que um spec não é</h3>
+
+<p>Ele não é um plano de execução — quem fatia o trabalho é o <code>/to-tickets</code>, que
+consome o spec e o quebra em <em>tracer bullets</em>: fatias verticais que atravessam todas
+as camadas de uma vez e que dá para demonstrar sozinhas. Ele não é uma investigação — quem
+investiga é o wayfinder. E não é um documento vivo que você edita enquanto constrói: ele é
+o corte de uma conversa num instante.</p>
+
+<h2>O seu caso: o mapa já está escrevendo o spec</h2>
+
+<p>Aqui está a parte que vale a lição inteira. As seções do seu
+<a href="https://github.com/FerndsTech/alves-assessoria/issues/1">mapa</a> não são
+arbitrárias — elas mapeiam quase um-para-um nas seções do spec:</p>
+
+<div class="rolagem">
+<table>
+<thead><tr><th>No seu mapa</th><th>Vira, no spec</th></tr></thead>
+<tbody>
+<tr><td><strong>Destino</strong></td><td>Problem Statement + Solution</td></tr>
+<tr><td><strong>Decisões até agora</strong><br>(um item por ticket fechado)</td><td><strong>Implementation Decisions</strong> — é o material bruto, já pronto</td></tr>
+<tr><td><strong>Fora de escopo</strong></td><td>Out of Scope, quase sem edição</td></tr>
+<tr><td><strong>Ainda não especificado</strong></td><td><strong>Nada.</strong> Não existe seção de névoa num spec</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Essa última linha é o critério que você procurava. <strong>O mapa acabou quando “Ainda
+não especificado” está vazio e não há ticket aberto.</strong> Não é uma questão de bom senso
+nem de cansaço: é uma condição verificável, e é literalmente a definição de pronto do
+wayfinder — <em>“the map is done when the way is clear.”</em></p>
+
+<p>Traduzindo para hoje: seu mapa tem <strong>doze tickets abertos</strong> e cinco itens de
+névoa. Você não está perto do <code>/to-spec</code>, e isso está certo. Cada ticket que você
+fecha escreve um parágrafo do documento que ainda não existe.</p>
+
+<h2>Teste rápido</h2>
+
+<p>Sem voltar no texto. Errar aqui é mais útil do que acertar de olho — é o esforço de
+lembrar que fixa.</p>
+
+<div class="quiz" id="quiz">
+
+  <div class="pergunta" data-certa="1">
+    <p>1. Por que um spec não pode conter caminho de arquivo nem trecho de código?</p>
+    <button class="opcao" data-i="0">Porque o rastreador de issues formata código mal</button>
+    <button class="opcao" data-i="1">Porque envelhecem rápido e desalinham o documento</button>
+    <button class="opcao" data-i="2">Porque deixariam o documento comprido demais</button>
+    <button class="opcao" data-i="3">Porque o agente prefere prosa corrida a exemplo</button>
+    <p class="retorno">Um spec registra <strong>decisões</strong>, e decisão sobrevive ao arquivo mudar de lugar. Caminho e trecho são fatos sobre o código de hoje — envelhecem e passam a mentir. A única exceção é o trecho vindo de protótipo que codifica a decisão melhor que a prosa.</p>
+  </div>
+
+  <div class="pergunta" data-certa="0">
+    <p>2. Como você sabe que o mapa acabou e dá para chamar o <code>/to-spec</code>?</p>
+    <button class="opcao" data-i="0">Quando “Ainda não especificado” estiver vazio</button>
+    <button class="opcao" data-i="1">Quando metade dos tickets do mapa fechar</button>
+    <button class="opcao" data-i="2">Quando o cliente responder as pendências</button>
+    <button class="opcao" data-i="3">Quando a fronteira tiver um ticket aberto</button>
+    <p class="retorno">Névoa vazia <em>e</em> nenhum ticket aberto. Não existe seção de névoa num spec — se ainda há questão que você não consegue nem formular, o documento nasceria com buraco. É condição verificável, não julgamento.</p>
+  </div>
+
+  <div class="pergunta" data-certa="3">
+    <p>3. O <code>/to-spec</code> te entrevista antes de escrever o documento?</p>
+    <button class="opcao" data-i="0">Sim, ele pergunta sobre cada uma das seções</button>
+    <button class="opcao" data-i="1">Sim, ele chama o <code>/grilling</code> por dentro</button>
+    <button class="opcao" data-i="2">Só quando o mapa tem decisões contraditórias</button>
+    <button class="opcao" data-i="3">Não, ele sintetiza a conversa que já aconteceu</button>
+    <p class="retorno">“<strong>Do NOT interview the user</strong> — just synthesize what you already know.” É por isso que a higiene de contexto importa: o <code>/to-spec</code> só escreve o que está na conversa. Compactar antes dele é jogar fora matéria-prima.</p>
+  </div>
+
+  <div class="pergunta" data-certa="2">
+    <p>4. O que consome o spec depois que ele fica pronto?</p>
+    <button class="opcao" data-i="0">O <code>/implement</code>, que já começa a codar</button>
+    <button class="opcao" data-i="1">O <code>/code-review</code>, que confere o código</button>
+    <button class="opcao" data-i="2">O <code>/to-tickets</code>, que o fatia em vertical</button>
+    <button class="opcao" data-i="3">O <code>/wayfinder</code>, que devolve para o mapa</button>
+    <p class="retorno">O <code>/to-tickets</code> quebra o spec em <em>tracer bullets</em> — fatias que atravessam todas as camadas e são demonstráveis sozinhas, cada uma declarando quem a bloqueia. Só então cada ticket vai para um <code>/implement</code>, em contexto limpo.</p>
+  </div>
+
+</div>
+
+<p class="placar" id="placar"></p>
+
+<div class="rodape">
+
+  <h3>Leia a fonte primária</h3>
+  <p>Abra <code>~/.claude/skills/to-spec/SKILL.md</code>. São menos de 70 linhas e contêm o
+  template inteiro. Ler a skill que o agente lê é o jeito mais rápido de parar de adivinhar
+  o que ele vai fazer.</p>
+
+  <h3>Onde isso te leva</h3>
+  <p>A próxima coisa útil não é outra lição — é fechar mais um ticket do mapa. O critério
+  de “pronto” agora é verificável, e você pode conferi-lo a qualquer momento.</p>
+
+  <h3>Pergunte</h3>
+  <p>Eu sou seu professor aqui, não só o gerador desta página. Se qualquer coisa acima
+  ficou vaga — o que é uma fatia vertical, por que contexto limpo importa, como um spec
+  ruim se parece — pergunte na conversa. Dúvida que fica é dúvida que volta.</p>
+
+</div>
+
+<script>
+(function () {
+  var total = document.querySelectorAll('.pergunta').length;
+  var feitas = 0, acertos = 0;
+  var placar = document.getElementById('placar');
+
+  document.querySelectorAll('.pergunta').forEach(function (q) {
+    var certa = Number(q.dataset.certa);
+    var retorno = q.querySelector('.retorno');
+
+    q.querySelectorAll('.opcao').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (q.dataset.respondida) return;
+        q.dataset.respondida = '1';
+
+        var escolha = Number(b.dataset.i);
+        if (escolha === certa) acertos++;
+        feitas++;
+
+        q.querySelectorAll('.opcao').forEach(function (o) {
+          o.disabled = true;
+          var i = Number(o.dataset.i);
+          if (i === certa) o.classList.add('certa');
+          else if (i === escolha) o.classList.add('errada');
+        });
+
+        retorno.classList.add('visivel');
+
+        if (feitas === total) {
+          placar.textContent = acertos === total
+            ? 'Quatro de quatro. Feche um ticket.'
+            : acertos + ' de ' + total + ' — releia os retornos das que escaparam.';
+        } else {
+          placar.textContent = feitas + ' de ' + total + ' respondidas';
+        }
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

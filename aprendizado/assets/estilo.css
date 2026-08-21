@@ -1,0 +1,248 @@
+/* Estilo compartilhado das licoes.
+   Paleta herdada de docs/brand/brief-de-marca.md — mesmo vermelho do projeto. */
+
+:root {
+  --tinta:      #1c1a19;
+  --tinta-fraca:#5d5754;
+  --papel:      #fbf9f6;
+  --papel-caixa:#f2eee8;
+  --linha:      #ddd6cc;
+  --marca:      #a82520;
+  --ok:         #2f6b45;
+  --erro:       #a3322c;
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --sans:  "Source Sans 3", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --mono:  "Cascadia Code", "SF Mono", Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tinta:      #ece7e1;
+    --tinta-fraca:#a49c95;
+    --papel:      #17161a;
+    --papel-caixa:#211f25;
+    --linha:      #35323a;
+    --marca:      #e4635e;
+    --ok:         #7fc79b;
+    --erro:       #f0918c;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0 auto;
+  padding: 4rem 1.5rem 8rem;
+  max-width: 40rem;
+  background: var(--papel);
+  color: var(--tinta);
+  font: 400 1.0625rem/1.7 var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* --- cabecalho --------------------------------------------------------- */
+
+.chapeu {
+  font: 600 0.75rem/1 var(--sans);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--marca);
+  margin-bottom: 1.25rem;
+}
+
+h1 {
+  font: 600 2.25rem/1.15 var(--serif);
+  margin: 0 0 0.75rem;
+  letter-spacing: -0.015em;
+}
+
+.linha-fina {
+  font-size: 1.1rem;
+  color: var(--tinta-fraca);
+  margin: 0 0 3rem;
+  font-style: italic;
+}
+
+h2 {
+  font: 600 1.4rem/1.3 var(--serif);
+  margin: 3.25rem 0 1rem;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font: 600 0.8rem/1.4 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 2.25rem 0 0.6rem;
+}
+
+p { margin: 0 0 1.15rem; }
+
+a { color: var(--marca); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 2px; }
+
+code {
+  font: 0.875em var(--mono);
+  background: var(--papel-caixa);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+strong { font-weight: 600; }
+
+/* --- destaques --------------------------------------------------------- */
+
+.regra {
+  border-left: 3px solid var(--marca);
+  background: var(--papel-caixa);
+  padding: 1.1rem 1.35rem;
+  margin: 2rem 0;
+  border-radius: 0 4px 4px 0;
+}
+.regra p:last-child { margin-bottom: 0; }
+
+blockquote {
+  margin: 1.75rem 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid var(--linha);
+  color: var(--tinta-fraca);
+  font-style: italic;
+}
+blockquote p:last-child { margin-bottom: 0; }
+
+.fonte {
+  display: block;
+  font: 400 0.8rem/1.5 var(--sans);
+  font-style: normal;
+  color: var(--tinta-fraca);
+  margin-top: 0.5rem;
+}
+
+/* --- tabela ------------------------------------------------------------ */
+
+.rolagem { overflow-x: auto; margin: 1.75rem 0; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font: 400 0.9rem/1.5 var(--sans);
+}
+th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  border-bottom: 1.5px solid var(--linha);
+  padding: 0 0.9rem 0.55rem 0;
+}
+td {
+  border-bottom: 1px solid var(--linha);
+  padding: 0.7rem 0.9rem 0.7rem 0;
+  vertical-align: top;
+}
+td:last-child, th:last-child { padding-right: 0; }
+
+/* --- quiz -------------------------------------------------------------- */
+
+.quiz { margin: 2rem 0 0; }
+
+.pergunta {
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  padding: 1.35rem 1.5rem;
+  margin-bottom: 1.1rem;
+  background: var(--papel-caixa);
+}
+
+.pergunta > p {
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.opcao {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 400 0.95rem/1.5 var(--sans);
+  color: inherit;
+  background: var(--papel);
+  border: 1px solid var(--linha);
+  border-radius: 5px;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.opcao:hover:not([disabled]) { border-color: var(--marca); }
+.opcao[disabled] { cursor: default; }
+
+.opcao.certa {
+  border-color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 12%, var(--papel));
+  font-weight: 600;
+}
+.opcao.errada {
+  border-color: var(--erro);
+  background: color-mix(in srgb, var(--erro) 12%, var(--papel));
+  text-decoration: line-through;
+}
+
+.retorno {
+  font: 400 0.9rem/1.6 var(--sans);
+  margin: 0.85rem 0 0;
+  padding-top: 0.85rem;
+  border-top: 1px dashed var(--linha);
+  display: none;
+}
+.retorno.visivel { display: block; }
+
+.placar {
+  font: 600 0.95rem/1.5 var(--sans);
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--tinta-fraca);
+  min-height: 1.5em;
+}
+
+/* --- rodape ------------------------------------------------------------ */
+
+.rodape {
+  margin-top: 4.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--linha);
+  font: 400 0.9rem/1.65 var(--sans);
+  color: var(--tinta-fraca);
+}
+.rodape h3 { margin-top: 1.75rem; }
+.rodape h3:first-child { margin-top: 0; }
+
+.navegacao {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 2rem;
+  font: 400 0.9rem var(--sans);
+}
+
+/* --- impressao --------------------------------------------------------- */
+
+@media print {
+  :root {
+    --tinta: #000; --tinta-fraca: #444; --papel: #fff;
+    --papel-caixa: #f4f4f4; --linha: #ccc; --marca: #8c1e1a;
+  }
+  body { padding: 0; max-width: none; font-size: 11pt; }
+  .quiz, .navegacao { display: none; }
+  h2 { page-break-after: avoid; }
+  .regra, table { page-break-inside: avoid; }
+  a { text-decoration: none; }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font: 400 8pt var(--sans);
+    color: #666;
+    word-break: break-all;
+  }
+}
