@@ -1,0 +1,797 @@
+<title>Painel do Advogado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@600&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   PROTÓTIPO DESCARTÁVEL — ticket #20 do mapa #1
+   Tokens de docs/brand/brief-de-marca.md, aplicados sem invenção.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root{
+  --bg:#F7F8FA; --surface:#FFFFFF; --ink:#14171C; --muted:#5A6270;
+  --rule:#DDE1E7; --border:#8590A0; --accent:#A82520; --accent-soft:#FBEDEC;
+  --on-accent:#FFFFFF; --caution:#8A5300; --caution-soft:#FDF3E3;
+  --ok:#1E6B45; --ok-soft:#E8F4ED;
+  --veu:rgba(20,23,28,.55);
+  --sombra-painel:0 0 0 1px rgba(20,23,28,.06), 0 24px 64px rgba(20,23,28,.18);
+  --foto-a:#C9D2DC; --foto-b:#B2BECB; --foto-c:#98A6B4;
+  --serif:"Spectral",Georgia,"Times New Roman",serif;
+  --sans:"Source Sans 3",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101318; --surface:#181C23; --ink:#E7EBF1; --muted:#98A1B0;
+    --rule:#282E38; --border:#5E6877; --accent:#E4635E; --accent-soft:#26191A;
+    --on-accent:#101318; --caution:#E3A648; --caution-soft:#2B2113;
+    --ok:#63BE90; --ok-soft:#142A20;
+    --veu:rgba(4,6,9,.68);
+    --sombra-painel:0 0 0 1px rgba(231,235,241,.08), 0 24px 64px rgba(0,0,0,.5);
+    --foto-a:#2B3542; --foto-b:#343F4D; --foto-c:#404C5C;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101318; --surface:#181C23; --ink:#E7EBF1; --muted:#98A1B0;
+  --rule:#282E38; --border:#5E6877; --accent:#E4635E; --accent-soft:#26191A;
+  --on-accent:#101318; --caution:#E3A648; --caution-soft:#2B2113;
+  --ok:#63BE90; --ok-soft:#142A20;
+  --veu:rgba(4,6,9,.68);
+  --sombra-painel:0 0 0 1px rgba(231,235,241,.08), 0 24px 64px rgba(0,0,0,.5);
+  --foto-a:#2B3542; --foto-b:#343F4D; --foto-c:#404C5C;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:var(--sans); font-size:17px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--serif); font-weight:600; margin:0; text-wrap:balance}
+p{margin:0}
+svg{display:block; max-width:100%}
+[inert]{user-select:none}
+
+/* ── O palco: rolagem, posicionamento e container query num lugar só.
+      É ele que encolhe para 390px no modo celular. ────────────────── */
+.palco{
+  position:relative; container-type:inline-size; container-name:palco;
+  width:100%; height:100dvh; overflow-y:auto; overflow-x:hidden;
+  background:var(--bg); margin:0 auto; scrollbar-gutter:stable;
+}
+.palco.celular{
+  width:390px; height:min(800px, calc(100dvh - 120px));
+  margin:24px auto 96px; border-radius:20px;
+  outline:1px solid var(--border); outline-offset:8px;
+  box-shadow:0 24px 60px rgba(20,23,28,.22);
+}
+
+/* ── Nota de protótipo ─────────────────────────────────────────── */
+.nota{
+  background:var(--caution-soft); color:var(--caution);
+  border-bottom:1px solid var(--rule);
+  padding:12px 24px; font-size:13px; line-height:1.5;
+}
+.nota b{font-weight:600}
+
+/* ── Seção ─────────────────────────────────────────────────────── */
+.secao{max-width:1160px; margin:0 auto; padding:96px 32px 128px}
+@container palco (max-width: 760px){ .secao{padding:64px 20px 96px} }
+
+.eyebrow{
+  font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--accent); margin-bottom:12px;
+}
+.secao > h2{font-size:36px; line-height:1.15; margin-bottom:16px}
+@container palco (max-width: 760px){ .secao > h2{font-size:28px} }
+.lead{font-size:19px; line-height:1.55; color:var(--muted); max-width:60ch; margin-bottom:48px}
+
+/* ── Grade de cards ────────────────────────────────────────────── */
+.grade{
+  list-style:none; margin:0; padding:0;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:32px;
+}
+@container palco (max-width: 900px){ .grade{grid-template-columns:repeat(2,1fr); gap:24px} }
+@container palco (max-width: 560px){ .grade{grid-template-columns:1fr; gap:24px} }
+
+.card{
+  position:relative; background:var(--surface); border-radius:8px;
+  border:1px solid var(--rule); overflow:hidden;
+  display:flex; flex-direction:column;
+  transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.card:has(.card-btn:hover), .card:has(.card-btn:focus-visible){
+  border-color:var(--border); transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(20,23,28,.10);
+}
+.card:has(.card-btn:focus-visible){outline:2px solid var(--accent); outline-offset:2px}
+.card-foto{aspect-ratio:3/4; width:100%; background:var(--foto-a); overflow:hidden}
+.card-corpo{padding:20px; display:flex; flex-direction:column; gap:8px; flex:1}
+.card-nome{font-size:23px; line-height:1.3}
+.card-oab{
+  font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); font-variant-numeric:tabular-nums;
+}
+.card-areas{font-size:15px; line-height:1.5; color:var(--muted); margin-top:4px}
+.card-acao{
+  margin-top:auto; padding-top:16px;
+  font-size:15px; font-weight:600; color:var(--accent);
+  display:flex; align-items:center; gap:6px;
+}
+.card:has(.card-btn:hover) .card-acao span{transform:translateX(3px)}
+.card-acao span{display:inline-block; transition:transform .18s ease}
+.card-btn{
+  position:absolute; inset:0; width:100%; height:100%;
+  background:none; border:0; padding:0; cursor:pointer;
+  font:inherit; color:transparent; z-index:2;
+}
+.card-btn:focus{outline:none}
+
+.ver-mais{
+  margin-top:32px; display:inline-flex; align-items:center; gap:8px;
+  min-height:44px; padding:0 24px;
+  background:transparent; color:var(--accent);
+  border:1px solid var(--border); border-radius:4px;
+  font-family:var(--sans); font-size:17px; font-weight:600; cursor:pointer;
+  transition:background .18s ease, border-color .18s ease;
+}
+.ver-mais:hover{background:var(--accent-soft); border-color:var(--accent)}
+.ver-mais:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.ver-mais[hidden]{display:none}
+
+/* ── Bloco de CTA de 4 elementos (decidido em #9 e #17) ─────────── */
+.cta-bloco{
+  margin-top:64px; padding:32px; border-radius:8px;
+  background:var(--accent-soft); border:1px solid var(--rule);
+  display:flex; flex-direction:column; gap:12px; align-items:flex-start;
+}
+@container palco (max-width: 560px){ .cta-bloco{padding:24px 20px} }
+.cta-assunto{font-size:19px; line-height:1.55; max-width:52ch}
+.btn-wa{
+  display:inline-flex; align-items:center; gap:10px;
+  min-height:44px; padding:0 24px; border:0; border-radius:4px;
+  background:var(--accent); color:var(--on-accent);
+  font-family:var(--sans); font-size:17px; font-weight:600;
+  text-decoration:none; cursor:pointer; transition:filter .18s ease;
+}
+.btn-wa:hover{filter:brightness(1.1)}
+.btn-wa:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.btn-wa svg{fill:currentColor; width:20px; height:20px; flex:0 0 20px}
+.cta-meta{font-size:15px; line-height:1.5; color:var(--muted)}
+.cta-meta a{color:var(--accent); text-underline-offset:3px}
+
+/* ═══ VÉU E PAINEL ══════════════════════════════════════════════ */
+.veu{
+  position:absolute; inset:0; background:var(--veu); z-index:40;
+  opacity:0; pointer-events:none; transition:opacity .28s ease;
+}
+.veu.on{opacity:1; pointer-events:auto}
+.veu.sem-veu{background:transparent}
+
+.painel{
+  position:absolute; z-index:50; background:var(--surface);
+  display:none; box-shadow:var(--sombra-painel);
+}
+.painel.on{display:flex}
+
+/* ── X: circular, contornado, alto e sempre visível ────────────── */
+.x{
+  width:48px; height:48px; flex:0 0 48px; border-radius:50%;
+  background:var(--surface); color:var(--ink);
+  border:1px solid var(--border); cursor:pointer;
+  display:grid; place-items:center;
+  transition:background .18s ease, border-color .18s ease, color .18s ease;
+}
+.x:hover{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+.x:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.x svg{width:18px; height:18px; stroke:currentColor; stroke-width:1.8; fill:none}
+
+/* ── Peças de conteúdo compartilhadas pelas 3 variantes ────────── */
+.p-nome{font-size:36px; line-height:1.15}
+@container palco (max-width: 760px){ .p-nome{font-size:28px} }
+.p-oab{
+  font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); font-variant-numeric:tabular-nums; margin-top:8px;
+}
+.p-desc{font-size:17px; line-height:1.6; max-width:64ch}
+.p-rotulo{
+  font-size:13px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--muted); margin-bottom:6px;
+}
+.p-dado{font-size:17px; line-height:1.5}
+.p-dado .sub{color:var(--muted); font-size:15px}
+.p-redes{display:flex; gap:8px; margin-left:-10px}
+.p-redes a{
+  width:44px; height:44px; border-radius:4px; display:grid; place-items:center;
+  color:var(--muted); transition:color .18s ease, background .18s ease;
+}
+.p-redes a:hover{color:var(--accent); background:var(--accent-soft)}
+.p-redes a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.p-redes svg{width:20px; height:20px; fill:currentColor}
+.regua{height:1px; background:var(--rule); border:0; margin:0; width:100%}
+.p-foto{width:100%; height:100%; overflow:hidden}
+
+/* ── VARIANTE A — painel lateral de 560px, home visível atrás ───── */
+.painel.va{
+  top:0; left:0; bottom:0; width:min(560px,100%); flex-direction:column;
+  transform:translateX(-100%); transition:transform .32s cubic-bezier(.2,0,0,1);
+}
+.painel.va.entrou{transform:translateX(0)}
+.va-topo{position:absolute; top:16px; right:16px; z-index:6}
+.va-rola{flex:1; overflow-y:auto; min-height:0}
+.va-foto-caixa{aspect-ratio:4/3; width:100%; overflow:hidden; background:var(--foto-a)}
+.va-texto{padding:32px; display:flex; flex-direction:column; gap:24px}
+@container palco (max-width: 560px){ .va-texto{padding:24px 20px} }
+.va-pe{
+  border-top:1px solid var(--rule); padding:16px 32px;
+  background:var(--surface); display:flex; flex-direction:column; gap:8px;
+  align-items:flex-start;
+}
+@container palco (max-width: 560px){ .va-pe{padding:16px 20px} }
+
+/* ── VARIANTE B — tela cheia dividida ao meio ──────────────────── */
+.painel.vb{
+  inset:0; opacity:0; transform:translateY(10px);
+  transition:opacity .28s ease, transform .28s cubic-bezier(.2,0,0,1);
+}
+.painel.vb.on{display:grid; grid-template-columns:1fr 1fr}
+.painel.vb.entrou{opacity:1; transform:none}
+.vb-texto{
+  overflow-y:auto; padding:88px 56px 48px;
+  display:flex; flex-direction:column; gap:24px; align-items:flex-start;
+}
+.vb-topo{position:absolute; top:24px; right:24px; z-index:6}
+.vb-foto{position:relative; overflow:hidden; background:var(--foto-a)}
+@container palco (max-width: 860px){
+  .painel.vb.on{grid-template-columns:1fr; grid-template-rows:40% 1fr}
+  .vb-foto{order:-1}
+  .vb-texto{padding:24px 20px 32px}
+  .vb-topo{top:16px; right:16px}
+}
+
+/* ── VARIANTE C — tela cheia, ficha de contato sempre visível ───── */
+.painel.vc{
+  inset:0; opacity:0; transform:scale(.985);
+  transition:opacity .28s ease, transform .28s cubic-bezier(.2,0,0,1);
+}
+.painel.vc.on{
+  display:grid;
+  grid-template-columns:minmax(260px,32%) 1fr minmax(300px,26%);
+  grid-template-rows:auto 1fr;
+}
+.painel.vc.entrou{opacity:1; transform:none}
+.vc-foto{grid-column:1; grid-row:1/-1; position:relative; overflow:hidden; background:var(--foto-a)}
+.vc-id{grid-column:2; grid-row:1; padding:88px 48px 0}
+.vc-prosa{
+  grid-column:2; grid-row:2; overflow-y:auto; padding:24px 48px 48px;
+  display:flex; flex-direction:column; gap:24px; align-items:flex-start;
+}
+.vc-ficha{
+  grid-column:3; grid-row:1/-1;
+  background:var(--bg); border-left:1px solid var(--rule);
+  padding:88px 28px 28px; display:flex; flex-direction:column; gap:20px;
+  overflow-y:auto; align-items:flex-start;
+}
+.vc-topo{position:absolute; top:24px; right:24px; z-index:6}
+@container palco (max-width: 1000px){
+  .painel.vc.on{grid-template-columns:minmax(220px,38%) 1fr; grid-template-rows:auto 1fr auto}
+  .vc-foto{grid-column:1; grid-row:1/3}
+  .vc-id{grid-column:2; grid-row:1; padding:88px 32px 0}
+  .vc-prosa{grid-column:2; grid-row:2; padding:24px 32px 32px}
+  .vc-ficha{
+    grid-column:1/-1; grid-row:3; border-left:0; border-top:1px solid var(--rule);
+    padding:24px 32px; flex-direction:row; flex-wrap:wrap; gap:20px 40px; align-items:flex-start;
+  }
+}
+/* Em celular a identidade sobe: você lê de quem é antes de ler o contato. */
+@container palco (max-width: 700px){
+  .painel.vc.on{grid-template-columns:1fr; grid-template-rows:30% auto auto 1fr}
+  .vc-foto{grid-column:1; grid-row:1}
+  .vc-id{grid-column:1; grid-row:2; padding:24px 20px 0}
+  .vc-ficha{
+    grid-column:1; grid-row:3; flex-direction:column; align-items:flex-start; gap:16px;
+    padding:20px; border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  }
+  .vc-prosa{grid-column:1; grid-row:4; padding:24px 20px 32px}
+  .vc-topo{top:16px; right:16px}
+}
+
+/* ── Foto voadora do FLIP ──────────────────────────────────────── */
+#voadora{
+  position:fixed; z-index:60; pointer-events:none; overflow:hidden; display:none;
+}
+#voadora.on{display:block}
+
+/* ── Aviso do wa.me — só existe no protótipo ───────────────────── */
+.torrada{
+  position:fixed; left:50%; bottom:104px; transform:translateX(-50%);
+  z-index:200; max-width:min(600px,90vw);
+  background:#14171C; color:#F7F8FA; border:1px solid #3A4250;
+  padding:12px 16px; border-radius:4px; font-size:14px; line-height:1.5;
+  box-shadow:0 8px 24px rgba(0,0,0,.35); word-break:break-word;
+}
+.torrada[hidden]{display:none}
+
+/* ── Barra do protótipo — de propósito fora da linguagem do site ── */
+.barra{
+  position:fixed; left:50%; bottom:16px; transform:translateX(-50%);
+  z-index:300; display:flex; align-items:center; gap:2px; flex-wrap:wrap;
+  justify-content:center;
+  background:#14171C; color:#F7F8FA; border:1px solid #3A4250;
+  border-radius:999px; padding:6px; font-family:var(--sans); font-size:13px;
+  box-shadow:0 8px 32px rgba(0,0,0,.35);
+}
+.barra button{
+  background:transparent; border:0; color:inherit; cursor:pointer;
+  font:inherit; border-radius:999px; padding:8px 12px; min-height:36px;
+  display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+}
+.barra button:hover{background:rgba(247,248,250,.12)}
+.barra button:focus-visible{outline:2px solid #E4635E; outline-offset:1px}
+.barra button[aria-pressed="true"]{background:#E4635E; color:#14171C; font-weight:600}
+.barra .rotulo{
+  padding:8px 14px; font-weight:600; min-width:206px; text-align:center;
+  border-left:1px solid rgba(247,248,250,.18);
+  border-right:1px solid rgba(247,248,250,.18);
+}
+.barra .sep{width:1px; align-self:stretch; background:rgba(247,248,250,.18); margin:0 6px}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important; animation-iteration-count:1 !important;
+    transition-duration:.01ms !important; scroll-behavior:auto !important;
+  }
+}
+</style>
+
+<div class="palco" id="palco">
+  <div class="nota" id="nota">
+    <b>Protótipo descartável — ticket #20.</b>
+    Nomes, textos, endereços e fotos são fictícios e substituíveis.
+    O número da OAB aparece como <b>000.000</b> de propósito: o ticket #2 proíbe publicar número fictício.
+    As fotos são marcas de lugar — o que está em julgamento aqui é o <b>tratamento uniforme</b>, não a imagem.
+  </div>
+
+  <main class="secao" id="conteudo">
+    <p class="eyebrow">Seção 4 da home</p>
+    <h2>Advogados</h2>
+    <p class="lead">
+      Quem atende no escritório. Cada perfil traz o número de inscrição na OAB,
+      as áreas em que a pessoa atua e a unidade onde você a encontra.
+    </p>
+
+    <ul class="grade" id="grade"></ul>
+    <button class="ver-mais" id="verMais">Ver os outros 3 advogados</button>
+
+    <div class="cta-bloco">
+      <p class="cta-assunto">
+        Se aparece um desconto que você não reconhece no seu benefício, fale com o escritório.
+      </p>
+      <a class="btn-wa" href="#" data-wa data-assunto="desconto-que-voce-nao-reconhece">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.2 8.2 0 0 1 5.83 2.42 8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Z"/></svg>
+        Falar com o escritório
+      </a>
+      <p class="cta-meta">Seg a sex, 08h às 16h · atendimento presencial mediante hora marcada</p>
+      <p class="cta-meta">Prefere ligar? <a href="#" data-inerte>(88) 0000-0000</a></p>
+    </div>
+  </main>
+
+  <div class="veu" id="veu"></div>
+  <div class="painel" id="painel" role="dialog" aria-modal="true" aria-labelledby="p-nome" tabindex="-1"></div>
+</div>
+
+<div id="voadora" aria-hidden="true"></div>
+<div class="torrada" id="torrada" role="status" hidden></div>
+
+<div class="barra" role="group" aria-label="Controles do protótipo">
+  <button id="ant" aria-label="Variante anterior">←</button>
+  <span class="rotulo" id="rotulo"></span>
+  <button id="prox" aria-label="Próxima variante">→</button>
+  <span class="sep"></span>
+  <button id="btnTexto" aria-pressed="false">Texto curto</button>
+  <button id="btnCel" aria-pressed="false">Celular</button>
+  <button id="btnTema" aria-pressed="false">Tema escuro</button>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   PROTÓTIPO — 3 variantes do painel do advogado (ticket #20).
+   Troca por ?variante=a|b|c, pelas setas da barra ou do teclado.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Dados fictícios e substituíveis ─────────────────────────────
+   A descrição é escrita em construção NOMINAL de propósito:
+   "Graduação em Direito pela..." em vez de "Graduado/a em...".
+   Testa a hipótese do ticket — prosa de credenciais, sem adjetivo —
+   e de quebra some com a concordância de gênero que o brief evita. */
+const ADVOGADOS = [
+  { id:"helena-sampaio", nome:"Helena Sampaio Vasconcelos", tom:"var(--foto-a)",
+    areas:"Direito bancário · revisão de empréstimo consignado · descontos no benefício",
+    unidade:"Unidade Acopiara",
+    endereco:"Rua Coronel Alves, 240 — Centro · Acopiara/CE",
+    dias:"Atende às segundas, quartas e sextas",
+    curta:"Graduação em Direito pela Universidade Federal do Ceará. Pós-graduação em Direito Previdenciário. Atuação em direito bancário desde 2014.",
+    longa:"Graduação em Direito pela Universidade Federal do Ceará. Pós-graduação em Direito Previdenciário pela Universidade de Fortaleza. Extensão em Direito do Consumidor Bancário pela Escola Superior da Advocacia da OAB/CE. Membro da Comissão de Defesa do Consumidor da OAB/CE. Membro do Instituto Brasileiro de Direito Previdenciário. Atuação em direito bancário desde 2014, com ênfase em contratos de empréstimo consignado descontados de aposentadoria, pensão e Benefício de Prestação Continuada. Autoria de artigos sobre reserva de margem consignável em publicações da seccional." },
+
+  { id:"rui-bastos", nome:"Rui Bastos Meireles", tom:"var(--foto-b)",
+    areas:"Direito bancário · cartão com desconto na aposentadoria · seguros não contratados",
+    unidade:"Unidade Juazeiro do Norte",
+    endereco:"Avenida Padre Cícero, 1180 — São Miguel · Juazeiro do Norte/CE",
+    dias:"Atende de segunda a quinta",
+    curta:"Graduação em Direito pela Universidade Regional do Cariri. Pós-graduação em Direito Civil e Processo Civil. Atuação em direito bancário desde 2011.",
+    longa:"Graduação em Direito pela Universidade Regional do Cariri. Pós-graduação em Direito Civil e Processo Civil pela Faculdade de Juazeiro do Norte. Formação em Mediação e Conciliação pelo Tribunal de Justiça do Ceará. Membro da Comissão de Direito Bancário da OAB/CE, subseção Juazeiro do Norte. Atuação em direito bancário desde 2011, com ênfase em cartão de crédito consignado e reserva de margem consignável descontados de benefício previdenciário. Docência em cursos de extensão sobre superendividamento da pessoa idosa." },
+
+  { id:"claudia-timbo", nome:"Cláudia Reginaldo Timbó", tom:"var(--foto-c)",
+    areas:"Direito bancário · direito previdenciário · benefício suspenso ou cessado",
+    unidade:"Unidade Juazeiro do Norte",
+    endereco:"Avenida Padre Cícero, 1180 — São Miguel · Juazeiro do Norte/CE",
+    dias:"Atende às terças e quintas",
+    curta:"Graduação em Direito pela Universidade de Fortaleza. Pós-graduação em Direito Previdenciário. Atuação em direito previdenciário desde 2009.",
+    longa:"Graduação em Direito pela Universidade de Fortaleza. Pós-graduação em Direito Previdenciário pela Pontifícia Universidade Católica de São Paulo. Extensão em Perícia Médica Previdenciária pela Escola Superior da Advocacia. Membro do Instituto Brasileiro de Direito Previdenciário. Membro da Comissão da Pessoa Idosa da OAB/CE. Atuação em direito previdenciário desde 2009 e em direito bancário desde 2016, com ênfase em benefícios suspensos, cessados ou onerados por descontos de origem não identificada. Coautoria de capítulo sobre descontos associativos em benefício do INSS." },
+
+  { id:"ivo-paulino", nome:"Ivo Nogueira Paulino", tom:"var(--foto-b)",
+    areas:"Direito bancário · empréstimo que você não fez · negativação indevida",
+    unidade:"Unidade Senador Pompeu",
+    endereco:"Rua Sete de Setembro, 55 — Centro · Senador Pompeu/CE",
+    dias:"Atende às quartas e sextas",
+    curta:"Graduação em Direito pelo Centro Universitário Christus. Pós-graduação em Direito do Consumidor. Atuação em direito bancário desde 2017.",
+    longa:"Graduação em Direito pelo Centro Universitário Christus. Pós-graduação em Direito do Consumidor pela Universidade Estadual do Ceará. Extensão em Direito Digital e Proteção de Dados pela Escola Superior da Advocacia da OAB/CE. Membro da Comissão de Defesa do Consumidor da OAB/CE. Atuação em direito bancário desde 2017, com ênfase em contratos celebrados sem a manifestação de vontade do titular do benefício e em inscrição indevida em cadastro restritivo de crédito." },
+
+  { id:"sarah-quezado", nome:"Sarah Andrade Quezado", tom:"var(--foto-a)",
+    areas:"Direito bancário · seguro descontado do benefício · devolução de valores",
+    unidade:"Unidade Fortim",
+    endereco:"Rua da Praia, 300, sala 05 — Centro · Fortim/CE",
+    dias:"Atende às segundas e terças",
+    curta:"Graduação em Direito pela Universidade Estadual do Ceará. Pós-graduação em Direito Bancário. Atuação em direito bancário desde 2015.",
+    longa:"Graduação em Direito pela Universidade Estadual do Ceará. Pós-graduação em Direito Bancário e Mercado de Capitais pela Fundação Getulio Vargas. Extensão em Direito do Consumidor Superendividado pela Escola Nacional de Defesa do Consumidor. Membro da Comissão de Direito Bancário da OAB/CE. Atuação em direito bancário desde 2015, com ênfase em prêmios de seguro e mensalidades associativas descontados de aposentadoria e pensão, e em repetição de indébito dos valores já descontados." },
+
+  { id:"otavio-cavalcante", nome:"Otávio Lins Cavalcante", tom:"var(--foto-c)",
+    areas:"Direito bancário · direito previdenciário · revisão de contrato",
+    unidade:"Unidade Acopiara · Unidade Fortim",
+    endereco:"Rua Coronel Alves, 240 — Centro · Acopiara/CE<br><span class=\"sub\">Rua da Praia, 300, sala 05 — Centro · Fortim/CE</span>",
+    dias:"Acopiara às terças e quintas · Fortim às sextas",
+    curta:"Graduação em Direito pela Universidade Federal do Cariri. Pós-graduação em Direito Processual Civil. Atuação em direito bancário desde 2012.",
+    longa:"Graduação em Direito pela Universidade Federal do Cariri. Pós-graduação em Direito Processual Civil pela Universidade Federal do Ceará. Formação em Arbitragem e Mediação pelo Conselho Nacional de Justiça. Membro da Comissão de Estudos de Direito Bancário da OAB/CE. Atuação em direito bancário e previdenciário desde 2012, com ênfase em revisão de contrato de empréstimo consignado e em identificação de rubricas de desconto no extrato de pagamento do benefício. Docência em curso de extensão sobre margem consignável na Escola Superior da Advocacia." }
+];
+
+const VARIANTES = {
+  a:{nome:"Painel lateral 560px", classe:"va", veu:true},
+  b:{nome:"Tela cheia dividida",  classe:"vb", veu:false},
+  c:{nome:"Tela cheia com ficha", classe:"vc", veu:false}
+};
+const ORDEM = ["a","b","c"];
+
+const $ = s => document.querySelector(s);
+const palco   = $("#palco"),  painel = $("#painel"), veu = $("#veu"),
+      voadora = $("#voadora"), grade = $("#grade"),  verMais = $("#verMais"),
+      rotulo  = $("#rotulo"),  torrada = $("#torrada"),
+      conteudo = $("#conteudo"), nota = $("#nota");
+
+let variante = new URLSearchParams(location.search).get("variante");
+if(!ORDEM.includes(variante)) variante = "a";
+
+let textoLongo = false, abertoId = null, ultimoFoco = null,
+    scrollTravado = 0, empurrei = false;
+
+const reduzido = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ── Marca de lugar da foto: mesma composição para todos, tom por pessoa.
+      É isto que demonstra o "tratamento fotográfico uniforme" do #7. ── */
+function fotoSVG(adv){
+  return '<svg viewBox="0 0 300 400" preserveAspectRatio="xMidYMid slice" role="img"' +
+    ' style="width:100%;height:100%;background:' + adv.tom + '"' +
+    ' aria-label="Marca de lugar da foto de ' + adv.nome + '">' +
+    '<g opacity=".26" fill="var(--ink)">' +
+      '<rect x="0" y="58" width="300" height="6"/>' +
+      '<rect x="0" y="126" width="300" height="6"/>' +
+      '<rect x="0" y="194" width="300" height="6"/>' +
+      '<rect x="0" y="262" width="300" height="6"/>' +
+    '</g>' +
+    '<g fill="var(--surface)" opacity=".9">' +
+      '<circle cx="150" cy="162" r="52"/>' +
+      '<path d="M150 226c-58 0-96 38-104 96-2 14 6 26 20 26h168c14 0 22-12 20-26-8-58-46-96-104-96Z"/>' +
+    '</g></svg>';
+}
+
+const ICO_WA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.2 8.2 0 0 1 5.83 2.42 8.19 8.19 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23Z"/></svg>';
+const ICO_IN = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM3 9h4v12H3V9Zm6 0h3.8v1.7h.05c.53-1 1.83-2.05 3.76-2.05C20.7 8.65 22 10.6 22 14.02V21h-4v-6.2c0-1.48-.03-3.38-2.06-3.38-2.06 0-2.38 1.6-2.38 3.27V21H9V9Z"/></svg>';
+const ICO_IG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23C2.17 15.58 2.16 15.2 2.16 12s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41C8.42 2.17 8.8 2.16 12 2.16Zm0 5.68a4.16 4.16 0 1 0 0 8.32 4.16 4.16 0 0 0 0-8.32Zm0 6.86a2.7 2.7 0 1 1 0-5.4 2.7 2.7 0 0 1 0 5.4Zm5.3-7.02a.97.97 0 1 1-1.94 0 .97.97 0 0 1 1.94 0Z"/></svg>';
+
+const redes = adv =>
+  '<div class="p-redes">' +
+    '<a href="#" data-inerte aria-label="LinkedIn de ' + adv.nome + '">' + ICO_IN + '</a>' +
+    '<a href="#" data-inerte aria-label="Instagram de ' + adv.nome + '">' + ICO_IG + '</a>' +
+  '</div>';
+
+const botaoWA = adv =>
+  '<a class="btn-wa" href="#" data-wa data-assunto="perfil-' + adv.id + '">' +
+  ICO_WA + ' Falar com ' + adv.nome.split(" ")[0] + '</a>';
+
+const botaoX = () =>
+  '<button class="x" data-fechar aria-label="Fechar o perfil">' +
+  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>' +
+  '</button>';
+
+const horario = '<p class="cta-meta">Seg a sex, 08h às 16h · mediante hora marcada</p>';
+
+/* ── Grade de cards ────────────────────────────────────────────── */
+function montarGrade(){
+  grade.innerHTML = ADVOGADOS.map(function(a,i){
+    return '<li class="card" data-card="' + a.id + '"' + (i>2 ? ' hidden' : '') + '>' +
+      '<div class="card-foto" data-foto-card="' + a.id + '">' + fotoSVG(a) + '</div>' +
+      '<div class="card-corpo">' +
+        '<h3 class="card-nome">' + a.nome + '</h3>' +
+        '<p class="card-oab">OAB/CE 000.000</p>' +
+        '<p class="card-areas">Atua em: ' + a.areas + '</p>' +
+        '<p class="card-acao" aria-hidden="true">Ver perfil <span>→</span></p>' +
+      '</div>' +
+      '<button class="card-btn" data-abrir="' + a.id + '">Ver o perfil de ' + a.nome + '</button>' +
+    '</li>';
+  }).join("");
+}
+
+/* ── Um corpo por variante — cada uma é livre para jogar fora o layout ── */
+function corpoA(adv, desc){
+  return '<div class="va-topo">' + botaoX() + '</div>' +
+    '<div class="va-rola">' +
+      '<div class="va-foto-caixa" data-foto-painel>' + fotoSVG(adv) + '</div>' +
+      '<div class="va-texto">' +
+        '<div><h2 class="p-nome" id="p-nome">' + adv.nome + '</h2>' +
+        '<p class="p-oab">OAB/CE 000.000</p></div>' +
+        '<p class="p-desc">' + desc + '</p>' +
+        '<hr class="regua">' +
+        '<div><p class="p-rotulo">Atua em</p><p class="p-dado">' + adv.areas + '</p></div>' +
+        '<div><p class="p-rotulo">Onde encontrar</p><p class="p-dado">' + adv.unidade +
+          '<br><span class="sub">' + adv.endereco + '</span></p></div>' +
+        '<div><p class="p-rotulo">Dias de atendimento</p><p class="p-dado">' + adv.dias + '</p></div>' +
+        '<div><p class="p-rotulo">Redes</p>' + redes(adv) + '</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="va-pe">' + botaoWA(adv) + horario + '</div>';
+}
+
+function corpoB(adv, desc){
+  return '<div class="vb-texto">' +
+      '<div><h2 class="p-nome" id="p-nome">' + adv.nome + '</h2>' +
+      '<p class="p-oab">OAB/CE 000.000</p></div>' +
+      '<p class="p-desc">' + desc + '</p>' +
+      '<hr class="regua">' +
+      '<div><p class="p-rotulo">Atua em</p><p class="p-dado">' + adv.areas + '</p></div>' +
+      '<div><p class="p-rotulo">Onde encontrar</p><p class="p-dado">' + adv.unidade +
+        '<br><span class="sub">' + adv.endereco + '</span></p></div>' +
+      '<div><p class="p-rotulo">Dias de atendimento</p><p class="p-dado">' + adv.dias + '</p></div>' +
+      botaoWA(adv) + horario + redes(adv) +
+    '</div>' +
+    '<div class="vb-foto" data-foto-painel>' + fotoSVG(adv) + '</div>' +
+    '<div class="vb-topo">' + botaoX() + '</div>';
+}
+
+function corpoC(adv, desc){
+  return '<div class="vc-foto" data-foto-painel>' + fotoSVG(adv) + '</div>' +
+    '<div class="vc-id">' +
+      '<h2 class="p-nome" id="p-nome">' + adv.nome + '</h2>' +
+      '<p class="p-oab">OAB/CE 000.000</p>' +
+    '</div>' +
+    '<div class="vc-prosa">' +
+      '<div><p class="p-rotulo">Atua em</p><p class="p-dado">' + adv.areas + '</p></div>' +
+      '<hr class="regua">' +
+      '<p class="p-desc">' + desc + '</p>' +
+    '</div>' +
+    '<aside class="vc-ficha">' +
+      '<div><p class="p-rotulo">Onde encontrar</p><p class="p-dado">' + adv.unidade +
+        '<br><span class="sub">' + adv.endereco + '</span></p></div>' +
+      '<div><p class="p-rotulo">Dias de atendimento</p><p class="p-dado">' + adv.dias + '</p></div>' +
+      '<div>' + botaoWA(adv) + horario + '</div>' +
+      '<div><p class="p-rotulo">Redes</p>' + redes(adv) + '</div>' +
+    '</aside>' +
+    '<div class="vc-topo">' + botaoX() + '</div>';
+}
+
+const CORPOS = {a:corpoA, b:corpoB, c:corpoC};
+
+/* ── Abrir ─────────────────────────────────────────────────────── */
+function abrir(id, opcoes){
+  opcoes = opcoes || {};
+  const empurrar = opcoes.empurrar !== false;
+  const adv = ADVOGADOS.find(a => a.id === id);
+  if(!adv) return;
+
+  // Link profundo para um dos 3 escondidos: revela a grade antes
+  if(ADVOGADOS.indexOf(adv) > 2 && !verMais.hidden) revelarTodos();
+
+  abertoId = id;
+  ultimoFoco = opcoes.foco || document.querySelector('[data-abrir="' + id + '"]');
+
+  const cfg = VARIANTES[variante];
+  const cardFoto = document.querySelector('[data-foto-card="' + id + '"]');
+  const rectCard = cardFoto ? cardFoto.getBoundingClientRect() : null;
+
+  painel.className = "painel " + cfg.classe;
+  painel.innerHTML = CORPOS[variante](adv, textoLongo ? adv.longa : adv.curta);
+  painel.classList.add("on");
+  veu.className = "veu on" + (cfg.veu ? "" : " sem-veu");
+
+  // O fundo sai do alcance do teclado e do leitor de tela
+  conteudo.inert = true; nota.inert = true;
+
+  scrollTravado = palco.scrollTop;
+  palco.style.overflow = "hidden";
+
+  if(empurrar){ history.pushState({adv:id}, "", "#" + id); empurrei = true; }
+
+  requestAnimationFrame(function(){
+    painel.classList.add("entrou");
+    if(rectCard && cardFoto) voar(adv, rectCard, cardFoto);
+    painel.focus();
+  });
+}
+
+/* ── Fechar ────────────────────────────────────────────────────── */
+function fechar(){
+  if(!abertoId) return;
+  if(empurrei){ history.back(); return; }   // o popstate faz o resto
+  fecharDeVerdade();
+}
+
+function fecharDeVerdade(){
+  const alvo = ultimoFoco;
+  painel.classList.remove("entrou");
+  veu.classList.remove("on");
+  abertoId = null; empurrei = false;
+
+  const fim = function(){
+    painel.classList.remove("on");
+    painel.innerHTML = "";
+    conteudo.inert = false; nota.inert = false;
+    palco.style.overflow = "";
+    palco.scrollTop = scrollTravado;
+    if(alvo) alvo.focus({preventScroll:true});
+  };
+  if(reduzido()) fim(); else setTimeout(fim, 300);
+}
+
+/* ── A foto expande, não troca (FLIP) ──────────────────────────── */
+function voar(adv, rectCard, cardFoto){
+  const destino = painel.querySelector("[data-foto-painel]");
+  if(!destino) return;
+  if(reduzido()) return;                  // degradê acordado: já abre grande
+
+  const fim = destino.getBoundingClientRect();
+  if(fim.width < 4 || fim.height < 4) return;
+
+  cardFoto.style.visibility = "hidden";
+  destino.style.visibility  = "hidden";
+
+  voadora.innerHTML = fotoSVG(adv);
+  voadora.className = "on";
+
+  const anim = voadora.animate([
+    { left:rectCard.left + "px", top:rectCard.top + "px",
+      width:rectCard.width + "px", height:rectCard.height + "px", borderRadius:"8px" },
+    { left:fim.left + "px", top:fim.top + "px",
+      width:fim.width + "px", height:fim.height + "px", borderRadius:"0px" }
+  ], { duration:320, easing:"cubic-bezier(.2,0,0,1)", fill:"forwards" });
+
+  anim.onfinish = function(){
+    destino.style.visibility = "";
+    voadora.className = ""; voadora.innerHTML = "";
+    cardFoto.style.visibility = "";
+  };
+}
+
+/* ── Teclado: ESC, armadilha de foco, setas de variante ────────── */
+const FOCAVEIS = 'a[href], button, [tabindex]:not([tabindex="-1"])';
+
+document.addEventListener("keydown", function(e){
+  if(e.key === "Escape" && abertoId){ e.preventDefault(); fechar(); return; }
+
+  if(e.key === "Tab" && abertoId){
+    const itens = Array.prototype.filter.call(
+      painel.querySelectorAll(FOCAVEIS), el => el.offsetParent !== null);
+    if(!itens.length) return;
+    const primeiro = itens[0], ultimo = itens[itens.length - 1];
+    if(e.shiftKey && (document.activeElement === primeiro || document.activeElement === painel)){
+      e.preventDefault(); ultimo.focus();
+    } else if(!e.shiftKey && document.activeElement === ultimo){
+      e.preventDefault(); primeiro.focus();
+    }
+    return;
+  }
+
+  const t = e.target;
+  if(t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+  if(e.key === "ArrowLeft")  trocarVariante(-1);
+  if(e.key === "ArrowRight") trocarVariante(1);
+});
+
+/* ── Cliques ───────────────────────────────────────────────────── */
+document.addEventListener("click", function(e){
+  const abre = e.target.closest("[data-abrir]");
+  if(abre){ abrir(abre.dataset.abrir, {foco:abre}); return; }
+
+  if(e.target.closest("[data-fechar]")){ fechar(); return; }
+
+  const wa = e.target.closest("[data-wa]");
+  if(wa){
+    e.preventDefault();
+    torrar('No site real este botão abre wa.me/55DDDNUMERO?text=… com o assunto "' +
+           wa.dataset.assunto + '". O catálogo dos textos é o ticket #19.');
+    return;
+  }
+  if(e.target.closest("[data-inerte]")){ e.preventDefault(); }
+});
+
+veu.addEventListener("click", function(){ fechar(); });
+
+verMais.addEventListener("click", revelarTodos);
+function revelarTodos(){
+  Array.prototype.forEach.call(grade.querySelectorAll("[hidden]"), li => li.hidden = false);
+  verMais.hidden = true;
+}
+
+/* ── Histórico do navegador — devolve o gesto de voltar do Android ── */
+addEventListener("popstate", function(){
+  const hash = location.hash.replace("#","");
+  const alvo = ADVOGADOS.find(a => a.id === hash);
+  if(alvo && alvo.id !== abertoId){ empurrei = false; abrir(alvo.id, {empurrar:false}); }
+  else if(!alvo && abertoId){ empurrei = false; fecharDeVerdade(); }
+});
+
+/* ── Barra do protótipo ────────────────────────────────────────── */
+function reabrir(){
+  if(!abertoId) return;
+  const id = abertoId;
+  const guardado = empurrei;
+  empurrei = false;
+  fecharDeVerdade();
+  empurrei = guardado;
+  abrir(id, {empurrar:false});
+}
+
+function trocarVariante(passo){
+  variante = ORDEM[(ORDEM.indexOf(variante) + passo + ORDEM.length) % ORDEM.length];
+  const url = new URL(location);
+  url.searchParams.set("variante", variante);
+  history.replaceState(history.state, "", url);
+  pintarRotulo();
+  reabrir();
+}
+function pintarRotulo(){
+  rotulo.textContent = variante.toUpperCase() + " — " + VARIANTES[variante].nome;
+}
+
+$("#ant").onclick  = function(){ trocarVariante(-1); };
+$("#prox").onclick = function(){ trocarVariante(1); };
+
+$("#btnTexto").onclick = function(){
+  textoLongo = !textoLongo;
+  this.setAttribute("aria-pressed", String(textoLongo));
+  this.textContent = textoLongo ? "Texto longo" : "Texto curto";
+  reabrir();
+};
+$("#btnCel").onclick = function(){
+  const on = palco.classList.toggle("celular");
+  this.setAttribute("aria-pressed", String(on));
+  reabrir();
+};
+$("#btnTema").onclick = function(){
+  const escuro = document.documentElement.getAttribute("data-theme") === "dark";
+  document.documentElement.setAttribute("data-theme", escuro ? "light" : "dark");
+  this.setAttribute("aria-pressed", String(!escuro));
+  this.textContent = escuro ? "Tema escuro" : "Tema claro";
+};
+
+let tid;
+function torrar(txt){
+  torrada.textContent = txt; torrada.hidden = false;
+  clearTimeout(tid); tid = setTimeout(function(){ torrada.hidden = true; }, 5600);
+}
+
+/* ── Início ────────────────────────────────────────────────────── */
+montarGrade();
+pintarRotulo();
+if(location.hash){
+  const alvo = ADVOGADOS.find(a => a.id === location.hash.replace("#",""));
+  if(alvo) abrir(alvo.id, {empurrar:false});
+}
+</script>
