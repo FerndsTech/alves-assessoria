@@ -1,0 +1,1049 @@
+<title>Dicionário do Fluxo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,600;1,400&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+<style>
+:root {
+  --papel:       #fbf9f6;
+  --papel-caixa: #f2eee8;
+  --cartao:      #ffffff;
+  --tinta:       #1c1a19;
+  --tinta-fraca: #5d5754;
+  --linha:       #ddd6cc;
+  --contorno:    #b5a99a;
+  --marca:       #a82520;
+  --marca-suave: #fbedec;
+  --sobre-marca: #ffffff;
+  --ok:          #2f6b45;
+  --ok-suave:    #e8f4ed;
+  --erro:        #a3322c;
+  --sombra:      0 1px 2px rgba(28,26,25,.05), 0 6px 18px -12px rgba(28,26,25,.22);
+
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --sans:  "Source Sans 3", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --mono:  "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel:       #17161a;
+    --papel-caixa: #211f25;
+    --cartao:      #1e1c22;
+    --tinta:       #ece7e1;
+    --tinta-fraca: #a49c95;
+    --linha:       #35323a;
+    --contorno:    #56515e;
+    --marca:       #e4635e;
+    --marca-suave: #2a1c1c;
+    --sobre-marca: #17161a;
+    --ok:          #7fc79b;
+    --ok-suave:    #16271e;
+    --erro:        #f0918c;
+    --sombra:      0 1px 2px rgba(0,0,0,.4), 0 6px 18px -12px rgba(0,0,0,.7);
+  }
+}
+
+:root[data-theme="dark"] {
+  --papel:       #17161a;
+  --papel-caixa: #211f25;
+  --cartao:      #1e1c22;
+  --tinta:       #ece7e1;
+  --tinta-fraca: #a49c95;
+  --linha:       #35323a;
+  --contorno:    #56515e;
+  --marca:       #e4635e;
+  --marca-suave: #2a1c1c;
+  --sobre-marca: #17161a;
+  --ok:          #7fc79b;
+  --ok-suave:    #16271e;
+  --erro:        #f0918c;
+  --sombra:      0 1px 2px rgba(0,0,0,.4), 0 6px 18px -12px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font: 400 17px/1.6 var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.folha {
+  max-width: 54rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.25rem 7rem;
+}
+
+/* --- abertura ---------------------------------------------------------- */
+
+.chapeu {
+  font: 600 0.72rem/1 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--marca);
+  margin: 0 0 1.1rem;
+}
+
+h1 {
+  font: 600 clamp(2.1rem, 6vw, 3.1rem)/1.08 var(--serif);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.7rem;
+  text-wrap: balance;
+}
+
+.linha-fina {
+  font-size: 1.15rem;
+  line-height: 1.5;
+  color: var(--tinta-fraca);
+  margin: 0 0 2rem;
+  max-width: 34em;
+}
+
+.abertura { max-width: 36em; margin: 0 0 2.5rem; }
+.abertura p { margin: 0 0 1rem; }
+.abertura p:last-child { margin-bottom: 0; }
+
+/* --- barra de controle ------------------------------------------------- */
+
+.controle {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--papel) 93%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--linha);
+  margin: 0 -1.25rem 2.25rem;
+  padding: 0.85rem 1.25rem 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem 1rem;
+  align-items: center;
+}
+
+.busca {
+  flex: 1 1 14rem;
+  min-width: 0;
+  font: 400 0.95rem var(--sans);
+  color: inherit;
+  background: var(--cartao);
+  border: 1px solid var(--contorno);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+}
+.busca::placeholder { color: var(--tinta-fraca); }
+.busca:focus-visible { outline: 2px solid var(--marca); outline-offset: 1px; }
+
+.registro-switch {
+  display: flex;
+  border: 1px solid var(--contorno);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--cartao);
+}
+.registro-switch button {
+  font: 600 0.78rem/1 var(--sans);
+  color: var(--tinta-fraca);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--linha);
+  padding: 0.55rem 0.7rem;
+  cursor: pointer;
+}
+.registro-switch button:first-child { border-left: 0; }
+.registro-switch button[aria-pressed="true"] {
+  background: var(--marca);
+  color: var(--sobre-marca);
+}
+.registro-switch button:focus-visible { outline: 2px solid var(--marca); outline-offset: -2px; }
+
+.contagem {
+  font: 400 0.8rem/1 var(--sans);
+  color: var(--tinta-fraca);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+}
+
+.familias { display: flex; flex-wrap: wrap; gap: 0.4rem; flex: 1 1 100%; }
+.familias button {
+  font: 600 0.75rem/1 var(--sans);
+  color: var(--tinta-fraca);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+}
+.familias button[aria-pressed="true"] {
+  border-color: var(--marca);
+  color: var(--marca);
+  background: var(--marca-suave);
+}
+.familias button:focus-visible { outline: 2px solid var(--marca); outline-offset: 1px; }
+
+/* --- famílias e verbetes ------------------------------------------------ */
+
+.familia { margin: 0 0 3rem; }
+.familia[hidden] { display: none; }
+
+.familia > h2 {
+  font: 600 1.55rem/1.2 var(--serif);
+  letter-spacing: -0.01em;
+  margin: 0 0 0.3rem;
+  text-wrap: balance;
+}
+.familia > .sub {
+  font: 400 0.95rem/1.55 var(--sans);
+  color: var(--tinta-fraca);
+  margin: 0 0 1.4rem;
+  max-width: 40em;
+}
+
+.verbete {
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  padding: 1.15rem 1.3rem 1.25rem;
+  margin: 0 0 0.85rem;
+  box-shadow: var(--sombra);
+}
+.verbete[hidden] { display: none; }
+
+.verbete-topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.7rem;
+  margin: 0 0 0.9rem;
+}
+.verbete-topo h3 {
+  font: 600 1.2rem/1.2 var(--serif);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+.original { font: 400 0.78rem/1 var(--mono); color: var(--tinta-fraca); }
+.selo {
+  margin-left: auto;
+  font: 600 0.63rem/1 var(--sans);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  padding: 0.32rem 0.5rem;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.selo-firme { background: var(--ok-suave); color: var(--ok); }
+.selo-novo  { background: var(--marca-suave); color: var(--marca); }
+
+.registros { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+@media (max-width: 44rem) { .registros { grid-template-columns: 1fr; gap: 0.9rem; } }
+
+.registro { min-width: 0; }
+.rotulo {
+  display: block;
+  font: 600 0.63rem/1.3 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 0 0 0.35rem;
+}
+.registro p { margin: 0; font-size: 0.95rem; line-height: 1.6; }
+
+body[data-registro="natural"] .registro.tecnica,
+body[data-registro="tecnica"] .registro.natural { display: none; }
+body[data-registro="natural"] .registros,
+body[data-registro="tecnica"] .registros { grid-template-columns: 1fr; }
+
+.analogia {
+  font: italic 400 0.97rem/1.6 var(--serif);
+  color: var(--tinta);
+  background: var(--papel-caixa);
+  border-left: 3px solid var(--marca);
+  border-radius: 0 5px 5px 0;
+  padding: 0.7rem 0.9rem;
+  margin: 1rem 0 0;
+}
+.analogia .rotulo { font-style: normal; }
+
+.contraste {
+  font: 400 0.92rem/1.55 var(--sans);
+  color: var(--tinta-fraca);
+  margin: 0.8rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--linha);
+}
+.contraste b { color: var(--tinta); font-weight: 600; }
+.ne { font: 600 0.95rem var(--mono); color: var(--marca); margin-right: 0.25rem; }
+
+code {
+  font: 0.87em var(--mono);
+  background: var(--papel-caixa);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+.vazio {
+  text-align: center;
+  color: var(--tinta-fraca);
+  font-size: 0.95rem;
+  padding: 3rem 0;
+}
+.vazio[hidden] { display: none; }
+
+/* --- treino ------------------------------------------------------------- */
+
+.treino {
+  border-top: 2px solid var(--tinta);
+  margin-top: 4rem;
+  padding-top: 2rem;
+}
+.treino h2 {
+  font: 600 1.75rem/1.15 var(--serif);
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.015em;
+}
+.treino > p { color: var(--tinta-fraca); max-width: 36em; margin: 0 0 1.75rem; }
+
+.pergunta {
+  border: 1px solid var(--linha);
+  background: var(--papel-caixa);
+  border-radius: 8px;
+  padding: 1.2rem 1.35rem;
+  margin: 0 0 0.85rem;
+}
+.pergunta > .enunciado { font: 400 1rem/1.55 var(--sans); margin: 0 0 0.95rem; }
+.pergunta > .enunciado b { font-weight: 600; }
+
+.opcao {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 400 0.93rem/1.45 var(--sans);
+  color: inherit;
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: 5px;
+  padding: 0.6rem 0.85rem;
+  margin: 0 0 0.45rem;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.opcao:hover:not([disabled]) { border-color: var(--marca); }
+.opcao:focus-visible { outline: 2px solid var(--marca); outline-offset: 1px; }
+.opcao[disabled] { cursor: default; }
+.opcao.certa { border-color: var(--ok); background: var(--ok-suave); font-weight: 600; }
+.opcao.errada {
+  border-color: var(--erro);
+  background: color-mix(in srgb, var(--erro) 11%, var(--cartao));
+  text-decoration: line-through;
+}
+.retorno {
+  font: 400 0.9rem/1.6 var(--sans);
+  margin: 0.85rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--linha);
+  display: none;
+}
+.retorno.visivel { display: block; }
+.placar {
+  font: 600 0.95rem/1.5 var(--sans);
+  text-align: center;
+  margin-top: 1.4rem;
+  color: var(--tinta-fraca);
+  min-height: 1.5em;
+}
+
+/* --- rodapé ------------------------------------------------------------- */
+
+.rodape {
+  margin-top: 4rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--linha);
+  font: 400 0.92rem/1.65 var(--sans);
+  color: var(--tinta-fraca);
+  max-width: 40em;
+}
+.rodape h3 {
+  font: 600 0.72rem/1.4 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 1.75rem 0 0.5rem;
+}
+.rodape h3:first-child { margin-top: 0; }
+.rodape .selo { margin-left: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<div class="folha">
+
+<p class="chapeu">Referência · o fluxo ideia → ship</p>
+<h1>Dicionário do Fluxo</h1>
+<p class="linha-fina">Cada termo em duas línguas: como você diria conversando, e como a skill diz.</p>
+
+<div class="abertura">
+<p>Você já opera o fluxo. O que ainda escapa são as <strong>palavras</strong> — e isso não é
+detalhe de estilo. Essas skills foram escritas por gente que escolheu cada termo de propósito e
+proibiu os sinônimos: o <code>codebase-design</code> diz literalmente <em>“use estes termos
+exatamente — não troque por componente, serviço ou boundary”</em>. Quando você usa a palavra
+certa, o agente puxa a regra certa. Quando usa o sinônimo, ele adivinha.</p>
+
+<p>Por isso cada verbete vem em <strong>duas versões da mesma ideia</strong>. A natural é a que
+você usa para pensar e para explicar ao cliente. A técnica é a que você escreve no ticket, no
+spec e no prompt. Saber o termo é conseguir passar de uma para a outra sem perder nada no
+caminho — e o botão ali em cima serve para treinar exatamente isso: esconda um lado e tente
+reconstruí-lo de cabeça.</p>
+
+<p>Cada verbete termina com um <strong>≠</strong>. Essa linha costuma valer mais que a
+definição, porque quase todo erro de vocabulário aqui é uma confusão entre dois termos vizinhos,
+não uma ignorância do termo sozinho.</p>
+</div>
+
+<div class="controle">
+  <input class="busca" id="busca" type="search" placeholder="Buscar termo, definição ou analogia…" aria-label="Buscar no dicionário" autocomplete="off">
+  <div class="registro-switch" role="group" aria-label="Qual linguagem mostrar">
+    <button type="button" data-registro="ambos" aria-pressed="true">As duas</button>
+    <button type="button" data-registro="natural" aria-pressed="false">Só natural</button>
+    <button type="button" data-registro="tecnica" aria-pressed="false">Só técnica</button>
+  </div>
+  <span class="contagem" id="contagem"></span>
+  <div class="familias" id="familias" role="group" aria-label="Filtrar por família"></div>
+</div>
+
+<div id="verbetes"></div>
+<p class="vazio" id="vazio" hidden>Nenhum termo bate com essa busca.</p>
+
+<section class="treino">
+  <h2>Treino de reconhecimento</h2>
+  <p>A definição vem em linguagem natural; você nomeia o termo. É o movimento que você vai
+  precisar fazer de verdade — traduzir o que sente para o que se escreve no ticket. Errar aqui
+  é útil: o esforço de lembrar é o que fixa.</p>
+
+  <div id="quiz">
+
+    <div class="pergunta" data-certa="2">
+      <p class="enunciado"><b>“Sinto que vai dar problema, mas não consigo nem escrever a pergunta ainda.”</b></p>
+      <button class="opcao" data-i="0">Um ticket ainda não priorizado</button>
+      <button class="opcao" data-i="1">Um item de fora de escopo</button>
+      <button class="opcao" data-i="2">Névoa</button>
+      <button class="opcao" data-i="3">Uma aresta de bloqueio</button>
+      <p class="retorno">Névoa. O teste é exatamente esse: <strong>consegue enunciar a pergunta?</strong>
+      Se consegue, já é ticket — mesmo sem ter a resposta. Se nem a pergunta sai, é névoa, e ela
+      mora na seção “Ainda não especificado” do mapa até graduar.</p>
+    </div>
+
+    <div class="pergunta" data-certa="1">
+      <p class="enunciado"><b>“Um pedacinho estreito do site que já dá para mostrar funcionando de ponta a ponta — página, dado, teste, tudo.”</b></p>
+      <button class="opcao" data-i="0">Um protótipo</button>
+      <button class="opcao" data-i="1">Um tracer bullet</button>
+      <button class="opcao" data-i="2">Um módulo fundo</button>
+      <button class="opcao" data-i="3">Um prefactor</button>
+      <p class="retorno">Tracer bullet — fatia vertical. Protótipo é descartável e serve para
+      responder uma pergunta de desenho; o tracer bullet <strong>fica</strong>. O contrário dele é
+      a fatia horizontal (“primeiro todo o banco, depois toda a tela”), que não demonstra nada até
+      a última camada fechar.</p>
+    </div>
+
+    <div class="pergunta" data-certa="3">
+      <p class="enunciado"><b>“Mudar uma coisa só e ver quinhentos lugares quebrarem de uma vez.”</b></p>
+      <button class="opcao" data-i="0">Um teste tautológico</button>
+      <button class="opcao" data-i="1">Um módulo raso</button>
+      <button class="opcao" data-i="2">Uma sobrecarga de termo</button>
+      <button class="opcao" data-i="3">Blast radius grande</button>
+      <p class="retorno">Blast radius. Importa porque é ele que decide a estratégia: raio pequeno
+      cabe num tracer bullet; raio que atravessa o repositório inteiro exige
+      <strong>expand–contract</strong>, porque nenhuma fatia vertical conseguiria fechar verde.</p>
+    </div>
+
+    <div class="pergunta" data-certa="0">
+      <p class="enunciado"><b>“Quero abrir uma conversa nova sem perder o que já foi decidido nesta.”</b></p>
+      <button class="opcao" data-i="0"><code>/handoff</code></button>
+      <button class="opcao" data-i="1"><code>/compact</code></button>
+      <button class="opcao" data-i="2"><code>/to-spec</code></button>
+      <button class="opcao" data-i="3"><code>/research</code></button>
+      <p class="retorno">O <code>/handoff</code> <strong>bifurca</strong>: escreve um markdown que
+      você referencia numa sessão nova. O <code>/compact</code> <strong>continua</strong> na mesma
+      conversa, resumindo as voltas anteriores. Regra de bolso: handoff quando você quer sessão
+      nova, compact quando quer a mesma sessão mais leve.</p>
+    </div>
+
+    <div class="pergunta" data-certa="2">
+      <p class="enunciado"><b>“Muita coisa acontecendo atrás de um jeito bem simples de usar.”</b></p>
+      <button class="opcao" data-i="0">Um adapter</button>
+      <button class="opcao" data-i="1">Um seam</button>
+      <button class="opcao" data-i="2">Um módulo fundo</button>
+      <button class="opcao" data-i="3">Alta localidade</button>
+      <p class="retorno">Profundidade é <strong>alavancagem na interface</strong>: quanto
+      comportamento quem chama aciona por unidade de interface que precisou aprender. O seam é
+      <em>onde</em> essa interface mora — outra decisão. E localidade é uma <em>consequência</em>
+      da profundidade, não sinônimo dela.</p>
+    </div>
+
+    <div class="pergunta" data-certa="1">
+      <p class="enunciado"><b>“O teste passa sempre, porque ele calcula o esperado do mesmo jeito que o código calcula.”</b></p>
+      <button class="opcao" data-i="0">Teste acoplado à implementação</button>
+      <button class="opcao" data-i="1">Teste tautológico</button>
+      <button class="opcao" data-i="2">Fatiamento horizontal</button>
+      <button class="opcao" data-i="3">Teste em seam não acordado</button>
+      <p class="retorno">Tautológico: passa por construção e nunca consegue discordar do código.
+      O valor esperado tem que vir de fonte independente — um literal conhecido, um exemplo
+      trabalhado à mão, o spec. Já o teste <em>acoplado</em> é o defeito oposto: quebra no refactor
+      mesmo sem nenhuma mudança de comportamento.</p>
+    </div>
+
+    <div class="pergunta" data-certa="3">
+      <p class="enunciado"><b>“Esta issue está tão bem escrita que dá para largar um agente nela sem acompanhar.”</b></p>
+      <button class="opcao" data-i="0"><code>needs-triage</code></button>
+      <button class="opcao" data-i="1"><code>needs-info</code></button>
+      <button class="opcao" data-i="2"><code>ready-for-human</code></button>
+      <button class="opcao" data-i="3"><code>ready-for-agent</code></button>
+      <p class="retorno">É um dos cinco papéis de triagem do seu rastreador. O detalhe que economiza
+      tempo: ticket que saiu do <code>/to-tickets</code> <strong>já nasce</strong> com esse rótulo —
+      por isso não se passa <code>/triage</code> nele. Triagem é só para o que chegou de fora.</p>
+    </div>
+
+    <div class="pergunta" data-certa="0">
+      <p class="enunciado"><b>“Uma palavra que está fazendo três trabalhos diferentes na mesma conversa.”</b></p>
+      <button class="opcao" data-i="0">Sobrecarga de termo</button>
+      <button class="opcao" data-i="1">Névoa</button>
+      <button class="opcao" data-i="2">Módulo raso</button>
+      <button class="opcao" data-i="3">Altitude misturada</button>
+      <p class="retorno">Sobrecarga — o gatilho clássico do <code>/domain-modeling</code>. No seu
+      caso: “atendimento” é a conversa inicial, a unidade física ou o serviço contratado? Enquanto
+      a palavra fizer três trabalhos, o ticket, o teste e a página vão discordar em silêncio.</p>
+    </div>
+
+  </div>
+  <p class="placar" id="placar"></p>
+</section>
+
+<div class="rodape">
+  <h3>De onde vem cada definição</h3>
+  <p>Dos arquivos <code>SKILL.md</code> instalados em <code>~/.claude/skills/</code> — as fontes
+  primárias. Onde a skill declara explicitamente um termo a evitar, ele está no “≠”. Esta página
+  é resumo: em caso de dúvida, a <code>SKILL.md</code> manda.</p>
+
+  <h3>Os selos não são enfeite</h3>
+  <p><span class="selo selo-firme">demonstrado</span> é termo que você já usou corretamente numa
+  sessão real — está no <code>aprendizado/GLOSSARY.md</code>.
+  <span class="selo selo-novo">a firmar</span> é termo apresentado, ainda sem prova de uso. A regra
+  do glossário é essa: um termo entra depois de demonstrado, nunca depois de apresentado.</p>
+
+  <h3>O que fazer com isto</h3>
+  <p>Não leia de cabo a rabo. Use a busca quando uma palavra aparecer numa skill e você travar, e
+  use “Só natural” como flashcard quando quiser testar se pegou. O companheiro desta página é o
+  <a href="https://claude.ai/code/artifact/7d49c3d2-6c6d-4078-b67a-757abf92df7b">Manual das
+  Skills</a>, que ensina a operar — aqui é só o vocabulário.</p>
+</div>
+
+</div>
+
+<script>
+const TERMOS = [
+  {
+    familia: "mapa",
+    termo: "Mapa", original: "map", selo: "firme",
+    natural: "A issue única que serve de índice do esforço inteiro. Você abre ela e sabe o que já foi decidido, o que ainda falta e o que ficou de fora.",
+    tecnica: "Issue-índice de um esforço nebuloso, com quatro seções: destino, decisões até agora, ainda não especificado e fora de escopo. É índice, não depósito — cada decisão mora no ticket que a produziu, e o mapa só aponta.",
+    analogia: "A capa do processo. Ela não contém as peças; diz quais peças existem e em que ordem entraram.",
+    contraste: "<b>Backlog.</b> Backlog é fila de trabalho a fazer. O mapa é registro do que já se sabe — ele encolhe conforme você aprende, não conforme você entrega."
+  },
+  {
+    familia: "mapa",
+    termo: "Destino", original: "destination", selo: "firme",
+    natural: "A frase que diz aonde este esforço quer chegar. É a primeira coisa que se decide, e é contra ela que todo o resto é julgado.",
+    tecnica: "O enunciado que fixa o escopo do mapa. Serve de régua binária: cada questão que aparece ou serve ao destino, ou é fora de escopo. Não muda no meio — mudar o destino é abrir um esforço novo.",
+    analogia: "O pedido da petição inicial. Tudo que não serve ao pedido é excesso, por mais verdadeiro que seja.",
+    contraste: "<b>Objetivo do projeto.</b> O objetivo do projeto sobrevive ao esforço; o destino morre com ele. O seu destino atual é “um spec implementável do site”, não “ter um site bom”."
+  },
+  {
+    familia: "mapa",
+    termo: "Névoa", original: "fog / not yet specified", selo: "firme",
+    natural: "Aquilo que você pressente que vai dar problema, mas ainda não consegue nem formular a pergunta direito.",
+    tecnica: "Item da seção “Ainda não especificado”. Gradua para ticket no instante em que a pergunta fica <em>enunciável</em> — não quando fica respondível. Névoa não é trabalho pendente; é conhecimento faltando.",
+    analogia: "O incômodo na véspera da audiência que você ainda não sabe nomear. Nomear já é metade.",
+    contraste: "<b>Ticket.</b> Ticket = pergunta formulada. Névoa = pergunta ainda não formulada. Teste prático: consegue escrever a pergunta numa frase? Então já é ticket, mesmo sem resposta."
+  },
+  {
+    familia: "mapa",
+    termo: "Ticket", original: "ticket", selo: "firme",
+    natural: "Uma issue filha que resolve uma coisa só e cabe numa sessão.",
+    tecnica: "Unidade de trabalho dimensionada para uma janela de contexto. <strong>Atenção: a palavra faz dois trabalhos.</strong> No <code>/wayfinder</code> o ticket produz uma <em>decisão</em>. No <code>/to-tickets</code> o ticket produz <em>código</em> — é um tracer bullet com arestas de bloqueio.",
+    analogia: "Uma diligência: uma ida ao cartório resolve uma pendência. Não duas.",
+    contraste: "<b>Ele mesmo, na outra fase.</b> É o termo mais sobrecarregado do fluxo. Quando falar dele, diga de qual: “ticket de investigação” ou “ticket de implementação”."
+  },
+  {
+    familia: "mapa",
+    termo: "Fronteira", original: "frontier", selo: "firme",
+    natural: "Os tickets que dá para pegar agora — abertos, desbloqueados e sem dono.",
+    tecnica: "Conjunto calculado, não curado: aberto E sem bloqueador pendente E sem responsável. É de onde a próxima sessão escolhe, e é o que permite trabalho paralelo sem coordenação.",
+    analogia: "As pastas que estão na mesa, não as que estão no armário esperando documento chegar.",
+    contraste: "<b>Lista de “próximos”.</b> Uma lista de próximos é opinião de alguém. A fronteira você deriva do estado do rastreador a qualquer momento, e ela nunca discorda de si mesma."
+  },
+  {
+    familia: "mapa",
+    termo: "Reivindicar", original: "claim", selo: "firme",
+    natural: "Se atribuir ao ticket antes de encostar nele, para ninguém pegar o mesmo.",
+    tecnica: "A atribuição <em>é</em> a reivindicação — não existe estado separado. Ticket aberto e sem responsável está livre; atribuído está tomado. É o protocolo que faz sessões paralelas se pularem sem precisar conversar.",
+    analogia: "Assinar a carga do processo. Enquanto está com você, ninguém mais mexe.",
+    contraste: "<b>Priorizar.</b> Reivindicar não diz que é o mais importante; diz que é o seu, agora."
+  },
+  {
+    familia: "mapa",
+    termo: "Fora de escopo", original: "out of scope", selo: "firme",
+    natural: "O que você decidiu conscientemente <em>não</em> fazer neste esforço.",
+    tecnica: "Trabalho colocado deliberadamente além do destino. Nunca gradua para ticket. Só volta se o destino for redesenhado — e aí como esforço novo, com mapa novo.",
+    analogia: "O pedido que você decidiu não fazer nesta ação. Não é “depois”: é outra ação.",
+    contraste: "<b>“Depois” / v2 / adiado.</b> Essas coisas ainda pertencem ao esforço e continuam cobrando atenção. Fora de escopo já não pertence — é exatamente por isso que escrever lá alivia."
+  },
+
+  {
+    familia: "spec",
+    termo: "Spec", original: "spec, também chamado PRD", selo: "novo",
+    natural: "O documento que junta todas as decisões de uma funcionalidade num lugar só, para quem for construir não precisar adivinhar nada.",
+    tecnica: "Documento de sete seções fixas — Problem Statement, Solution, User Stories, Implementation Decisions, Testing Decisions, Out of Scope, Further Notes — publicado no rastreador com <code>ready-for-agent</code>. Proíbe caminho de arquivo e trecho de código: envelhecem e passam a mentir.",
+    analogia: "O contrato, não o roteiro da audiência. O contrato continua valendo depois que a sala mudou de andar.",
+    contraste: "<b>Plano de execução.</b> O spec registra <em>decisões</em>; quem fatia em ordem de trabalho é o <code>/to-tickets</code>. E o <code>/to-spec</code> não entrevista ninguém: ele sintetiza a conversa que já aconteceu."
+  },
+  {
+    familia: "spec",
+    termo: "Tracer bullet", original: "tracer bullet / vertical slice", selo: "novo",
+    natural: "Um pedaço fininho do trabalho que atravessa todas as camadas de uma vez e já dá para mostrar funcionando sozinho.",
+    tecnica: "Fatia que corta um caminho estreito mas <em>completo</em> por todas as camadas — dado, lógica, tela, teste —, demonstrável isoladamente e dimensionada para caber numa janela de contexto limpa.",
+    analogia: "Bala traçante: você dispara uma e enxerga o rastro inteiro até o alvo, em vez de montar a arma peça por peça no escuro. No escritório: atender <em>um</em> cliente de ponta a ponta antes de montar toda a recepção.",
+    contraste: "<b>Fatia horizontal.</b> “Primeiro todo o banco, depois toda a tela” não demonstra nada até a última camada fechar — e você só descobre o erro no fim, quando ele custa mais caro."
+  },
+  {
+    familia: "spec",
+    termo: "Aresta de bloqueio", original: "blocking edge", selo: "novo",
+    natural: "A declaração de que um ticket não pode começar antes de outro terminar.",
+    tecnica: "Dependência explícita entre tickets. Num rastreador de verdade vira link nativo de bloqueio; em arquivos locais, uma linha “Blocked by”. Ticket sem bloqueador pendente pode começar imediatamente — é isso que define a fronteira.",
+    analogia: "Não dá para protocolar antes de ter a procuração assinada. Não é preferência: é impossibilidade.",
+    contraste: "<b>Prioridade.</b> Prioridade é o que você <em>prefere</em> fazer antes. Bloqueio é o que você <em>não consegue</em> fazer antes. Confundir os dois é o jeito mais comum de travar trabalho paralelo à toa."
+  },
+  {
+    familia: "spec",
+    termo: "Blast radius", original: "blast radius", selo: "novo",
+    natural: "Quantos lugares do código quebram de uma vez quando você muda uma coisa só.",
+    tecnica: "A extensão do estrago de uma mudança mecânica. É o que decide a estratégia: raio pequeno cabe num tracer bullet; raio que atravessa o repositório inteiro impede qualquer fatia vertical de fechar verde e obriga expand–contract.",
+    analogia: "Trocar o nome de uma unidade em todos os contratos, placas, cartões e no Google ao mesmo tempo. O trabalho é pequeno; o estrago simultâneo é que não é.",
+    contraste: "<b>Tamanho da tarefa.</b> Renomear uma coluna é uma tarefa minúscula com raio enorme. São dois eixos diferentes, e é o raio que manda na estratégia."
+  },
+  {
+    familia: "spec",
+    termo: "Expand–contract", original: "expand–contract", selo: "novo",
+    natural: "Primeiro você põe o novo do lado do velho, depois migra aos poucos, e só no fim apaga o velho.",
+    tecnica: "Sequência em três fases para refactor amplo. <strong>Expand:</strong> adiciona a forma nova ao lado da antiga, nada quebra. <strong>Migrar:</strong> lotes dimensionados pelo blast radius (por pacote, por pasta), cada lote um ticket bloqueado pelo expand, com CI verde entre lotes porque a forma antiga ainda existe. <strong>Contract:</strong> apaga a antiga, bloqueado por todos os lotes.",
+    analogia: "Mudança de endereço do escritório: você põe o endereço novo nos documentos <em>antes</em> de desativar o antigo. Ao contrário, fica um período sem endereço válido.",
+    contraste: "<b>Refactor de uma vez só.</b> A tentação é trocar tudo num commit. Com raio grande, isso deixa o repositório vermelho por dias e nenhum ticket consegue ser demonstrado."
+  },
+  {
+    familia: "spec",
+    termo: "Prefactor", original: "prefactor", selo: "novo",
+    natural: "Arrumar o código <em>antes</em> de mudar, para a mudança ficar fácil.",
+    tecnica: "“Make the change easy, then make the easy change.” O <code>/to-tickets</code> procura oportunidades de prefactor e as coloca <em>primeiro</em> na ordem dos tickets, porque tudo o que vem depois depende delas.",
+    analogia: "Organizar a pasta antes de escrever a peça. Você não avançou no mérito, mas a peça sai em metade do tempo.",
+    contraste: "<b>Refactor.</b> Prefactor vem antes da mudança e serve a ela. Refactor vem depois, na revisão — e o <code>/tdd</code> é explícito: refactor não faz parte do laço vermelho-verde."
+  },
+  {
+    familia: "spec",
+    termo: "ready-for-agent", original: "ready-for-agent", selo: "novo",
+    natural: "O rótulo que diz “esta issue está tão bem escrita que dá para largar um agente nela sem acompanhar”.",
+    tecnica: "Um dos cinco papéis de triagem do rastreador (<code>needs-triage</code>, <code>needs-info</code>, <code>ready-for-agent</code>, <code>ready-for-human</code>, <code>wontfix</code>). Tickets saídos do <code>/to-tickets</code> e specs saídos do <code>/to-spec</code> já nascem com ele.",
+    analogia: "Processo instruído. Não falta documento, não falta assinatura — pode ir a julgamento.",
+    contraste: "<b><code>needs-triage</code>.</b> Triagem existe para o que chegou <em>de fora</em>: bug reportado, pedido do cliente. O que o seu próprio fluxo produziu já nasce especificado — passar <code>/triage</code> nele é cerimônia pura."
+  },
+
+  {
+    familia: "codigo",
+    termo: "Módulo", original: "module", selo: "novo",
+    natural: "Qualquer coisa que tem um jeito de usar por fora e um monte de coisa por dentro.",
+    tecnica: "Qualquer coisa com interface e implementação. O termo é <em>deliberadamente</em> agnóstico de escala: uma função, uma classe, um pacote ou uma fatia que atravessa camadas são todos módulos.",
+    analogia: "O balcão do escritório. Por fora: “traga o documento”. Por dentro: protocolo, prazo, cadastro, arquivo.",
+    contraste: "<b>Componente, serviço, unidade.</b> A skill pede explicitamente para não usar esses. Cada um carrega bagagem de outro framework e faz a conversa escorregar de escala sem ninguém perceber."
+  },
+  {
+    familia: "codigo",
+    termo: "Interface", original: "interface", selo: "novo",
+    natural: "Tudo que quem for usar precisa saber para usar certo — não só os parâmetros.",
+    tecnica: "A assinatura de tipos <em>mais</em> as invariantes, a ordem obrigatória das chamadas, os modos de erro, a configuração exigida e as características de performance. Se o chamador precisa saber, é interface.",
+    analogia: "Não é só “o que pedir no balcão”: é também “traga cópia autenticada”, “só até as 17h” e “demora três dias”. Quem não avisa isso não tem balcão, tem armadilha.",
+    contraste: "<b>API / assinatura.</b> Estreitos demais — só cobrem o nível dos tipos. Um prazo não declarado não está na assinatura, mas está na interface."
+  },
+  {
+    familia: "codigo",
+    termo: "Profundidade", original: "depth", selo: "novo",
+    natural: "Muita coisa acontecendo atrás de um jeito bem simples de usar.",
+    tecnica: "Alavancagem na interface: quanto comportamento o chamador (ou o teste) consegue acionar por unidade de interface que precisou aprender. <strong>Fundo</strong> = muito comportamento atrás de interface pequena. <strong>Raso</strong> = a interface é quase tão complicada quanto a implementação.",
+    analogia: "Uma boa procuração: uma folha que autoriza cinquenta atos. A ruim exige uma folha por ato.",
+    contraste: "<b>“Muitas linhas por dentro”.</b> A skill rejeita explicitamente medir profundidade por proporção de linhas — isso premiaria implementação inchada. Profundidade é propriedade da <em>interface</em>."
+  },
+  {
+    familia: "codigo",
+    termo: "Seam", original: "seam (Michael Feathers)", selo: "novo",
+    natural: "O ponto onde dá para trocar o comportamento sem mexer ali dentro.",
+    tecnica: "O lugar onde a interface de um módulo mora. Onde colocar o seam é uma decisão de desenho <em>separada</em> do que vai atrás dele. É também onde os testes se ligam.",
+    analogia: "A tomada. Você troca o abajur sem mexer na fiação da parede — porque alguém decidiu que ali haveria uma tomada.",
+    contraste: "<b>Boundary.</b> A skill pede para evitar “boundary”: a palavra já está tomada pelo <em>bounded context</em> do DDD. Diga seam, ou diga interface."
+  },
+  {
+    familia: "codigo",
+    termo: "Adapter", original: "adapter", selo: "novo",
+    natural: "A peça concreta que se encaixa no ponto de troca.",
+    tecnica: "Coisa concreta que satisfaz uma interface num seam. Descreve <em>papel</em> (que vaga preenche), não substância (o que tem dentro): um adapter pode ser fino com implementação grande, ou grosso com implementação minúscula.",
+    analogia: "O abajur na tomada. E o falso, de teste, também é um abajur — só não ilumina.",
+    contraste: "<b>Implementação.</b> Use “adapter” quando o assunto for o seam; “implementação” quando for o que tem dentro. Mesma coisa vista de dois ângulos — trocar de ângulo no meio da frase confunde."
+  },
+  {
+    familia: "codigo",
+    termo: "Alavancagem", original: "leverage", selo: "novo",
+    natural: "O que quem usa o módulo ganha: aprende pouco, consegue muito.",
+    tecnica: "O retorno da profundidade para o chamador. Uma implementação paga em N pontos de chamada e M testes — o custo de aprender a interface é pago uma vez e amortizado em todos.",
+    analogia: "Um bom modelo de contrato: você aprende uma vez e fecha cem contratos.",
+    contraste: "<b>Localidade.</b> Alavancagem é o ganho de <em>quem chama</em>. Localidade é o ganho de <em>quem mantém</em>. Profundidade produz as duas, mas para pessoas diferentes."
+  },
+  {
+    familia: "codigo",
+    termo: "Localidade", original: "locality", selo: "novo",
+    natural: "Conserta num lugar, e está consertado em todos.",
+    tecnica: "O retorno da profundidade para quem mantém: mudança, bug, conhecimento e verificação se concentram num ponto em vez de se espalharem pelos chamadores.",
+    analogia: "Errou o CNPJ no modelo de contrato? Corrige o modelo. Se cada advogado tivesse a própria cópia, você corrigiria quatro vezes e esqueceria uma.",
+    contraste: "<b>Estar tudo na mesma pasta.</b> Localidade não é sobre onde os arquivos ficam; é sobre onde a <em>consequência</em> de uma mudança fica."
+  },
+  {
+    familia: "codigo",
+    termo: "Teste de deleção", original: "the deletion test", selo: "novo",
+    natural: "Imagine apagar o módulo. Se nada de complicado voltar, ele não estava fazendo nada.",
+    tecnica: "Critério para julgar se um módulo ganha o próprio sustento. Apague-o mentalmente: se a complexidade <em>some</em>, era passa-a-diante e só custava um nome a mais para aprender. Se ela <em>reaparece espalhada</em> em N chamadores, o módulo estava segurando peso.",
+    analogia: "Tire o balcão do escritório. Se a fila só muda de lugar, o balcão era enfeite. Se cada advogado passa a protocolar sozinho, o balcão trabalhava.",
+    contraste: "<b>“É usado em muitos lugares.”</b> Ser muito chamado não prova nada — um passa-a-diante também é. A pergunta é o que <em>volta</em> quando ele sai."
+  },
+
+  {
+    familia: "testes",
+    termo: "Vermelho-verde", original: "red–green", selo: "novo",
+    natural: "Escreve o teste que falha primeiro; depois só o código suficiente para ele passar. E repete.",
+    tecnica: "O laço do TDD. Regras: vermelho antes de verde; uma fatia por ciclo (um seam, um teste, uma implementação mínima); nada de código especulativo para testes futuros. O refactor <em>não</em> faz parte do laço — ele pertence à revisão.",
+    analogia: "Você não escreve a defesa antes de ler a acusação. O teste é a acusação: sem ela, você defende o que imaginou.",
+    contraste: "<b>“Escrever teste depois”.</b> Teste escrito depois verifica o que o código <em>faz</em>. Teste escrito antes verifica o que ele <em>deveria fazer</em> — e só o segundo consegue discordar."
+  },
+  {
+    familia: "testes",
+    termo: "Seam de teste acordado", original: "pre-agreed seam", selo: "novo",
+    natural: "Antes de escrever teste, vocês combinam <em>onde</em> vai testar. Nada é testado em ponto não combinado.",
+    tecnica: "Regra dura do <code>/tdd</code>: escreva os seams sob teste e confirme com o usuário antes do primeiro teste. Como não dá para testar tudo, acordar os seams é o que faz o esforço cair nos caminhos críticos em vez de em toda borda.",
+    analogia: "Combinar as testemunhas antes da audiência, em vez de arrolar todo mundo que passou na rua.",
+    contraste: "<b>Cobertura.</b> Cobertura mede quanto código foi tocado. Seam acordado decide <em>onde vale a pena olhar</em>. Cobertura alta em seams errados é dinheiro no lixo."
+  },
+  {
+    familia: "testes",
+    termo: "Teste acoplado à implementação", original: "implementation-coupled test", selo: "novo",
+    natural: "O teste espia por dentro. Aí você reorganiza o código sem mudar nada do comportamento, e ele quebra.",
+    tecnica: "Teste que mocka colaborador interno, exercita método privado ou verifica por canal lateral (consulta o banco em vez de usar a interface). O sinal inequívoco: quebra no refactor <em>sem</em> mudança de comportamento.",
+    analogia: "Fiscalizar o advogado pela ordem em que ele abre as gavetas, e não pela peça que ele entrega.",
+    contraste: "<b>Teste tautológico.</b> O acoplado quebra demais — falso alarme. O tautológico não quebra nunca — alarme mudo. Defeitos opostos, e a cura de um agrava o outro se você não souber qual tem."
+  },
+  {
+    familia: "testes",
+    termo: "Teste tautológico", original: "tautological test", selo: "novo",
+    natural: "O teste calcula o esperado do mesmo jeito que o código calcula. Então ele sempre passa — e nunca descobre nada.",
+    tecnica: "A asserção reproduz a lógica sob teste (<code>expect(soma(a,b)).toBe(a+b)</code>, snapshot derivado à mão pelo mesmo caminho, constante comparada consigo mesma). Passa por construção, incapaz de discordar. O valor esperado precisa vir de fonte independente: um literal conhecido, um exemplo trabalhado à mão, o spec.",
+    analogia: "Conferir a própria conta refazendo a conta do mesmo jeito. Se errou o método, erra de novo — e sai convencido.",
+    contraste: "<b>Teste simples.</b> Teste simples com valor conhecido é ótimo. Tautológico não é simples: é vazio."
+  },
+  {
+    familia: "testes",
+    termo: "Laço de feedback apertado", original: "tight feedback loop", selo: "novo",
+    natural: "Um comando só, que roda rápido e já falha por causa <em>deste</em> bug.",
+    tecnica: "Pré-requisito do <code>/diagnosing-bugs</code>: a skill se recusa a teorizar antes de existir uma reprodução automática e rápida. Sem ela, cada hipótese custa uma verificação manual, e você acaba testando teorias em vez de testar o sistema.",
+    analogia: "Não adianta discutir a tese enquanto ninguém consegue reproduzir o fato. Primeiro se reproduz o fato.",
+    contraste: "<b>“Consegui ver o erro uma vez.”</b> Ver uma vez não é laço. Laço é conseguir ver <em>quando quiser</em>, em segundos — é isso que transforma palpite em experimento."
+  },
+
+  {
+    familia: "contexto",
+    termo: "Janela de contexto", original: "context window", selo: "novo",
+    natural: "Tudo que o agente consegue ter “na cabeça” nesta conversa ao mesmo tempo.",
+    tecnica: "O limite total de tokens de uma sessão: instruções, arquivos lidos, saídas de ferramenta e o histórico. Tudo que sai da janela deixa de existir para o agente — ele não “lembra”, ele lê.",
+    analogia: "A mesa de trabalho. Cabe muita coisa, mas o que cai no chão sumiu — e ele não se abaixa para pegar.",
+    contraste: "<b>Memória.</b> Não há memória entre sessões por padrão. É por isso que o fluxo escreve tudo em issue, spec e ADR: o que não está escrito, não atravessa."
+  },
+  {
+    familia: "contexto",
+    termo: "Smart zone", original: "smart zone", selo: "novo",
+    natural: "A faixa dentro da qual o modelo ainda raciocina afiado — mais ou menos os primeiros 120 mil tokens.",
+    tecnica: "A região da janela em que a qualidade de raciocínio se mantém. Passando dela o modelo continua respondendo — e é aí que mora o perigo: a degradação é silenciosa, não vem com aviso de erro.",
+    analogia: "A quinta hora de audiência. Você ainda fala, ainda responde, e ainda assim não deveria estar decidindo nada importante.",
+    contraste: "<b>Limite da janela.</b> O limite é onde o modelo <em>não consegue mais</em>. A smart zone é onde ele <em>para de conseguir bem</em>, muito antes. Higiene de contexto é sobre a segunda, não sobre a primeira."
+  },
+  {
+    familia: "contexto",
+    termo: "Compactar", original: "/compact", selo: "novo",
+    natural: "Resumir as voltas antigas e <em>continuar na mesma conversa</em>, mais leve.",
+    tecnica: "Substitui o histórico anterior por um resumo, mantendo a sessão. Use em quebras intencionais entre fases, quando o literal já não importa. Não compacte no meio de uma fase — o agente perde o fio.",
+    analogia: "Limpar a mesa no fim de uma etapa, guardando um resumo. Se limpar no meio, some justamente o papel que você estava usando.",
+    contraste: "<b><code>/handoff</code>.</b> A frase para decorar: <strong>handoff bifurca; compact continua.</strong> Se você quer sessão nova, é handoff. Se quer a mesma sessão mais leve, é compact."
+  },
+  {
+    familia: "contexto",
+    termo: "Handoff", original: "/handoff", selo: "novo",
+    natural: "Espremer a conversa num arquivo, abrir uma sessão nova e apontar para o arquivo.",
+    tecnica: "Escreve um markdown de passagem (na pasta temporária do sistema, não no repositório), com uma seção de skills sugeridas, sem duplicar o que já está em spec, ADR, issue ou commit — esses ele referencia por caminho ou URL. Você então abre sessão limpa e referencia o arquivo.",
+    analogia: "O memorando que você deixa para o colega que vai à audiência no seu lugar. Ele não precisa do seu dia inteiro; precisa do que foi decidido e do que ainda está aberto.",
+    contraste: "<b>Compactar.</b> Handoff é ponte <em>entre</em> janelas; compact é faxina <em>dentro</em> de uma. Escolha pela pergunta: quero continuar aqui, ou começar do zero sem perder o fio?"
+  },
+  {
+    familia: "contexto",
+    termo: "Higiene de contexto", original: "context hygiene", selo: "novo",
+    natural: "A disciplina de decidir o que precisa ficar junto numa mesma conversa e onde é seguro cortar.",
+    tecnica: "Duas regras. <strong>Uma:</strong> grilling, <code>/to-spec</code> e <code>/to-tickets</code> numa única janela sem compactar — o <code>/to-spec</code> não entrevista, só sintetiza o que está na janela, então jogar contexto fora é jogar spec fora. <strong>Duas:</strong> contexto limpo antes de cada <code>/implement</code> — o ticket já carrega o que importa, e a sobra dos outros só disputa a smart zone.",
+    analogia: "Uma pasta por processo. Você não junta quatro processos na mesma mesa porque é mais rápido pegar — junta e troca as peças.",
+    contraste: "<b>Economizar tokens.</b> Não é economia, é foco. Às vezes a higiene manda <em>gastar</em> mais contexto — manter três fases juntas — porque separá-las custaria a coerência."
+  },
+
+  {
+    familia: "dominio",
+    termo: "Linguagem ubíqua", original: "ubiquitous language", selo: "novo",
+    natural: "Um termo, um significado — igual na conversa com o cliente, no ticket, no teste e no código.",
+    tecnica: "O vocabulário canônico do domínio, mantido em <code>CONTEXT.md</code>. As skills de código o consomem antes de explorar: nomes de teste e vocabulário de interface devem sair dele, para o código falar a língua do negócio.",
+    analogia: "Se a petição, o contrato e o e-mail chamam a mesma coisa por três nomes, alguém vai tratar como três coisas. Sempre.",
+    contraste: "<b>Este dicionário.</b> Aqui está o vocabulário do <em>método</em>. A linguagem ubíqua é o vocabulário do <em>negócio</em> — “unidade”, “consulta de benefício”, “atendimento”. Não misture os dois arquivos."
+  },
+  {
+    familia: "dominio",
+    termo: "CONTEXT.md", original: "CONTEXT.md", selo: "novo",
+    natural: "O glossário do projeto, na raiz do repositório. Quem chega lê ele primeiro.",
+    tecnica: "Arquivo único de contexto na raiz (ou vários, indexados por <code>CONTEXT-MAP.md</code>, em repositório multi-contexto). Criado <em>preguiçosamente</em>: só nasce quando o primeiro termo é de fato resolvido. Se não existe, as skills seguem em silêncio — não sugerem criar por antecipação.",
+    analogia: "O caderninho de siglas do escritório. Ninguém escreve ele de véspera; ele cresce toda vez que alguém pergunta “o que é isso mesmo?”.",
+    contraste: "<b>README.</b> README explica como rodar. <code>CONTEXT.md</code> explica o que as palavras significam."
+  },
+  {
+    familia: "dominio",
+    termo: "ADR", original: "Architecture Decision Record", selo: "novo",
+    natural: "O registro curto de uma decisão difícil de voltar atrás: o que se decidiu, por quê, e o que isso custa.",
+    tecnica: "Arquivo numerado em <code>docs/adr/</code>, criado quando surge uma decisão de reversão cara. Não se edita ADR antigo para mudar de ideia: escreve-se um novo que supera o anterior, preservando o histórico do raciocínio.",
+    analogia: "Um despacho fundamentado. Daqui a um ano ninguém lembra por que foi assim — o ADR lembra, e evita a discussão inteira de novo.",
+    contraste: "<b>Comentário no código.</b> O comentário morre com o arquivo e só explica o <em>como</em>. O ADR sobrevive à reescrita porque registra o <em>porquê</em> e as alternativas descartadas."
+  },
+  {
+    familia: "dominio",
+    termo: "Sobrecarga de termo", original: "overloaded term", selo: "novo",
+    natural: "Uma palavra fazendo três trabalhos ao mesmo tempo, e cada pessoa entendendo um.",
+    tecnica: "Sinal de que o modelo de domínio precisa de uma distinção. O <code>/domain-modeling</code> ataca isso na hora: propõe termos canônicos separados e força a escolha com cenários concretos de borda.",
+    analogia: "“Atendimento” no escritório: é a conversa inicial, a unidade física, ou o serviço contratado? Enquanto for as três, o site vai contradizer o contrato.",
+    contraste: "<b>Sinônimo.</b> Sinônimo é uma coisa com dois nomes — irritante, mas inofensivo. Sobrecarga é três coisas com um nome — e essa produz bug."
+  },
+
+  {
+    familia: "skills",
+    termo: "Skill", original: "skill", selo: "novo",
+    natural: "Uma pasta com um manual dentro. Quando você chama, o manual entra na conversa e o agente passa a seguir aquilo.",
+    tecnica: "Diretório em <code>~/.claude/skills/&lt;nome&gt;/</code> com um <code>SKILL.md</code>. Ao ser invocada, as instruções são carregadas no turno e substituem a abordagem padrão do agente para aquela tarefa. Ocupa contexto — por isso não se carrega skill “por via das dúvidas”.",
+    analogia: "O procedimento afixado na parede da sala. Enquanto você está naquela sala, é ele que vale.",
+    contraste: "<b>Prompt.</b> Prompt é o que você pede uma vez. Skill é o procedimento versionado que qualquer sessão pode carregar — e que você pode ler e auditar antes de confiar."
+  },
+  {
+    familia: "skills",
+    termo: "Frontmatter", original: "frontmatter", selo: "novo",
+    natural: "O cabeçalho do manual, entre traços, que diz o nome da skill e quando ela serve.",
+    tecnica: "Bloco YAML no topo do <code>SKILL.md</code>: <code>name</code>, <code>description</code> e opcionalmente <code>argument-hint</code> e <code>disable-model-invocation</code>. A <code>description</code> não é enfeite — é por ela que o modelo decide sozinho se aquela skill se aplica.",
+    analogia: "A ementa da decisão. É o que faz alguém achar a decisão certa sem ler as cinquenta páginas.",
+    contraste: "<b>Título.</b> O título descreve. A <code>description</code> <em>roteia</em>: é lida por uma máquina para tomar uma decisão."
+  },
+  {
+    familia: "skills",
+    termo: "Invocação por modelo × por você", original: "disable-model-invocation", selo: "novo",
+    natural: "Algumas skills o agente pode chamar sozinho. Outras só entram se <em>você</em> digitar a barra.",
+    tecnica: "<code>disable-model-invocation: true</code> desliga a escolha automática. O padrão é revelador: as skills que <em>conduzem</em> o processo — <code>wayfinder</code>, os <code>grill</code>, <code>to-spec</code>, <code>to-tickets</code>, <code>implement</code>, <code>handoff</code>, <code>triage</code>, <code>teach</code> — são todas só suas. As que são <em>técnica ou vocabulário</em> — <code>tdd</code>, <code>code-review</code>, <code>domain-modeling</code>, <code>codebase-design</code>, <code>diagnosing-bugs</code>, <code>prototype</code>, <code>research</code> — o modelo puxa sozinho quando fazem falta.",
+    analogia: "O estagiário pode consultar a jurisprudência sem pedir. Protocolar, ele só faz quando você manda.",
+    contraste: "<b>Skill desativada.</b> Não é desligar a skill: é decidir <em>quem tem a caneta</em>. Quem dirige o fluxo é você; a técnica o agente busca sozinho."
+  },
+  {
+    familia: "skills",
+    termo: "Rampa de entrada", original: "on-ramp", selo: "novo",
+    natural: "Uma situação que gera trabalho e desemboca no fluxo principal, em vez de começar por uma ideia sua.",
+    tecnica: "São três: <code>/triage</code> (bug e pedido chegando de fora), <code>/diagnosing-bugs</code> (algo quebrado) e <code>/wayfinder</code> (esforço enorme e nebuloso). Cada uma entra no caminho principal num ponto específico — o wayfinder desemboca no <code>/to-spec</code>, a triagem desemboca no <code>/implement</code>.",
+    analogia: "Acesso de rodovia. Você não estava na estrada; entra nela num ponto marcado, já na velocidade dela.",
+    contraste: "<b>Etapa do fluxo.</b> Rampa não faz parte do caminho: ela <em>alimenta</em> o caminho. Por isso não se roda rampa por hábito, só quando a situação aparece."
+  },
+  {
+    familia: "skills",
+    termo: "Sub-agente", original: "sub-agent", selo: "novo",
+    natural: "Um agente auxiliar com a própria cabeça, que faz uma parte e devolve só a conclusão.",
+    tecnica: "Agente com janela de contexto própria, disparado por uma skill. Serve a dois fins: paralelizar (o <code>/code-review</code> roda os dois eixos — Padrões e Spec — ao mesmo tempo) e isolar (o <code>/research</code> lê muita coisa sem entulhar a sua janela).",
+    analogia: "Mandar o estagiário levantar a jurisprudência. Ele lê trinta acórdãos; você recebe duas páginas.",
+    contraste: "<b>Outra sessão sua.</b> A sessão nova você conduz. O sub-agente roda sozinho e devolve resultado — e não sabe nada que você não tenha mandado junto."
+  },
+  {
+    familia: "skills",
+    termo: "Altitude", original: "altitude", selo: "novo",
+    natural: "O nível em que o texto está falando. Detalhe miúdo e regra de negócio misturados no mesmo parágrafo cansam quem lê.",
+    tecnica: "Nível de abstração de um trecho. Mistura de altitude é quando manipulação de índice e decisão de negócio convivem na mesma função, forçando quem lê a trocar de marcha a cada linha. É uma das quatro frentes do <code>/simplify</code>, junto de reutilização, simplificação e eficiência.",
+    analogia: "Uma peça que alterna tese constitucional e número de protocolo a cada parágrafo. Tudo verdadeiro, ilegível assim mesmo.",
+    contraste: "<b>Função grande.</b> Uma função longa toda na mesma altitude lê bem. Uma função curta que pula de altitude lê mal. Não é tamanho: é consistência."
+  }
+];
+
+const FAMILIAS = [
+  { id: "mapa",     nome: "O mapa",             sub: "O vocabulário do <code>/wayfinder</code> — o que você já opera. Está aqui para servir de âncora: os termos novos foram escritos por contraste com estes." },
+  { id: "spec",     nome: "Do spec ao ticket",  sub: "O que acontece quando a névoa acaba e o esforço vira trabalho fatiável. É onde você está entrando agora." },
+  { id: "codigo",   nome: "Forma do código",    sub: "O vocabulário do <code>/codebase-design</code>. A skill exige estes termos exatos e proíbe os sinônimos — a lista de “≠” aqui não é opinião, é regra dela." },
+  { id: "testes",   nome: "Testes",             sub: "O vocabulário do <code>/tdd</code> e do <code>/diagnosing-bugs</code>. Metade destes termos nomeia um jeito de <em>errar</em> — porque erro em teste é silencioso." },
+  { id: "contexto", nome: "Contexto e sessão",  sub: "Corre por baixo de tudo. Não é vocabulário de código: é vocabulário sobre como o agente pensa, e é o que decide onde você corta a conversa." },
+  { id: "dominio",  nome: "Domínio",            sub: "Corre por baixo de tudo. Para quando o problema são as <em>palavras do negócio</em>, e não o processo." },
+  { id: "skills",   nome: "As próprias skills", sub: "O vocabulário para falar da ferramenta em si — útil no dia em que você for escrever a sua." }
+];
+
+(function () {
+  const alvo = document.getElementById("verbetes");
+  const chips = document.getElementById("familias");
+  const contagem = document.getElementById("contagem");
+  const vazio = document.getElementById("vazio");
+  const busca = document.getElementById("busca");
+
+  // Busca sem acento: quem digita "nevoa" tem que achar "névoa".
+  const normalizar = (s) =>
+    s.replace(/<[^>]*>/g, "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  FAMILIAS.forEach(function (f) {
+    const secao = document.createElement("section");
+    secao.className = "familia";
+    secao.dataset.familia = f.id;
+
+    const titulo = document.createElement("h2");
+    titulo.textContent = f.nome;
+    const sub = document.createElement("p");
+    sub.className = "sub";
+    sub.innerHTML = f.sub;
+    secao.appendChild(titulo);
+    secao.appendChild(sub);
+
+    TERMOS.filter((t) => t.familia === f.id).forEach(function (t) {
+      const art = document.createElement("article");
+      art.className = "verbete";
+      art.dataset.chave = normalizar([t.termo, t.original, t.natural, t.tecnica, t.analogia, t.contraste].join(" "));
+      art.innerHTML =
+        '<div class="verbete-topo">' +
+          "<h3>" + t.termo + "</h3>" +
+          '<span class="original">' + t.original + "</span>" +
+          '<span class="selo selo-' + t.selo + '">' + (t.selo === "firme" ? "demonstrado" : "a firmar") + "</span>" +
+        "</div>" +
+        '<div class="registros">' +
+          '<div class="registro natural"><span class="rotulo">Em linguagem natural</span><p>' + t.natural + "</p></div>" +
+          '<div class="registro tecnica"><span class="rotulo">Em linguagem técnica</span><p>' + t.tecnica + "</p></div>" +
+        "</div>" +
+        '<p class="analogia"><span class="rotulo">Analogia</span>' + t.analogia + "</p>" +
+        '<p class="contraste"><span class="ne">&ne;</span>' + t.contraste + "</p>";
+      secao.appendChild(art);
+    });
+
+    alvo.appendChild(secao);
+  });
+
+  let familiaAtiva = "todas";
+
+  const botaoTodas = document.createElement("button");
+  botaoTodas.type = "button";
+  botaoTodas.textContent = "Todas";
+  botaoTodas.dataset.familia = "todas";
+  botaoTodas.setAttribute("aria-pressed", "true");
+  chips.appendChild(botaoTodas);
+
+  FAMILIAS.forEach(function (f) {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.textContent = f.nome;
+    b.dataset.familia = f.id;
+    b.setAttribute("aria-pressed", "false");
+    chips.appendChild(b);
+  });
+
+  chips.addEventListener("click", function (e) {
+    const b = e.target.closest("button");
+    if (!b) return;
+    familiaAtiva = b.dataset.familia;
+    chips.querySelectorAll("button").forEach(function (o) {
+      o.setAttribute("aria-pressed", String(o === b));
+    });
+    filtrar();
+  });
+
+  busca.addEventListener("input", filtrar);
+
+  function filtrar() {
+    const termo = normalizar(busca.value.trim());
+    let visiveis = 0;
+
+    document.querySelectorAll(".familia").forEach(function (secao) {
+      const daFamilia = familiaAtiva === "todas" || secao.dataset.familia === familiaAtiva;
+      let algum = false;
+
+      secao.querySelectorAll(".verbete").forEach(function (v) {
+        const bate = daFamilia && (!termo || v.dataset.chave.indexOf(termo) !== -1);
+        v.hidden = !bate;
+        if (bate) { algum = true; visiveis++; }
+      });
+
+      secao.hidden = !algum;
+    });
+
+    contagem.textContent = visiveis + " de " + TERMOS.length + " termos";
+    vazio.hidden = visiveis > 0;
+  }
+
+  document.querySelectorAll(".registro-switch button").forEach(function (b) {
+    b.addEventListener("click", function () {
+      document.querySelectorAll(".registro-switch button").forEach(function (o) {
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      document.body.dataset.registro = b.dataset.registro;
+    });
+  });
+
+  filtrar();
+})();
+
+(function () {
+  const perguntas = document.querySelectorAll(".pergunta");
+  const total = perguntas.length;
+  const placar = document.getElementById("placar");
+  let feitas = 0, acertos = 0;
+
+  perguntas.forEach(function (q) {
+    const certa = Number(q.dataset.certa);
+    const retorno = q.querySelector(".retorno");
+
+    q.querySelectorAll(".opcao").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (q.dataset.respondida) return;
+        q.dataset.respondida = "1";
+
+        const escolha = Number(b.dataset.i);
+        if (escolha === certa) acertos++;
+        feitas++;
+
+        q.querySelectorAll(".opcao").forEach(function (o) {
+          o.disabled = true;
+          const i = Number(o.dataset.i);
+          if (i === certa) o.classList.add("certa");
+          else if (i === escolha) o.classList.add("errada");
+        });
+
+        retorno.classList.add("visivel");
+
+        if (feitas === total) {
+          placar.textContent = acertos === total
+            ? "Oito de oito. O vocabulário pegou — agora use no próximo ticket."
+            : acertos + " de " + total + " — releia os retornos das que escaparam.";
+        } else {
+          placar.textContent = feitas + " de " + total + " respondidas";
+        }
+      });
+    });
+  });
+})();
+</script>

@@ -2,6 +2,15 @@
 
 ## Conhecimento
 
+- **[Dicionário do Fluxo](https://claude.ai/code/artifact/a587a9b3-47e3-48c0-9160-ee92ec9a2635)** (artifact)
+  Os 42 termos do fluxo, cada um em linguagem natural e em linguagem técnica, com analogia e o
+  termo vizinho de que se confunde. Busca, filtro por família e modo flashcard.
+  Use para: destravar quando uma palavra aparecer numa skill e não fizer sentido.
+
+- **[Manual das Skills](https://claude.ai/code/artifact/7d49c3d2-6c6d-4078-b67a-757abf92df7b)** (artifact)
+  O que uma skill é por dentro, quem pode invocá-la, bússola interativa de decisão, higiene de
+  contexto em detalhe e o que simplificar quer dizer. Use para: operar, não para consultar termo.
+
 - **Skill `to-spec` — `~/.claude/skills/to-spec/SKILL.md`** (local)
   A definição autoritativa do que é um spec neste fluxo: o template de sete seções,
   a proibição de caminho de arquivo e trecho de código, e a regra de que não há

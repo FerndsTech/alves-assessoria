@@ -44,10 +44,15 @@ _Evitar_: Depois, versão 2, adiado
 
 ## A entrar
 
-Termos apresentados na [Lição 01](./lessons/0001-o-que-e-um-spec.html) mas ainda sem
-evidência de uso correto. Promover quando o Murilo os usar bem numa conversa real:
+Termos apresentados na [Lição 01](./lessons/0001-o-que-e-um-spec.html) e desenvolvidos por
+inteiro no [Dicionário do Fluxo](https://claude.ai/code/artifact/a587a9b3-47e3-48c0-9160-ee92ec9a2635)
+— cada um em linguagem natural e técnica, com analogia e o termo vizinho de que se confunde.
+Ainda sem evidência de uso correto. Promover para cima quando o Murilo os usar bem numa conversa real:
 
 - **Spec** — o documento de sete seções que registra decisões, não instruções
 - **Tracer bullet** — fatia vertical que atravessa todas as camadas e é demonstrável só
 - **Aresta de bloqueio** — a declaração de que um ticket precisa de outro antes de começar
 - **Smart zone** — a janela de contexto dentro da qual o modelo ainda raciocina bem
+- **Blast radius** — quantos lugares quebram de uma vez; é o que escolhe entre fatia e expand–contract
+- **Profundidade / seam / alavancagem / localidade** — o vocabulário de forma do código
+- **Higiene de contexto** — o que fica junto numa janela e onde se corta

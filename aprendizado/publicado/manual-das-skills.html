@@ -1,0 +1,1134 @@
+<title>Manual das Skills</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,600;1,400&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+<style>
+:root {
+  --papel:       #fbf9f6;
+  --papel-caixa: #f2eee8;
+  --cartao:      #ffffff;
+  --tinta:       #1c1a19;
+  --tinta-fraca: #5d5754;
+  --linha:       #ddd6cc;
+  --contorno:    #b5a99a;
+  --marca:       #a82520;
+  --marca-suave: #fbedec;
+  --sobre-marca: #ffffff;
+  --ok:          #2f6b45;
+  --ok-suave:    #e8f4ed;
+  --erro:        #a3322c;
+  --erro-suave:  #fbeceb;
+  --atencao:     #8a5300;
+  --atencao-suave:#fdf3e3;
+  --sombra:      0 1px 2px rgba(28,26,25,.05), 0 6px 18px -12px rgba(28,26,25,.22);
+
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --sans:  "Source Sans 3", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --mono:  "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel:       #17161a;
+    --papel-caixa: #211f25;
+    --cartao:      #1e1c22;
+    --tinta:       #ece7e1;
+    --tinta-fraca: #a49c95;
+    --linha:       #35323a;
+    --contorno:    #56515e;
+    --marca:       #e4635e;
+    --marca-suave: #2a1c1c;
+    --sobre-marca: #17161a;
+    --ok:          #7fc79b;
+    --ok-suave:    #16271e;
+    --erro:        #f0918c;
+    --erro-suave:  #2c1a19;
+    --atencao:     #e3a648;
+    --atencao-suave:#2b2113;
+    --sombra:      0 1px 2px rgba(0,0,0,.4), 0 6px 18px -12px rgba(0,0,0,.7);
+  }
+}
+
+:root[data-theme="dark"] {
+  --papel:       #17161a;
+  --papel-caixa: #211f25;
+  --cartao:      #1e1c22;
+  --tinta:       #ece7e1;
+  --tinta-fraca: #a49c95;
+  --linha:       #35323a;
+  --contorno:    #56515e;
+  --marca:       #e4635e;
+  --marca-suave: #2a1c1c;
+  --sobre-marca: #17161a;
+  --ok:          #7fc79b;
+  --ok-suave:    #16271e;
+  --erro:        #f0918c;
+  --erro-suave:  #2c1a19;
+  --atencao:     #e3a648;
+  --atencao-suave:#2b2113;
+  --sombra:      0 1px 2px rgba(0,0,0,.4), 0 6px 18px -12px rgba(0,0,0,.7);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font: 400 17px/1.65 var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+.folha { max-width: 46rem; margin: 0 auto; padding: 3.5rem 1.25rem 7rem; }
+.larga { max-width: 54rem; margin-left: auto; margin-right: auto; }
+
+p { margin: 0 0 1.15rem; }
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+.chapeu {
+  font: 600 0.72rem/1 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--marca);
+  margin: 0 0 1.1rem;
+}
+
+h1 {
+  font: 600 clamp(2.1rem, 6vw, 3.1rem)/1.08 var(--serif);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.7rem;
+  text-wrap: balance;
+}
+
+.linha-fina {
+  font: italic 400 1.15rem/1.5 var(--serif);
+  color: var(--tinta-fraca);
+  margin: 0 0 2.75rem;
+  max-width: 32em;
+}
+
+h2 {
+  font: 600 1.7rem/1.18 var(--serif);
+  letter-spacing: -0.015em;
+  margin: 3.75rem 0 1rem;
+  text-wrap: balance;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--linha);
+}
+h2 .num {
+  display: block;
+  font: 600 0.7rem/1 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--marca);
+  margin-bottom: 0.6rem;
+}
+
+h3 {
+  font: 600 1.12rem/1.3 var(--serif);
+  margin: 2.25rem 0 0.7rem;
+  letter-spacing: -0.01em;
+}
+
+h4 {
+  font: 600 0.72rem/1.4 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 1.9rem 0 0.55rem;
+}
+
+code {
+  font: 0.86em var(--mono);
+  background: var(--papel-caixa);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+pre {
+  font: 400 0.82rem/1.6 var(--mono);
+  background: var(--papel-caixa);
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  padding: 0.95rem 1.1rem;
+  overflow-x: auto;
+  margin: 1.4rem 0;
+}
+pre code { background: none; padding: 0; font-size: 1em; }
+pre .cmt { color: var(--tinta-fraca); }
+pre .key { color: var(--marca); }
+
+.regra {
+  border-left: 3px solid var(--marca);
+  background: var(--papel-caixa);
+  padding: 1.05rem 1.3rem;
+  margin: 1.9rem 0;
+  border-radius: 0 5px 5px 0;
+}
+.regra p:last-child { margin-bottom: 0; }
+.regra .rot {
+  display: block;
+  font: 600 0.68rem/1.3 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--marca);
+  margin-bottom: 0.5rem;
+}
+
+blockquote {
+  margin: 1.6rem 0;
+  padding-left: 1.2rem;
+  border-left: 2px solid var(--linha);
+  color: var(--tinta-fraca);
+  font-style: italic;
+}
+blockquote p:last-child { margin-bottom: 0; }
+.fonte {
+  display: block;
+  font: 400 0.78rem/1.5 var(--sans);
+  font-style: normal;
+  color: var(--tinta-fraca);
+  margin-top: 0.5rem;
+}
+
+ul, ol { margin: 0 0 1.15rem; padding-left: 1.35rem; }
+li { margin-bottom: 0.5rem; }
+
+.rolagem { overflow-x: auto; margin: 1.6rem 0; }
+table { border-collapse: collapse; width: 100%; font: 400 0.88rem/1.5 var(--sans); }
+th {
+  text-align: left;
+  font: 600 0.68rem/1.3 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  border-bottom: 1.5px solid var(--contorno);
+  padding: 0 0.9rem 0.5rem 0;
+  vertical-align: bottom;
+}
+td { border-bottom: 1px solid var(--linha); padding: 0.65rem 0.9rem 0.65rem 0; vertical-align: top; }
+td:last-child, th:last-child { padding-right: 0; }
+
+/* --- bússola ------------------------------------------------------------ */
+
+.bussola {
+  background: var(--cartao);
+  border: 1px solid var(--contorno);
+  border-radius: 10px;
+  padding: 1.5rem 1.6rem 1.7rem;
+  margin: 2rem 0;
+  box-shadow: var(--sombra);
+}
+.trilha {
+  font: 400 0.78rem/1.5 var(--sans);
+  color: var(--tinta-fraca);
+  margin: 0 0 1rem;
+  min-height: 1.2em;
+}
+.trilha span::after { content: " › "; color: var(--contorno); }
+.trilha span:last-child::after { content: ""; }
+
+.bussola-pergunta {
+  font: 600 1.2rem/1.35 var(--serif);
+  margin: 0 0 1.1rem;
+  text-wrap: balance;
+}
+.bussola-opcoes { display: flex; flex-direction: column; gap: 0.5rem; }
+.bussola-opcoes button {
+  text-align: left;
+  font: 400 0.96rem/1.45 var(--sans);
+  color: inherit;
+  background: var(--papel);
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  padding: 0.7rem 0.9rem;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.bussola-opcoes button:hover { border-color: var(--marca); background: var(--marca-suave); }
+.bussola-opcoes button:focus-visible { outline: 2px solid var(--marca); outline-offset: 1px; }
+
+.resposta .skill {
+  font: 600 1.35rem/1.2 var(--mono);
+  color: var(--marca);
+  margin: 0 0 0.7rem;
+  word-break: break-word;
+}
+.resposta p { font: 400 0.98rem/1.6 var(--sans); margin: 0 0 0.9rem; }
+.resposta .io {
+  font: 400 0.82rem/1.55 var(--sans);
+  color: var(--tinta-fraca);
+  border-top: 1px dashed var(--linha);
+  padding-top: 0.75rem;
+  margin: 0 0 0.9rem;
+}
+.resposta .io b { color: var(--tinta); font-weight: 600; }
+.resposta .aviso {
+  font: 400 0.88rem/1.55 var(--sans);
+  background: var(--atencao-suave);
+  color: var(--tinta);
+  border-left: 3px solid var(--atencao);
+  border-radius: 0 4px 4px 0;
+  padding: 0.65rem 0.85rem;
+  margin: 0 0 1rem;
+}
+.recomecar {
+  font: 600 0.82rem/1 var(--sans);
+  color: var(--marca);
+  background: none;
+  border: 1px solid var(--linha);
+  border-radius: 5px;
+  padding: 0.5rem 0.8rem;
+  cursor: pointer;
+}
+.recomecar:hover { border-color: var(--marca); }
+.recomecar:focus-visible { outline: 2px solid var(--marca); outline-offset: 1px; }
+
+/* --- trilho de sessões --------------------------------------------------- */
+
+.trilho-caixa { overflow-x: auto; margin: 1.9rem 0 1.2rem; padding-bottom: 0.5rem; }
+.trilho { display: flex; align-items: stretch; gap: 0.5rem; min-width: 44rem; }
+
+.sessao {
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--cartao);
+  padding: 0.8rem 0.9rem 0.9rem;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.sessao.longa { flex: 2.4 1 0; border-color: var(--marca); }
+.sessao .rot {
+  display: block;
+  font: 600 0.62rem/1.3 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin-bottom: 0.55rem;
+}
+.sessao.longa .rot { color: var(--marca); }
+.etapas { display: flex; gap: 0.35rem; }
+.etapa {
+  flex: 1 1 0;
+  font: 400 0.7rem/1.25 var(--mono);
+  text-align: center;
+  background: var(--papel-caixa);
+  border-radius: 4px;
+  padding: 0.5rem 0.25rem;
+  word-break: break-word;
+}
+.sessao.longa .etapa { background: var(--marca-suave); color: var(--marca); }
+.sessao .nota {
+  font: 400 0.72rem/1.45 var(--sans);
+  color: var(--tinta-fraca);
+  margin: 0.6rem 0 0;
+}
+
+.corte {
+  flex: 0 0 auto;
+  align-self: center;
+  font: 600 0.62rem/1.3 var(--sans);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--marca);
+  writing-mode: vertical-rl;
+  padding: 0.4rem 0.1rem;
+  border-left: 2px dashed var(--marca);
+  border-right: 2px dashed var(--marca);
+}
+
+.legenda-trilho { font: 400 0.82rem/1.6 var(--sans); color: var(--tinta-fraca); margin: 0 0 2rem; }
+
+/* --- par certo/errado ---------------------------------------------------- */
+
+.par { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin: 1.6rem 0; }
+@media (max-width: 40rem) { .par { grid-template-columns: 1fr; } }
+.par > div {
+  border: 1px solid var(--linha);
+  border-radius: 7px;
+  padding: 0.95rem 1.05rem;
+  font: 400 0.9rem/1.55 var(--sans);
+}
+.par .mau { background: var(--erro-suave); border-color: color-mix(in srgb, var(--erro) 35%, var(--linha)); }
+.par .bom { background: var(--ok-suave); border-color: color-mix(in srgb, var(--ok) 35%, var(--linha)); }
+.par .rot {
+  display: block;
+  font: 600 0.65rem/1.3 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+}
+.par .mau .rot { color: var(--erro); }
+.par .bom .rot { color: var(--ok); }
+.par p { margin: 0 0 0.6rem; }
+.par p:last-child { margin-bottom: 0; }
+
+/* --- quiz ---------------------------------------------------------------- */
+
+.pergunta {
+  border: 1px solid var(--linha);
+  background: var(--papel-caixa);
+  border-radius: 8px;
+  padding: 1.2rem 1.35rem;
+  margin: 0 0 0.85rem;
+}
+.pergunta > .enunciado { font: 400 1rem/1.55 var(--sans); font-weight: 600; margin: 0 0 0.95rem; }
+.opcao {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 400 0.93rem/1.45 var(--sans);
+  color: inherit;
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: 5px;
+  padding: 0.6rem 0.85rem;
+  margin: 0 0 0.45rem;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.opcao:hover:not([disabled]) { border-color: var(--marca); }
+.opcao:focus-visible { outline: 2px solid var(--marca); outline-offset: 1px; }
+.opcao[disabled] { cursor: default; }
+.opcao.certa { border-color: var(--ok); background: var(--ok-suave); font-weight: 600; }
+.opcao.errada {
+  border-color: var(--erro);
+  background: var(--erro-suave);
+  text-decoration: line-through;
+}
+.retorno {
+  font: 400 0.9rem/1.6 var(--sans);
+  margin: 0.85rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--linha);
+  display: none;
+}
+.retorno.visivel { display: block; }
+.placar {
+  font: 600 0.95rem/1.5 var(--sans);
+  text-align: center;
+  margin-top: 1.4rem;
+  color: var(--tinta-fraca);
+  min-height: 1.5em;
+}
+
+.rodape {
+  margin-top: 4rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--linha);
+  font: 400 0.92rem/1.65 var(--sans);
+  color: var(--tinta-fraca);
+}
+.rodape h4 { margin-top: 1.6rem; }
+.rodape h4:first-child { margin-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<div class="folha">
+
+<p class="chapeu">Lição 02 · o fluxo ideia → ship</p>
+<h1>Manual das Skills</h1>
+<p class="linha-fina">O que uma skill é por dentro, quem tem a caneta, onde cortar a conversa e
+o que “simplificar” quer dizer de verdade.</p>
+
+<p>A Lição 01 respondeu <em>o que é um spec</em>. Esta responde uma pergunta diferente e mais
+prática: <strong>como se opera isso</strong>. Não é sobre decorar nomes — o
+<a href="https://claude.ai/code/artifact/a587a9b3-47e3-48c0-9160-ee92ec9a2635">Dicionário do Fluxo</a> faz esse trabalho. É sobre entender a máquina o
+suficiente para saber quando ela não se aplica, que é a única forma de usar um método sem virar
+refém dele.</p>
+
+<p>Três coisas vão ficar claras aqui, e as três mudam como você trabalha amanhã: <strong>quem
+decide qual skill entra</strong> (nem sempre é você, e isso é de propósito), <strong>onde a
+conversa pode ser cortada</strong> sem perder o raciocínio, e <strong>o que significa
+simplificar</strong> — que quase nunca quer dizer “escrever menos”.</p>
+
+<h2><span class="num">Parte 1</span>O que é uma skill, por dentro</h2>
+
+<p>Em linguagem natural: <strong>uma skill é uma pasta com um manual dentro.</strong> Quando você
+chama, o manual entra na conversa, e o agente passa a seguir aquele procedimento em vez do
+instinto padrão dele.</p>
+
+<p>Em linguagem técnica: é um diretório em <code>~/.claude/skills/&lt;nome&gt;/</code> contendo um
+arquivo <code>SKILL.md</code>. Ao ser invocada, o conteúdo desse arquivo é carregado no turno
+atual e substitui a abordagem padrão do agente para aquela tarefa. Nada mágico: é texto, e você
+pode ler o texto inteiro antes de confiar nele.</p>
+
+<div class="regra">
+  <span class="rot">Faça isto hoje</span>
+  <p>Abra <code>~/.claude/skills/to-spec/SKILL.md</code>. São menos de setenta linhas. Ler a skill
+  que o agente lê é o jeito mais rápido do mundo de parar de adivinhar o que ele vai fazer — e
+  é a diferença entre usar a ferramenta e ser usado por ela.</p>
+</div>
+
+<h3>O cabeçalho decide tudo</h3>
+
+<p>Todo <code>SKILL.md</code> começa com um bloco entre traços — o <strong>frontmatter</strong>.
+Este é o do <code>to-tickets</code>, palavra por palavra:</p>
+
+<pre><code><span class="cmt">---</span>
+<span class="key">name:</span> to-tickets
+<span class="key">description:</span> Break a plan, spec, or the current conversation into a set of
+  tracer-bullet tickets, each declaring its blocking edges, published to
+  the configured tracker…
+<span class="key">disable-model-invocation:</span> true
+<span class="cmt">---</span></code></pre>
+
+<p>São três campos e cada um faz um trabalho diferente:</p>
+
+<ul>
+<li><strong><code>name</code></strong> — o que você digita depois da barra.</li>
+<li><strong><code>description</code></strong> — não é enfeite nem documentação. É <em>roteamento</em>.
+É este texto que o modelo lê para decidir sozinho se a skill se aplica ao que você acabou de
+pedir. Uma <code>description</code> vaga é uma skill que nunca é chamada na hora certa.</li>
+<li><strong><code>disable-model-invocation</code></strong> — o campo mais interessante do
+conjunto, e o assunto da próxima seção.</li>
+</ul>
+
+<h3>Quem tem a caneta</h3>
+
+<p>Uma skill pode entrar na conversa por dois caminhos: <strong>você digita</strong>
+<code>/nome</code>, ou <strong>o modelo lê a <code>description</code></strong> e conclui que ela
+serve agora. O campo <code>disable-model-invocation: true</code> desliga o segundo caminho.</p>
+
+<p>Eu fui olhar quais das suas skills têm esse campo ligado. O padrão não é aleatório:</p>
+
+<div class="rolagem">
+<table>
+<thead><tr><th>Só você pode chamar</th><th>O modelo também chama sozinho</th></tr></thead>
+<tbody>
+<tr>
+<td><code>wayfinder</code>, <code>grill-with-docs</code>, <code>grill-me</code>,
+<code>to-spec</code>, <code>to-tickets</code>, <code>implement</code>, <code>handoff</code>,
+<code>triage</code>, <code>teach</code>, <code>improve-codebase-architecture</code>,
+<code>ask-vini</code></td>
+<td><code>tdd</code>, <code>code-review</code>, <code>domain-modeling</code>,
+<code>codebase-design</code>, <code>diagnosing-bugs</code>, <code>prototype</code>,
+<code>research</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>Leia a coluna da esquerda de novo. São exatamente as skills que <strong>conduzem o
+processo</strong> — as que abrem mapa, publicam issue, escrevem spec, commitam código, encerram
+uma sessão. E a coluna da direita são as que carregam <strong>técnica e vocabulário</strong>:
+como escrever um teste, como nomear um módulo, como caçar um bug.</p>
+
+<div class="regra">
+  <span class="rot">O princípio por trás</span>
+  <p>Quem dirige o fluxo é você. A técnica o agente busca sozinho quando precisa.</p>
+  <p>É por isso que <code>/implement</code> exige a sua barra, mas <code>/tdd</code> e
+  <code>/code-review</code> não — eles são chamados <em>por dentro</em> do implement, como
+  técnica. A analogia é direta: o estagiário consulta a jurisprudência sem pedir licença;
+  protocolar, ele só faz quando você manda.</p>
+</div>
+
+<h3>Skill ocupa espaço</h3>
+
+<p>Isto raramente é dito e importa muito: carregar uma skill <strong>consome contexto</strong>.
+O texto dela entra na janela e fica lá, disputando espaço com o seu problema. Não existe “chamar
+por via das dúvidas”. Uma sessão que começa com quatro skills carregadas é uma sessão que já
+nasceu com menos espaço para pensar — e isso nos leva direto à Parte 3.</p>
+
+<h2><span class="num">Parte 2</span>A bússola: qual skill agora</h2>
+
+<p>O mapa do <code>/ask-vini</code> é excelente para ler, e péssimo para consultar com pressa —
+é prosa, e você precisa de uma decisão. Então virei o mapa numa árvore. Responda o que está na
+sua frente <em>hoje</em>, e ela te diz onde entrar e, mais importante, <strong>por quê</strong>.</p>
+
+<div class="bussola" id="bussola">
+  <p class="trilha" id="trilha"></p>
+  <div id="bussola-corpo"></div>
+</div>
+
+<p>Repare numa coisa que a árvore torna visível: <strong>a maioria dos caminhos não começa em
+“tenho uma ideia”</strong>. Bug quebrado, pedido do cliente e esforço nebuloso são
+<em>rampas de entrada</em> — situações que geram trabalho e desembocam no caminho principal num
+ponto específico. Rampa não se roda por hábito; roda quando a situação aparece.</p>
+
+<h2><span class="num">Parte 3</span>Higiene de contexto, em detalhe</h2>
+
+<p>Esta é a parte que mais muda o seu resultado prático, e a que mais parece superstição até você
+entender o porquê. Vou construí-la em três camadas: o mecanismo, as duas regras, e como
+reconhecer que você está violando uma.</p>
+
+<h3>O mecanismo: o agente não lembra, ele lê</h3>
+
+<p>A <strong>janela de contexto</strong> é tudo que o agente consegue ter à mão nesta conversa:
+as instruções, os arquivos lidos, as saídas de comando e o histórico. Não existe memória entre
+sessões. O que saiu da janela deixou de existir para ele — não é que ele esqueceu, é que nunca
+mais vai lá buscar.</p>
+
+<p>Dentro dessa janela há uma faixa menor, a <strong>smart zone</strong>: por volta dos primeiros
+120 mil tokens, dentro dos quais o modelo ainda raciocina afiado. E aqui está a armadilha:</p>
+
+<div class="regra">
+  <span class="rot">Por que isto não é superstição</span>
+  <p>Passando da smart zone, <strong>o modelo não dá erro</strong>. Ele continua respondendo, com
+  a mesma segurança de sempre — só que raciocinando pior. A degradação é silenciosa. É a quinta
+  hora de audiência: você ainda fala, ainda responde, e ainda assim não deveria estar decidindo
+  nada importante.</p>
+</div>
+
+<h3>Regra 1 — grilling, spec e tickets numa janela só</h3>
+
+<p>Do <code>/grill-with-docs</code> até o <code>/to-tickets</code>, tudo numa <strong>única
+conversa, sem compactar e sem limpar</strong>.</p>
+
+<p>O motivo é uma frase literal da skill do spec:</p>
+
+<blockquote>
+<p>“<strong>Do NOT interview the user</strong> — just synthesize what you already know.”</p>
+<span class="fonte">Fonte primária: <code>~/.claude/skills/to-spec/SKILL.md</code></span>
+</blockquote>
+
+<p>O <code>/to-spec</code> <strong>não descobre nada</strong>. Ele não te pergunta. Ele escreve o
+documento a partir do que está na janela naquele instante. Então a conta é brutalmente simples:
+<strong>o que você jogou fora do contexto não vai para o spec.</strong> Compactar antes do
+<code>/to-spec</code> não é economia — é jogar matéria-prima no lixo e depois se surpreender com
+um documento raso.</p>
+
+<p>E o <code>/to-tickets</code> vem logo atrás pela mesma razão: fatiar bem exige entender a
+<em>discussão</em> que produziu o spec, não só o spec. Por isso os três moram juntos.</p>
+
+<h3>Regra 2 — contexto limpo antes de cada <code>/implement</code></h3>
+
+<p>Aqui a lógica se inverte, e é essa inversão que confunde todo mundo. Cada
+<code>/implement</code> começa numa <strong>sessão nova</strong>, trabalhando a partir do ticket.</p>
+
+<p>Por quê? Porque o ticket é um tracer bullet: ele foi <em>projetado</em> para carregar tudo que
+importa e caber sozinho numa janela limpa. Trazer junto a conversa dos outros onze tickets não
+ajuda em nada e ocupa smart zone — o agente passa a ponderar decisões que já foram tomadas em
+vez de construir esta.</p>
+
+<div class="regra">
+  <span class="rot">A regra, numa frase</span>
+  <p><strong>Antes do spec, contexto é matéria-prima — guarde tudo. Depois dos tickets, contexto
+  é ruído — jogue fora.</strong> O ponto de virada é o <code>/to-tickets</code>.</p>
+</div>
+
+<h3>O trilho, desenhado</h3>
+
+<div class="trilho-caixa larga">
+  <div class="trilho">
+    <div class="sessao longa">
+      <span class="rot">Sessão 1 · não corte aqui dentro</span>
+      <div class="etapas">
+        <div class="etapa">/grill-with-docs</div>
+        <div class="etapa">/to-spec</div>
+        <div class="etapa">/to-tickets</div>
+      </div>
+      <p class="nota">Chegou perto da smart zone antes do fim? Não insista degradado:
+      <code>/handoff</code> e recomeça numa janela nova.</p>
+    </div>
+    <div class="corte">contexto limpo</div>
+    <div class="sessao">
+      <span class="rot">Sessão 2</span>
+      <div class="etapas"><div class="etapa">/implement #01</div></div>
+      <p class="nota">Só o ticket. Roda <code>/tdd</code> e <code>/code-review</code> por dentro.</p>
+    </div>
+    <div class="corte">contexto limpo</div>
+    <div class="sessao">
+      <span class="rot">Sessão 3</span>
+      <div class="etapas"><div class="etapa">/implement #02</div></div>
+      <p class="nota">E assim por diante, um ticket por janela.</p>
+    </div>
+  </div>
+</div>
+
+<p class="legenda-trilho">As tesouras não são sugestão: são onde o método <em>manda</em> cortar.
+E o bloco largo à esquerda não é onde “dá para cortar se precisar” — é onde não se corta.</p>
+
+<h3>Cortar com <code>/handoff</code> ou com <code>/compact</code>?</h3>
+
+<p>São as duas tesouras disponíveis, e elas fazem coisas opostas. A frase para decorar:
+<strong>handoff bifurca; compact continua.</strong></p>
+
+<div class="rolagem">
+<table>
+<thead><tr><th></th><th><code>/handoff</code></th><th><code>/compact</code></th></tr></thead>
+<tbody>
+<tr><td><b>O que faz</b></td><td>Escreve um markdown de passagem e você abre <b>sessão nova</b> referenciando ele</td><td>Resume as voltas anteriores e <b>continua na mesma</b> conversa</td></tr>
+<tr><td><b>Você continua onde</b></td><td>Numa janela limpa</td><td>Na mesma janela, mais leve</td></tr>
+<tr><td><b>Onde o arquivo fica</b></td><td>Na pasta temporária do sistema — não no repositório</td><td>Não gera arquivo</td></tr>
+<tr><td><b>Quando usar</b></td><td>Vai desviar para um <code>/prototype</code>; a sessão encheu antes da hora; quer paralelizar</td><td>Quebra intencional <b>entre</b> fases, quando o literal já não importa</td></tr>
+<tr><td><b>Quando não usar</b></td><td>Quando dava para continuar ali mesmo — handoff custa uma reconstrução</td><td><b>No meio de uma fase.</b> O agente perde o fio</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>Um detalhe do handoff que vale saber: ele <strong>não duplica</strong> o que já está em spec,
+ADR, issue, commit ou diff — referencia por caminho ou URL. E inclui uma seção de skills sugeridas
+para a próxima sessão. Ou seja, ele é um <em>índice de estado</em>, não um resumo da conversa. Um
+handoff comprido é sinal de que o trabalho não foi registrado nos lugares certos.</p>
+
+<h3>Três violações que parecem inofensivas</h3>
+
+<div class="par">
+  <div class="mau">
+    <span class="rot">Parece razoável</span>
+    <p>“A sessão está grande, vou compactar rapidinho antes de rodar o <code>/to-spec</code>.”</p>
+  </div>
+  <div class="bom">
+    <span class="rot">O que acontece</span>
+    <p>O spec sai raso, porque o <code>/to-spec</code> só escreve o que está na janela. Perto do
+    limite, use <code>/handoff</code> e recomece — não compacte para “ganhar espaço” logo antes de
+    sintetizar.</p>
+  </div>
+</div>
+
+<div class="par">
+  <div class="mau">
+    <span class="rot">Parece eficiente</span>
+    <p>“Já estou com o contexto quente, vou tocar os tickets 01, 02 e 03 nesta mesma janela.”</p>
+  </div>
+  <div class="bom">
+    <span class="rot">O que acontece</span>
+    <p>O ticket 03 é construído por um agente que já saiu da smart zone. Ele vai entregar — e o
+    <code>/code-review</code> vai aprovar — código pior, sem que nada acuse. Um ticket por janela.</p>
+  </div>
+</div>
+
+<div class="par">
+  <div class="mau">
+    <span class="rot">Parece caprichado</span>
+    <p>“Vou rodar <code>/triage</code> nos tickets que o <code>/to-tickets</code> acabou de criar,
+    só para garantir.”</p>
+  </div>
+  <div class="bom">
+    <span class="rot">O que acontece</span>
+    <p>Nada, e é esse o problema: eles já nascem <code>ready-for-agent</code>. Você gastou uma
+    sessão e uma janela de contexto em cerimônia. Triagem é só para o que chegou de fora.</p>
+  </div>
+</div>
+
+<h3>A mesma higiene, aplicada às seções</h3>
+
+<p>Vale dizer que “higiene” não é só sobre a conversa — ela vale para os documentos também, e pela
+mesma razão. <strong>Cada seção carrega um tipo de coisa só.</strong> Quando isso escorrega, o
+documento continua bonito e para de funcionar:</p>
+
+<div class="rolagem">
+<table>
+<thead><tr><th>Seção</th><th>Carrega</th><th>Vaza quando…</th></tr></thead>
+<tbody>
+<tr><td>Destino, no mapa</td><td>Onde este esforço quer chegar</td><td>Vira lista de desejos e para de servir de régua para “fora de escopo”</td></tr>
+<tr><td>Ainda não especificado</td><td>Névoa — pergunta não formulável</td><td>Vira backlog de tarefas, e você perde o critério de “o mapa acabou”</td></tr>
+<tr><td>Decisões até agora</td><td>Uma linha por ticket fechado</td><td>Vira depósito de discussão, e o mapa deixa de ser índice</td></tr>
+<tr><td>Implementation Decisions, no spec</td><td>Decisões de arquitetura</td><td>Entra caminho de arquivo ou trecho de código — e o spec passa a mentir na primeira mudança</td></tr>
+<tr><td>Out of Scope</td><td>O que não será feito neste esforço</td><td>Vira “v2”, e o que devia aliviar volta a cobrar atenção</td></tr>
+</tbody>
+</table>
+</div>
+
+<p>O teste é sempre o mesmo, e cabe numa pergunta: <em>este parágrafo é do tipo que esta seção
+carrega?</em> Se não é, ele não está “fora de lugar” — ele está quebrando o critério de pronto
+daquele documento.</p>
+
+<h2><span class="num">Parte 4</span>Simplificar</h2>
+
+<p>Existe uma skill, <code>/simplify</code>, e existe a habilidade. Vou tratar das duas, porque a
+skill só é útil na mão de quem já sabe julgar.</p>
+
+<h3>A skill, primeiro</h3>
+
+<p>O <code>/simplify</code> revisa o <strong>código que mudou</strong> e aplica as correções, em
+quatro frentes: <strong>reutilização</strong> (isso já existe em outro lugar?),
+<strong>simplificação</strong> (dá para conseguir o mesmo com menos peças?),
+<strong>eficiência</strong> e <strong>altitude</strong> (o trecho fica pulando de nível de
+abstração?).</p>
+
+<div class="regra">
+  <span class="rot">A divisão que evita confusão</span>
+  <p><code>/simplify</code> cuida de <strong>qualidade</strong> — ele não caça bug.
+  <code>/code-review</code> é quem procura defeito, e faz isso em dois eixos paralelos: Padrões
+  (o código segue o que este repositório documentou?) e Spec (o código faz o que a issue pediu?).</p>
+  <p>Chamar <code>/simplify</code> esperando que ele ache um bug é usar a chave errada. Chamar
+  <code>/code-review</code> esperando código mais bonito também.</p>
+</div>
+
+<h3>Agora a habilidade — e ela não é “escrever menos”</h3>
+
+<p>Este é o mal-entendido mais caro do assunto. Em linguagem natural, simplificar é
+<strong>fazer a vida de quem usa ficar mais fácil</strong> — e quase sempre isso significa que
+alguém, em algum lugar, teve <em>mais</em> trabalho, de propósito.</p>
+
+<p>Em linguagem técnica: simplificar é aumentar a <strong>profundidade</strong> de um módulo —
+mais comportamento atrás de uma interface menor. Você não apaga a complexidade; você a
+<strong>move para trás de um seam</strong>, onde ela é escrita e testada uma vez em vez de N.</p>
+
+<div class="regra">
+  <span class="rot">A frase que resume</span>
+  <p>Simplificar não é remover complexidade. É <strong>concentrá-la num lugar só</strong>, para
+  que quem chama aprenda pouco e consiga muito.</p>
+</div>
+
+<h3>Um caso do seu próprio site</h3>
+
+<p>Você vai ter quatro páginas de cidade, uma por unidade. A versão rasa é a que sai naturalmente
+quando ninguém pensa no assunto:</p>
+
+<pre><code><span class="cmt">// Raso — quatro arquivos, cada um com o layout inteiro repetido.</span>
+<span class="cmt">// A interface é enorme: para escrever o quinto, você precisa</span>
+<span class="cmt">// conhecer cabeçalho, mapa, horário, CTA, dados estruturados…</span>
+paginaCidadeA.html
+paginaCidadeB.html
+paginaCidadeC.html
+paginaCidadeD.html</code></pre>
+
+<pre><code><span class="cmt">// Fundo — uma interface pequena, tudo o mais escondido atrás dela.</span>
+PaginaDeUnidade({ unidade })
+<span class="cmt">// Por dentro: layout, mapa, horário, dados estruturados,</span>
+<span class="cmt">// texto local, canônica. Quem chama só precisa saber a unidade.</span></code></pre>
+
+<p>Repare que a <em>implementação</em> ficou maior, não menor. A quinta unidade agora custa uma
+linha. Isso é <strong>alavancagem</strong>: o custo de aprender a interface foi pago uma vez e é
+amortizado em todas as chamadas.</p>
+
+<p>E quando você errar o horário de funcionamento — porque vai errar —, corrige num lugar e está
+corrigido nos quatro. Isso é <strong>localidade</strong>. As duas são consequências da mesma
+profundidade, mas para pessoas diferentes: alavancagem é o ganho de quem chama, localidade é o
+ganho de quem mantém.</p>
+
+<h3>Como saber se você simplificou mesmo</h3>
+
+<p>Existe um teste, e ele é bom justamente porque é rápido e não admite conversa: o
+<strong>teste de deleção</strong>.</p>
+
+<div class="regra">
+  <span class="rot">Teste de deleção</span>
+  <p>Imagine apagar o módulo. <strong>Se a complexidade some</strong>, ele era passa-a-diante —
+  só custava um nome a mais para alguém aprender. <strong>Se ela reaparece espalhada</strong> em
+  vários chamadores, o módulo estava segurando peso, e ele se paga.</p>
+</div>
+
+<p>“Mas é usado em muitos lugares” não é resposta: um passa-a-diante também é muito chamado. A
+pergunta não é quantos chamam — é o que <em>volta</em> quando ele sai.</p>
+
+<p>E um contrapeso, direto do <code>/codebase-design</code>, para você não simplificar demais:
+<strong>um adapter significa um seam hipotético; dois adapters significam um seam real.</strong>
+Não crie um ponto de troca porque um dia talvez varie. Crie quando algo de fato varia. Abstração
+inventada para um futuro que não chegou é complexidade nova disfarçada de simplificação — e ela
+custa exatamente o que você achava estar economizando.</p>
+
+<h2><span class="num">Parte 5</span>Teste rápido</h2>
+
+<p>Sem voltar no texto. Errar aqui é mais útil do que acertar de olho.</p>
+
+<div id="quiz">
+
+  <div class="pergunta" data-certa="1">
+    <p class="enunciado">Por que <code>/tdd</code> e <code>/code-review</code> podem ser chamados pelo próprio modelo, mas <code>/implement</code> não?</p>
+    <button class="opcao" data-i="0">Porque são mais rápidas e custam menos contexto</button>
+    <button class="opcao" data-i="1">Porque são técnica; quem conduz o processo é você</button>
+    <button class="opcao" data-i="2">Porque não escrevem arquivo nenhum</button>
+    <button class="opcao" data-i="3">Porque foram instaladas depois das outras</button>
+    <p class="retorno">O campo <code>disable-model-invocation: true</code> separa exatamente isso.
+    As skills que <strong>conduzem</strong> — wayfinder, grills, to-spec, to-tickets, implement,
+    handoff, triage — exigem a sua barra. As de <strong>técnica e vocabulário</strong> o modelo
+    puxa sozinho quando fazem falta. Quem dirige é você; a técnica ele busca.</p>
+  </div>
+
+  <div class="pergunta" data-certa="3">
+    <p class="enunciado">A sessão está ficando grande e você ainda não chegou no <code>/to-spec</code>. O que fazer?</p>
+    <button class="opcao" data-i="0">Compactar, para ganhar espaço antes de sintetizar</button>
+    <button class="opcao" data-i="1">Rodar o <code>/to-spec</code> logo, antes de piorar</button>
+    <button class="opcao" data-i="2">Seguir assim — o modelo avisa quando degradar</button>
+    <button class="opcao" data-i="3">Rodar <code>/handoff</code> e continuar em janela nova</button>
+    <p class="retorno">Compactar antes do spec joga fora matéria-prima: o <code>/to-spec</code>
+    não entrevista, só sintetiza o que está na janela. E o modelo <strong>não avisa</strong> — passando
+    da smart zone ele continua respondendo com a mesma segurança, raciocinando pior. Handoff.</p>
+  </div>
+
+  <div class="pergunta" data-certa="0">
+    <p class="enunciado">O que o <code>/simplify</code> <em>não</em> faz?</p>
+    <button class="opcao" data-i="0">Procurar bugs — isso é do <code>/code-review</code></button>
+    <button class="opcao" data-i="1">Olhar oportunidades de reutilização</button>
+    <button class="opcao" data-i="2">Arrumar mistura de altitude</button>
+    <button class="opcao" data-i="3">Aplicar as correções que encontrou</button>
+    <p class="retorno">Qualidade, não defeito. As quatro frentes são reutilização, simplificação,
+    eficiência e altitude — e ele aplica as correções. Quem caça bug é o <code>/code-review</code>,
+    nos dois eixos: Padrões e Spec.</p>
+  </div>
+
+  <div class="pergunta" data-certa="2">
+    <p class="enunciado">Você extraiu um módulo e a implementação dele ficou <em>maior</em> que o código que existia antes. Isso é sinal de quê?</p>
+    <button class="opcao" data-i="0">De que você complicou — simplificar é reduzir código</button>
+    <button class="opcao" data-i="1">De nada; profundidade se mede em linhas por dentro</button>
+    <button class="opcao" data-i="2">Possivelmente de profundidade — o teste é a deleção</button>
+    <button class="opcao" data-i="3">De que faltou um segundo adapter</button>
+    <p class="retorno">Profundidade é propriedade da <strong>interface</strong>, não do tamanho da
+    implementação — a skill rejeita explicitamente medir por proporção de linhas, porque isso
+    premiaria implementação inchada. Aplique o teste de deleção: apague o módulo e veja se a
+    complexidade some (era passa-a-diante) ou reaparece em N chamadores (ele se paga).</p>
+  </div>
+
+  <div class="pergunta" data-certa="1">
+    <p class="enunciado">Qual destas é uma violação de higiene de contexto?</p>
+    <button class="opcao" data-i="0">Abrir sessão nova para cada <code>/implement</code></button>
+    <button class="opcao" data-i="1">Tocar três tickets na mesma janela para aproveitar o contexto</button>
+    <button class="opcao" data-i="2">Manter grilling, spec e tickets numa conversa só</button>
+    <button class="opcao" data-i="3">Usar <code>/handoff</code> antes de desviar para um protótipo</button>
+    <p class="retorno">O terceiro ticket seria construído por um agente já fora da smart zone — e
+    nada acusa isso, nem o <code>/code-review</code>. Um ticket por janela. As outras três
+    alternativas são a higiene funcionando exatamente como projetada.</p>
+  </div>
+
+  <div class="pergunta" data-certa="3">
+    <p class="enunciado">Um item da seção “Ainda não especificado” do mapa virou uma lista de tarefas a fazer. Qual é o dano real?</p>
+    <button class="opcao" data-i="0">Nenhum — é só organização diferente</button>
+    <button class="opcao" data-i="1">O rastreador fica com issues duplicadas</button>
+    <button class="opcao" data-i="2">O <code>/triage</code> deixa de funcionar naquela issue</button>
+    <button class="opcao" data-i="3">Você perde o critério de “o mapa acabou”</button>
+    <p class="retorno">Aquela seção carrega <strong>névoa</strong> — pergunta que ainda não dá para
+    formular. O mapa acaba quando ela está vazia e não há ticket aberto. Enchendo-a de tarefas,
+    ela nunca esvazia, e o critério de pronto — que era verificável — vira sensação.</p>
+  </div>
+
+</div>
+<p class="placar" id="placar"></p>
+
+<div class="rodape">
+  <h4>Fontes primárias</h4>
+  <p>Tudo aqui saiu dos <code>SKILL.md</code> em <code>~/.claude/skills/</code>, lidos direto.
+  A tabela de quem-pode-chamar veio do campo <code>disable-model-invocation</code> de cada arquivo.
+  Onde eu resumi, a skill manda.</p>
+
+  <h4>O que fazer em seguida</h4>
+  <p>Não é ler outra lição. É fechar mais um ticket do mapa — e, na próxima vez que você for
+  encerrar uma sessão, decidir conscientemente entre <code>/handoff</code> e <code>/compact</code>
+  em vez de fechar a janela no automático. Essa única escolha é metade da higiene.</p>
+
+  <h4>Pergunte</h4>
+  <p>Eu sou seu professor aqui, não só quem gerou esta página. Se qualquer coisa acima ficou vaga
+  — como um seam se parece no seu site, quando o fluxo inteiro é exagero para uma tarefa pequena,
+  o que faz um spec ser ruim — pergunte na conversa. Dúvida que fica é dúvida que volta.</p>
+</div>
+
+</div>
+
+<script>
+const ARVORE = {
+  inicio: {
+    pergunta: "O que está na sua frente agora?",
+    opcoes: [
+      { texto: "Uma ideia que eu quero construir", vai: "cabe" },
+      { texto: "Alguma coisa quebrada, ou lenta", vai: "r_diagnostico" },
+      { texto: "Bugs e pedidos que chegaram de fora, empilhando", vai: "r_triagem" },
+      { texto: "Código que já existe e me incomoda", vai: "r_arquitetura" }
+    ]
+  },
+  cabe: {
+    pergunta: "Dá para enxergar o caminho daqui até o fim?",
+    opcoes: [
+      { texto: "Não — é grande e nebuloso, não cabe numa cabeça só", vai: "r_wayfinder" },
+      { texto: "Sim — consigo conversar sobre a ideia inteira", vai: "repo" }
+    ]
+  },
+  repo: {
+    pergunta: "Existe um repositório onde isso vive?",
+    opcoes: [
+      { texto: "Sim, tem código e histórico", vai: "r_grill_docs" },
+      { texto: "Não — é um plano, uma proposta, algo fora de código", vai: "r_grill_me" }
+    ]
+  },
+  executavel: {
+    pergunta: "Depois de afiar a ideia, sobrou pergunta que só código responde?",
+    opcoes: [
+      { texto: "Sim — preciso ver rodando para decidir", vai: "r_prototipo" },
+      { texto: "Não — decidimos tudo conversando", vai: "sessoes" }
+    ]
+  },
+  sessoes: {
+    pergunta: "Isso cabe numa sessão só de construção?",
+    opcoes: [
+      { texto: "Não — é trabalho de vários dias", vai: "r_spec" },
+      { texto: "Sim — é uma coisa só, bem delimitada", vai: "r_implement" }
+    ]
+  },
+
+  r_wayfinder: {
+    skill: "/wayfinder",
+    porque: "Quando o caminho até o destino ainda não é visível, planejar é adivinhar. O wayfinder abre um mapa de tickets de investigação e resolve um por sessão — produzindo decisões, não entregáveis — até a névoa acabar.",
+    io: "<b>Consome:</b> uma ideia grande demais para uma cabeça · <b>Produz:</b> um mapa com decisões registradas",
+    depois: "Quando “Ainda não especificado” estiver vazio e não houver ticket aberto, o mapa acabou. Aí você segue para <code>/to-spec</code> — ou direto para <code>/implement</code>, se o esforço encolheu no caminho.",
+    aviso: null
+  },
+  r_grill_docs: {
+    skill: "/grill-with-docs",
+    porque: "Entrevista implacável, uma pergunta por vez, para afiar a ideia antes de qualquer código. Esta versão tem estado: deixa rastro em <code>CONTEXT.md</code> e em ADRs, então o que você decidir hoje continua valendo na sessão de daqui a um mês.",
+    io: "<b>Consome:</b> uma ideia que cabe numa sessão · <b>Produz:</b> entendimento compartilhado, mais glossário e ADRs",
+    depois: null,
+    continua: "executavel",
+    aviso: "A partir daqui você entra na janela que <strong>não pode ser cortada</strong> — grilling, spec e tickets moram na mesma conversa."
+  },
+  r_grill_me: {
+    skill: "/grill-me",
+    porque: "A mesma entrevista implacável, mas sem repositório para gravar nada. Serve para afiar qualquer plano ou proposta que não vive em código — uma apresentação para o cliente, um modelo de atendimento, uma decisão de negócio.",
+    io: "<b>Consome:</b> um plano fora de código · <b>Produz:</b> o plano afiado, e nada em disco",
+    depois: "É stateless de propósito: não cria <code>CONTEXT.md</code> nem ADR. Se a conversa gerar algo que precisa sobreviver, você registra à mão.",
+    aviso: null
+  },
+  r_prototipo: {
+    skill: "/prototype",
+    porque: "Tem pergunta que não se resolve no papel: este fluxo de tela funciona? este modelo de dado aguenta o caso real? O protótipo responde com código descartável — descartável desde o primeiro dia.",
+    io: "<b>Consome:</b> uma pergunta de desenho · <b>Produz:</b> a resposta (o código vai fora)",
+    depois: "O desvio é feito com <code>/handoff</code> nas duas direções: handoff para sair, sessão nova para prototipar, handoff de volta com o que você aprendeu. Guarde a resposta; apague o código.",
+    aviso: "Não deixe o protótipo virar a implementação “já que está pronto”. Ele foi escrito para responder, não para durar."
+  },
+  r_spec: {
+    skill: "/to-spec  →  /to-tickets",
+    porque: "Trabalho de vários dias precisa atravessar sessões, e nada atravessa sessão a não ser o que está escrito. O spec registra as decisões em sete seções; o to-tickets o fatia em tracer bullets, cada um declarando quem o bloqueia.",
+    io: "<b>Consome:</b> a conversa inteira · <b>Produz:</b> o spec, e depois os tickets com arestas de bloqueio",
+    depois: "Aí sim: <code>/implement</code> por ticket, <strong>um por janela limpa</strong>, trabalhando sempre a fronteira — qualquer ticket cujos bloqueadores já fecharam.",
+    aviso: "Não compacte antes do <code>/to-spec</code>. Ele não entrevista ninguém: escreve a partir do que está na janela. Contexto jogado fora é spec perdido."
+  },
+  r_implement: {
+    skill: "/implement",
+    porque: "Cabendo numa sessão, não há por que passar por spec e tickets — seria cerimônia. O implement constrói dirigindo o <code>/tdd</code> por dentro, uma fatia vermelho-verde por vez, e fecha rodando <code>/code-review</code> antes de commitar.",
+    io: "<b>Consome:</b> um ticket ou uma tarefa clara · <b>Produz:</b> código revisado e commitado",
+    depois: "Se no meio do caminho ficar claro que não cabia numa sessão, pare. Isso é informação: volte para <code>/to-spec</code> em vez de empurrar a sessão para fora da smart zone.",
+    aviso: null
+  },
+  r_triagem: {
+    skill: "/triage",
+    porque: "Issue que chegou de fora vem crua: falta reprodução, falta contexto, às vezes falta decidir se vai ser feita. A triagem move cada uma pelos cinco papéis até virar issue pronta para agente.",
+    io: "<b>Consome:</b> issues cruas de terceiros · <b>Produz:</b> issues <code>ready-for-agent</code>, que o <code>/implement</code> depois pega",
+    depois: "Triagem é <strong>só</strong> para o que você não criou. Ticket saído do <code>/to-tickets</code> já nasce pronto para agente — triá-lo é gastar sessão em cerimônia.",
+    aviso: null
+  },
+  r_diagnostico: {
+    skill: "/diagnosing-bugs",
+    porque: "Para o bug que resiste à primeira olhada, o intermitente, a regressão que apareceu entre dois estados bons. A skill se recusa a teorizar antes de existir um laço de feedback apertado — um comando que já falha neste bug — e fecha com teste de regressão.",
+    io: "<b>Consome:</b> um sintoma · <b>Produz:</b> a causa, a correção e um teste que trava a porta",
+    depois: "Se a autópsia concluir que o bug entrou porque não havia um seam decente para prendê-lo, ela passa a bola para <code>/improve-codebase-architecture</code>.",
+    aviso: null
+  },
+  r_arquitetura: {
+    skill: "/improve-codebase-architecture",
+    porque: "Não é trabalho de feature: é manutenção do terreno onde os agentes operam. A skill faz o levantamento e devolve oportunidades de aprofundamento — lugares onde muito comportamento poderia ficar atrás de uma interface menor.",
+    io: "<b>Consome:</b> um tempo livre · <b>Produz:</b> uma lista de oportunidades",
+    depois: "Escolher uma dessas oportunidades <em>gera uma ideia</em> — e aí você volta ao topo desta bússola e entra pelo <code>/grill-with-docs</code>. O desenho da escolhida se faz com o vocabulário do <code>/codebase-design</code>.",
+    aviso: null
+  }
+};
+
+(function () {
+  const corpo = document.getElementById("bussola-corpo");
+  const trilha = document.getElementById("trilha");
+  let caminho = [];
+
+  function desenhar(id) {
+    const no = ARVORE[id];
+    corpo.innerHTML = "";
+
+    trilha.innerHTML = caminho.length
+      ? caminho.map(function (t) { return "<span>" + t + "</span>"; }).join("")
+      : "";
+
+    if (no.pergunta) {
+      const p = document.createElement("p");
+      p.className = "bussola-pergunta";
+      p.textContent = no.pergunta;
+      corpo.appendChild(p);
+
+      const caixa = document.createElement("div");
+      caixa.className = "bussola-opcoes";
+      no.opcoes.forEach(function (o) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = o.texto;
+        b.addEventListener("click", function () {
+          caminho.push(o.texto);
+          desenhar(o.vai);
+        });
+        caixa.appendChild(b);
+      });
+      corpo.appendChild(caixa);
+      return;
+    }
+
+    const bloco = document.createElement("div");
+    bloco.className = "resposta";
+    let html =
+      '<p class="skill">' + no.skill + "</p>" +
+      "<p>" + no.porque + "</p>" +
+      '<p class="io">' + no.io + "</p>";
+    if (no.aviso) html += '<p class="aviso">' + no.aviso + "</p>";
+    if (no.depois) html += "<p>" + no.depois + "</p>";
+    bloco.innerHTML = html;
+
+    if (no.continua) {
+      const seguir = document.createElement("button");
+      seguir.type = "button";
+      seguir.className = "recomecar";
+      seguir.textContent = "E depois disso? →";
+      seguir.addEventListener("click", function () {
+        caminho.push("depois do grilling");
+        desenhar(no.continua);
+      });
+      bloco.appendChild(seguir);
+      bloco.appendChild(document.createTextNode(" "));
+    }
+
+    const voltar = document.createElement("button");
+    voltar.type = "button";
+    voltar.className = "recomecar";
+    voltar.textContent = "Recomeçar";
+    voltar.addEventListener("click", function () {
+      caminho = [];
+      desenhar("inicio");
+    });
+    bloco.appendChild(voltar);
+
+    corpo.appendChild(bloco);
+  }
+
+  desenhar("inicio");
+})();
+
+(function () {
+  const perguntas = document.querySelectorAll(".pergunta");
+  const total = perguntas.length;
+  const placar = document.getElementById("placar");
+  let feitas = 0, acertos = 0;
+
+  perguntas.forEach(function (q) {
+    const certa = Number(q.dataset.certa);
+    const retorno = q.querySelector(".retorno");
+
+    q.querySelectorAll(".opcao").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (q.dataset.respondida) return;
+        q.dataset.respondida = "1";
+
+        const escolha = Number(b.dataset.i);
+        if (escolha === certa) acertos++;
+        feitas++;
+
+        q.querySelectorAll(".opcao").forEach(function (o) {
+          o.disabled = true;
+          const i = Number(o.dataset.i);
+          if (i === certa) o.classList.add("certa");
+          else if (i === escolha) o.classList.add("errada");
+        });
+
+        retorno.classList.add("visivel");
+
+        if (feitas === total) {
+          placar.textContent = acertos === total
+            ? "Seis de seis. Agora escolha conscientemente como você encerra a próxima sessão."
+            : acertos + " de " + total + " — releia os retornos das que escaparam.";
+        } else {
+          placar.textContent = feitas + " de " + total + " respondidas";
+        }
+      });
+    });
+  });
+})();
+</script>
