@@ -40,45 +40,43 @@ Copie o bloco abaixo e preencha. Os cinco campos são obrigatórios.
 
 <!-- ── novas entradas abaixo ── -->
 
-> 📝 **As duas entradas abaixo foram redigidas em 22/08/2026 a partir dos arquivos.** Os campos *Tipo*, *Onde* e as observações são descrição do que está nas imagens. Os campos **"O que eu quero"** e **"O que eu NÃO quero"** estão marcados como **PROPOSTA** — são julgamento do Murilo e devem ser editados ou confirmados por ele antes de o #20 e o #6 os consumirem.
+> ⚠️ **Regra de leitura destas duas entradas, fixada pelo Murilo em 22/08/2026.**
+>
+> **Nenhum elemento destas referências entra no projeto. Só a ideia por trás delas.**
+>
+> Não é para copiar um botão, um ícone, um espaçamento, um texto ou uma cor. É para entender o **princípio** que a referência demonstra e implementá-lo com os elementos que **este** projeto já decidiu. Quando a referência e uma decisão do mapa divergirem, **a decisão do mapa vence** — a referência não tem voto.
+>
+> Isto é o que separa referência de alvo. Uma referência lida como alvo produz um site que é a média de sites alheios.
 
-### Seção de sócios e painel do advogado — AG Sociedade de Advogados
+### Seção de advogados — AG Sociedade de Advogados
 
 - **Tipo:** prints de site de terceiro (2 telas)
 - **Onde:** [`ModeloSectionAdv1.png`](ModeloSectionAdv1.png) (a grade de cards) · [`ModeloSectionAdv2.png`](ModeloSectionAdv2.png) (o painel aberto)
-- **O que eu quero daqui:** *(PROPOSTA — confirmar)*
-  - **A estrutura do painel:** divisão em duas metades, **texto à esquerda e foto grande à direita**, ocupando a tela inteira
-  - **O X circular e contornado**, no alto da coluna de texto — não um X pequeno no canto extremo. Bate com o requisito de "X grande, alto e sempre visível"
-  - **A foto do card vira a foto do painel** — mesma pessoa, mesmo enquadramento, ampliada. Confirma a decisão de *expandir* em vez de trocar
-  - **Ícones de rede social discretos ao pé do texto**, sem rótulo
-  - **A descrição escrita como prosa de credenciais** — graduação, pós, comissões da OAB, institutos, diretorias. Sem adjetivo sobre si mesmo. É exatamente a lista taxativa do CED art. 44, §1º (título acadêmico, distinção honorífica, instituição jurídica) redigida em texto corrido
-  - **O tratamento fotográfico uniforme:** meio corpo, fundo de estante, mesma luz e mesmo recorte nos quatro. Insumo direto do item 4 de [#7](https://github.com/FerndsTech/alves-assessoria/issues/7)
-- **O que eu NÃO quero:** *(PROPOSTA — confirmar)*
-  - **O texto de abertura da seção** — *"altamente qualificados"*, *"vasta experiência"*, *"foco em resultados eficazes"*. Superlativo (Prov. 205 art. 3º, IV) e promessa de resultado (art. 6º). **Vedado**
-  - **O rótulo "Especialista em ..."** sob cada nome. [#2](https://github.com/FerndsTech/alves-assessoria/issues/2) fechou: só com título certificado que sustente. O nosso escreve **"Atua em: ..."**
-  - **A ausência do número da OAB.** A referência não mostra nenhum; o nosso card e o nosso painel são **obrigados** a mostrar (CED art. 44, caput)
-  - A paleta verde e a tipografia
-- **Alimenta:** [#20 — Layout do painel do advogado](https://github.com/FerndsTech/alves-assessoria/issues/20) (principal) · [#7](https://github.com/FerndsTech/alves-assessoria/issues/7) item 4 (requisitos da foto) e item 1 (forma do campo `descricao`)
+- **O que eu quero daqui:** **o princípio da seção de advogados, e só ele** — uma grade de cards de advogado onde **clicar num card abre um layout maior daquele advogado**, sem sair da página. É o *estilo de painel* que eu quero, não o painel dela.
+- **O que eu NÃO quero:** **nenhum elemento dela.** Nada de texto, rótulo, paleta, tipografia, ícone, enquadramento ou disposição interna. O nosso painel carrega **o que já foi decidido no mapa** — número de OAB, botão de WhatsApp próprio, áreas de atuação, unidade e endereço, dias de atuação, redes sociais, foto ampliada — e nenhum desses elementos vem daqui.
+- **Alimenta:** [#20 — Layout do painel do advogado](https://github.com/FerndsTech/alves-assessoria/issues/20)
 
-> ⚠️ **Insumo obrigatório de [#20](https://github.com/FerndsTech/alves-assessoria/issues/20)** — aquele ticket não começa sem esta entrada. Foi por falta dela que o layout do painel saiu de [#7](https://github.com/FerndsTech/alves-assessoria/issues/7) e virou ticket próprio, em 22/08/2026.
+> ⚠️ **Insumo obrigatório de [#20](https://github.com/FerndsTech/alves-assessoria/issues/20)** — aquele ticket não começava sem esta entrada. Foi por falta dela que o layout do painel saiu de [#7](https://github.com/FerndsTech/alves-assessoria/issues/7) e virou ticket próprio, em 22/08/2026.
 
-### Home de referência — Chaib, Ribeiro & Severo Advogados
+### Modelo de home — Chaib, Ribeiro & Severo Advogados
 
 - **Tipo:** print de página inteira + PDF
 - **Onde:** [`ModeloHome.jpg`](ModeloHome.jpg) · [`Home.pdf`](Home.pdf)
-- **O que eu quero daqui:** *(PROPOSTA — confirmar)*
-  - **O "+" no canto do card de advogado** como sinal visível de que o card abre algo. Responde direto ao requisito de afordância de clique da emenda 2 do [#17](https://github.com/FerndsTech/alves-assessoria/issues/17)
-  - **A barra de navegação fixa no topo**, com âncoras para as seções
-  - **A faixa corrida de áreas de atuação** entre seções, como divisor
-  - **As áreas de atuação como cards que expandem**, em vez de lista
-  - **A densidade e o ritmo** — seções alternando fundo claro e escuro, com respiro entre elas
-  - **O nível de acabamento** em geral: é a régua de "premium" que o mapa pede
-- **O que eu NÃO quero:** *(PROPOSTA — confirmar)*
-  - **O selo "avaliado em 5 estrelas no Google"** no herói. **Vedado** — CED art. 42, IV e toda a família de prova social derrubada por [#2](https://github.com/FerndsTech/alves-assessoria/issues/2)
-  - **O formulário de contato.** Contradiz [#9](https://github.com/FerndsTech/alves-assessoria/issues/9): o site é **100% estático, sem backend**, e emite `wa.me` e nada mais. Formulário traz coleta de dado e LGPD junto
-  - **"Plantão 24h para urgências".** Colide com o horário publicado (*seg–sex, 08h–16h, mediante hora marcada*) e é afirmação sobre estrutura do escritório (Prov. 205 art. 6º)
-  - **A densidade de CTA** — a referência repete "Entre em contato" seis vezes ou mais. [#17](https://github.com/FerndsTech/alves-assessoria/issues/17), emendado, fixou **dois** blocos no corpo mais o do rodapé
-  - **A seção "Como é o processo"** — descrever o método de trabalho como etapas se aproxima de ofertar serviço
-  - **A paleta preto e dourado.** A nossa é vermelho, preto e branco, com os tokens já verificados em AA por [#5](https://github.com/FerndsTech/alves-assessoria/issues/5)
-  - **O herói com foto dos sócios em cenário de escritório** — o nosso herói é logo de fundo, e a vedação de estrutura física (Prov. 205 art. 6º) recomenda cautela com cenário
-- **Alimenta:** [#6](https://github.com/FerndsTech/alves-assessoria/issues/6) itens 9–11 (linha de base × enriquecimento) · [#20](https://github.com/FerndsTech/alves-assessoria/issues/20) (afordância do card) · [#10](https://github.com/FerndsTech/alves-assessoria/issues/10) e [#11](https://github.com/FerndsTech/alves-assessoria/issues/11) como referência de forma
+- **O que eu quero daqui:** **o modelo de home, no sentido de esqueleto** — como as seções se empilham no eixo **Y** e como o conteúdo se organiza no eixo **X** dentro de cada uma. Ritmo vertical, largura útil, alternância entre blocos, respiro entre seções.
+- **O que eu NÃO quero:** **as seções dela, o conteúdo dela e as funcionalidades dela.** As 7 seções do nosso site e a ordem delas já estão fixadas em [#17](https://github.com/FerndsTech/alves-assessoria/issues/17) e não se discutem por esta referência. Nada de paleta, tipografia, textos, formulário ou recursos.
+- **Alimenta:** o esqueleto da home · [#6](https://github.com/FerndsTech/alves-assessoria/issues/6) itens 9–11 (linha de base × enriquecimento)
+
+---
+
+## Achados de conformidade nestas referências
+
+Registro separado, porque **não** são coisas a copiar nem a evitar por gosto — são coisas que, se entrassem por descuido, violariam norma da OAB já apurada em [Limites da OAB](https://github.com/FerndsTech/alves-assessoria/issues/2). Ficam aqui como alerta, não como instrução de design.
+
+| Presente na referência | Por que não pode existir no nosso |
+|---|---|
+| Selo *"avaliado em 5 estrelas no Google"* | CED art. 42, IV — avaliação é prova social, vedada |
+| Rótulo *"Especialista em ..."* sob o nome | Prov. 205 art. 3º, III — só com título certificado ou notória especialização. O nosso escreve *"Atua em: ..."* |
+| *"altamente qualificados"*, *"vasta experiência"*, *"resultados eficazes"* | Prov. 205 art. 3º, IV (superlativo) e art. 6º (promessa de resultado) |
+| *"Plantão 24h para urgências"* | Colide com o horário publicado e afirma sobre estrutura do escritório (Prov. 205 art. 6º) |
+| Formulário de contato | Não é vedação da OAB, é decisão do projeto: [#9](https://github.com/FerndsTech/alves-assessoria/issues/9) fixou site **100% estático, sem backend** |
+| Ausência de número de OAB nos cards | O nosso é **obrigado** a exibir (CED art. 44, caput) |
