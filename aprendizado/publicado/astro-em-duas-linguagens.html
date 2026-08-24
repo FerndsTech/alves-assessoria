@@ -1,0 +1,1605 @@
+<title>Astro em Duas Linguagens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+
+<style>
+:root {
+  --papel:        #fbf9f6;
+  --papel-caixa:  #f2eee8;
+  --cartao:       #ffffff;
+  --tinta:        #1c1a19;
+  --tinta-fraca:  #5d5754;
+  --linha:        #ddd6cc;
+  --contorno:     #b5a99a;
+  --marca:        #a82520;
+  --marca-suave:  #fbedec;
+  --sobre-marca:  #ffffff;
+  --servidor:     #4b3f9e;
+  --servidor-suave:#eeecf9;
+  --ok:           #2f6b45;
+  --ok-suave:     #e8f4ed;
+  --erro:         #a3322c;
+  --erro-suave:   #fbeceb;
+  --atencao:      #8a5300;
+  --atencao-suave:#fdf3e3;
+  --sombra:       0 1px 2px rgba(28,26,25,.05), 0 6px 18px -12px rgba(28,26,25,.22);
+
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --sans:  "Source Sans 3", -apple-system, "Segoe UI", system-ui, sans-serif;
+  --mono:  "IBM Plex Mono", "Cascadia Code", Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --papel:        #17161a;
+    --papel-caixa:  #211f25;
+    --cartao:       #1e1c22;
+    --tinta:        #ece7e1;
+    --tinta-fraca:  #a49c95;
+    --linha:        #35323a;
+    --contorno:     #56515e;
+    --marca:        #e4635e;
+    --marca-suave:  #2e1f22;
+    --sobre-marca:  #17161a;
+    --servidor:     #9c8ff0;
+    --servidor-suave:#232140;
+    --ok:           #7fc79b;
+    --ok-suave:     #17281f;
+    --erro:         #f0918c;
+    --erro-suave:   #2e1c1c;
+    --atencao:      #e0ab5a;
+    --atencao-suave:#2c2416;
+    --sombra:       0 1px 2px rgba(0,0,0,.3), 0 6px 18px -12px rgba(0,0,0,.6);
+  }
+}
+
+:root[data-theme="dark"] {
+  --papel:        #17161a;
+  --papel-caixa:  #211f25;
+  --cartao:       #1e1c22;
+  --tinta:        #ece7e1;
+  --tinta-fraca:  #a49c95;
+  --linha:        #35323a;
+  --contorno:     #56515e;
+  --marca:        #e4635e;
+  --marca-suave:  #2e1f22;
+  --sobre-marca:  #17161a;
+  --servidor:     #9c8ff0;
+  --servidor-suave:#232140;
+  --ok:           #7fc79b;
+  --ok-suave:     #17281f;
+  --erro:         #f0918c;
+  --erro-suave:   #2e1c1c;
+  --atencao:      #e0ab5a;
+  --atencao-suave:#2c2416;
+  --sombra:       0 1px 2px rgba(0,0,0,.3), 0 6px 18px -12px rgba(0,0,0,.6);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--papel);
+  color: var(--tinta);
+  font: 400 1.0625rem/1.72 var(--serif);
+  -webkit-font-smoothing: antialiased;
+}
+
+.folha {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 7rem;
+}
+
+/* --- largura extra para diagramas e tabelas ---------------------------- */
+.largo {
+  width: min(64rem, 100vw - 3rem);
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* --- tipografia -------------------------------------------------------- */
+
+.chapeu {
+  font: 600 0.72rem/1 var(--sans);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--marca);
+  margin-bottom: 1.1rem;
+}
+
+h1 {
+  font: 600 2.6rem/1.1 var(--serif);
+  letter-spacing: -0.02em;
+  margin: 0 0 0.9rem;
+  text-wrap: balance;
+}
+
+.linha-fina {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: var(--tinta-fraca);
+  font-style: italic;
+  margin: 0 0 1.5rem;
+}
+
+h2 {
+  font: 600 1.65rem/1.25 var(--serif);
+  letter-spacing: -0.015em;
+  margin: 4.5rem 0 0.4rem;
+  text-wrap: balance;
+}
+h2 .num {
+  display: block;
+  font: 600 0.7rem/1 var(--sans);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--contorno);
+  margin-bottom: 0.6rem;
+}
+
+h3 {
+  font: 600 1.12rem/1.35 var(--serif);
+  margin: 2.4rem 0 0.6rem;
+}
+
+h4 {
+  font: 600 0.74rem/1.4 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  margin: 1.8rem 0 0.5rem;
+}
+
+p { margin: 0 0 1.1rem; }
+ul, ol { margin: 0 0 1.2rem; padding-left: 1.3rem; }
+li { margin-bottom: 0.45rem; }
+
+a { color: var(--marca); text-underline-offset: 0.15em; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--marca);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+code {
+  font: 0.855em var(--mono);
+  background: var(--papel-caixa);
+  padding: 0.12em 0.36em;
+  border-radius: 3px;
+  word-break: break-word;
+}
+
+strong { font-weight: 600; }
+
+hr.divisor {
+  border: 0;
+  border-top: 1px solid var(--linha);
+  margin: 3.5rem 0;
+}
+
+/* --- blocos de destaque ------------------------------------------------ */
+
+.veredito {
+  border: 1px solid var(--contorno);
+  border-left: 4px solid var(--marca);
+  background: var(--cartao);
+  border-radius: 0 8px 8px 0;
+  padding: 1.5rem 1.6rem;
+  margin: 2rem 0;
+  box-shadow: var(--sombra);
+}
+.veredito p:last-child { margin-bottom: 0; }
+.veredito .rot {
+  font: 600 0.7rem/1 var(--sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--marca);
+  display: block;
+  margin-bottom: 0.7rem;
+}
+
+.nota {
+  background: var(--papel-caixa);
+  border-radius: 6px;
+  padding: 1.1rem 1.3rem;
+  margin: 1.75rem 0;
+  font: 400 0.95rem/1.65 var(--sans);
+}
+.nota p { margin-bottom: 0.7rem; }
+.nota p:last-child { margin-bottom: 0; }
+
+.aviso {
+  border-left: 3px solid var(--atencao);
+  background: var(--atencao-suave);
+  border-radius: 0 6px 6px 0;
+  padding: 1.1rem 1.3rem;
+  margin: 1.75rem 0;
+  font: 400 0.95rem/1.65 var(--sans);
+}
+.aviso p:last-child { margin-bottom: 0; }
+.aviso b { color: var(--atencao); }
+
+blockquote {
+  margin: 1.6rem 0;
+  padding-left: 1.2rem;
+  border-left: 2px solid var(--linha);
+  color: var(--tinta-fraca);
+  font-style: italic;
+}
+blockquote p:last-child { margin-bottom: 0; }
+.fonte {
+  display: block;
+  font: 400 0.78rem/1.5 var(--sans);
+  font-style: normal;
+  color: var(--tinta-fraca);
+  margin-top: 0.45rem;
+}
+
+/* --- cartao de duas linguagens ----------------------------------------- */
+
+.dicionario-ctrl {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.5rem 0 1.25rem;
+  align-items: center;
+}
+.busca {
+  flex: 1 1 12rem;
+  font: 400 0.92rem var(--sans);
+  color: inherit;
+  background: var(--cartao);
+  border: 1px solid var(--contorno);
+  border-radius: 5px;
+  padding: 0.5rem 0.7rem;
+}
+.filtro {
+  font: 600 0.76rem var(--sans);
+  color: var(--tinta-fraca);
+  background: var(--cartao);
+  border: 1px solid var(--linha);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  cursor: pointer;
+}
+.filtro[aria-pressed="true"] {
+  background: var(--marca);
+  border-color: var(--marca);
+  color: var(--sobre-marca);
+}
+
+.termo {
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--cartao);
+  margin-bottom: 0.9rem;
+  overflow: hidden;
+}
+.termo.oculto { display: none; }
+
+.termo-topo {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.85rem 1.1rem;
+  border-bottom: 1px solid var(--linha);
+  background: var(--papel-caixa);
+}
+.termo-nome {
+  font: 600 1.02rem/1.3 var(--serif);
+  margin: 0;
+}
+.termo-nome code { background: none; padding: 0; font-size: 0.92em; }
+.familia {
+  font: 600 0.64rem/1 var(--sans);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  white-space: nowrap;
+}
+
+.duas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.duas > div { padding: 0.95rem 1.1rem; }
+.duas > div:first-child { border-right: 1px solid var(--linha); }
+.duas h5 {
+  font: 600 0.63rem/1 var(--sans);
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  margin: 0 0 0.5rem;
+}
+.duas .nat h5 { color: var(--marca); }
+.duas .tec h5 { color: var(--servidor); }
+.duas p {
+  font: 400 0.93rem/1.6 var(--sans);
+  margin: 0;
+}
+.duas .tec p { font-family: var(--serif); font-size: 0.95rem; }
+
+.termo-pe {
+  border-top: 1px dashed var(--linha);
+  padding: 0.8rem 1.1rem;
+  display: grid;
+  gap: 0.5rem;
+  font: 400 0.87rem/1.55 var(--sans);
+  color: var(--tinta-fraca);
+}
+.termo-pe b {
+  font: 600 0.63rem/1 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--contorno);
+  display: inline-block;
+  margin-right: 0.45rem;
+}
+
+@media (max-width: 34rem) {
+  .duas { grid-template-columns: 1fr; }
+  .duas > div:first-child {
+    border-right: 0;
+    border-bottom: 1px solid var(--linha);
+  }
+}
+
+/* --- figuras ----------------------------------------------------------- */
+
+figure {
+  margin: 2.25rem 0;
+}
+figure svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  color: var(--tinta);
+}
+figcaption {
+  font: 400 0.85rem/1.6 var(--sans);
+  color: var(--tinta-fraca);
+  margin-top: 0.8rem;
+  text-align: center;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.legenda-svg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.2rem;
+  justify-content: center;
+  font: 400 0.78rem/1.4 var(--sans);
+  color: var(--tinta-fraca);
+  margin-top: 0.7rem;
+}
+.legenda-svg span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.chip {
+  width: 0.85rem; height: 0.85rem;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+/* --- tabela ------------------------------------------------------------ */
+
+.rolagem { overflow-x: auto; margin: 1.75rem 0; }
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 40rem;
+  font: 400 0.88rem/1.55 var(--sans);
+  font-variant-numeric: tabular-nums;
+}
+caption {
+  caption-side: top;
+  text-align: left;
+  font: 600 0.7rem/1 var(--sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  padding-bottom: 0.7rem;
+}
+th {
+  text-align: left;
+  font: 600 0.68rem/1.3 var(--sans);
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+  border-bottom: 1.5px solid var(--contorno);
+  padding: 0 0.85rem 0.5rem 0;
+  vertical-align: bottom;
+}
+td {
+  border-bottom: 1px solid var(--linha);
+  padding: 0.65rem 0.85rem 0.65rem 0;
+  vertical-align: top;
+}
+td:first-child { font-weight: 600; color: var(--tinta); }
+tr.destaque td { background: var(--marca-suave); }
+tr.destaque td:first-child { color: var(--marca); }
+
+/* --- simulador --------------------------------------------------------- */
+
+.sim {
+  border: 1px solid var(--contorno);
+  border-radius: 10px;
+  background: var(--cartao);
+  padding: 1.4rem;
+  margin: 2rem 0;
+  box-shadow: var(--sombra);
+}
+.sim-botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-bottom: 1.2rem;
+}
+.sim-botoes button {
+  font: 600 0.82rem var(--mono);
+  color: var(--tinta);
+  background: var(--papel-caixa);
+  border: 1px solid var(--linha);
+  border-radius: 5px;
+  padding: 0.45rem 0.7rem;
+  cursor: pointer;
+  transition: background .12s, border-color .12s, color .12s;
+}
+.sim-botoes button:hover { border-color: var(--contorno); }
+.sim-botoes button[aria-pressed="true"] {
+  background: var(--marca);
+  border-color: var(--marca);
+  color: var(--sobre-marca);
+}
+
+.barra-tempo {
+  position: relative;
+  height: 2.6rem;
+  background: var(--papel-caixa);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 0.4rem;
+}
+.seg {
+  position: absolute;
+  top: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 0.68rem var(--sans);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: left .35s ease, width .35s ease;
+}
+.seg.html { background: var(--servidor); color: #fff; }
+.seg.js   { background: var(--marca);   color: var(--sobre-marca); }
+.seg.hid  { background: repeating-linear-gradient(45deg, var(--marca), var(--marca) 5px, transparent 5px, transparent 10px); border: 1px solid var(--marca); color: var(--tinta); }
+.eixo {
+  display: flex;
+  justify-content: space-between;
+  font: 400 0.7rem var(--sans);
+  color: var(--tinta-fraca);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 1.1rem;
+}
+.sim-saida {
+  display: grid;
+  gap: 0.75rem;
+  font: 400 0.92rem/1.6 var(--sans);
+}
+.sim-linha {
+  display: grid;
+  grid-template-columns: 8.5rem 1fr;
+  gap: 0.8rem;
+  align-items: baseline;
+}
+.sim-linha b {
+  font: 600 0.66rem/1.5 var(--sans);
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--tinta-fraca);
+}
+.sim-vered {
+  border-radius: 5px;
+  padding: 0.7rem 0.9rem;
+  font: 600 0.9rem/1.5 var(--sans);
+  margin-top: 0.3rem;
+}
+.sim-vered.bom  { background: var(--ok-suave);   color: var(--ok); }
+.sim-vered.ruim { background: var(--erro-suave); color: var(--erro); }
+.sim-vered.meio { background: var(--atencao-suave); color: var(--atencao); }
+
+@media (max-width: 34rem) {
+  .sim-linha { grid-template-columns: 1fr; gap: 0.15rem; }
+}
+
+/* --- mapa mental ------------------------------------------------------- */
+
+.mapa { margin: 2rem 0; }
+.mapa-raiz {
+  font: 600 1.05rem/1.4 var(--serif);
+  background: var(--marca);
+  color: var(--sobre-marca);
+  border-radius: 8px;
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1.1rem;
+  text-align: center;
+}
+.ramo {
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  margin-bottom: 0.7rem;
+  background: var(--cartao);
+  overflow: hidden;
+}
+.ramo > button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-align: left;
+  font: 600 1rem/1.4 var(--serif);
+  color: inherit;
+  background: none;
+  border: 0;
+  border-left: 4px solid var(--contorno);
+  padding: 0.9rem 1.1rem;
+  cursor: pointer;
+}
+.ramo > button:hover { background: var(--papel-caixa); }
+.ramo .sinal {
+  font: 600 1rem/1 var(--mono);
+  color: var(--marca);
+  width: 1rem;
+  flex: 0 0 auto;
+}
+.ramo .subtit {
+  font: 400 0.82rem/1.4 var(--sans);
+  color: var(--tinta-fraca);
+  margin-left: auto;
+  text-align: right;
+  flex: 0 1 auto;
+}
+.ramo-corpo { display: none; padding: 0.3rem 1.1rem 1.1rem 1.85rem; }
+.ramo.aberto .ramo-corpo { display: block; }
+.ramo.aberto > button { border-left-color: var(--marca); }
+
+.folhas { list-style: none; margin: 0; padding: 0; }
+.folhas > li {
+  position: relative;
+  padding: 0.55rem 0 0.55rem 1.1rem;
+  border-left: 1px solid var(--linha);
+  font: 400 0.92rem/1.55 var(--sans);
+}
+.folhas > li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 1.05rem;
+  width: 0.7rem;
+  border-top: 1px solid var(--linha);
+}
+.folhas > li:last-child { border-left-color: transparent; }
+.folhas > li:last-child::before {
+  border-left: 1px solid var(--linha);
+  height: 1.05rem;
+  top: 0;
+  left: -1px;
+  width: 0.7rem;
+}
+.folhas .rot-f {
+  font: 600 0.86rem var(--mono);
+  color: var(--servidor);
+}
+.folhas .diz {
+  display: block;
+  color: var(--tinta-fraca);
+  font-size: 0.87rem;
+}
+
+/* --- codigo anotado ---------------------------------------------------- */
+
+.codigo {
+  background: var(--papel-caixa);
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  padding: 1.1rem 1.2rem;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+}
+.codigo pre {
+  margin: 0;
+  font: 400 0.83rem/1.75 var(--mono);
+  white-space: pre;
+}
+.codigo .cm { color: var(--tinta-fraca); font-style: italic; }
+.codigo .kw { color: var(--marca); font-weight: 600; }
+.codigo .sv { color: var(--servidor); font-weight: 600; }
+.codigo .fence { color: var(--contorno); font-weight: 600; }
+
+/* --- quiz -------------------------------------------------------------- */
+
+.pergunta {
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  padding: 1.3rem 1.4rem;
+  margin-bottom: 1rem;
+  background: var(--cartao);
+}
+.pergunta > p { font-weight: 600; margin: 0 0 1rem; }
+.opcao {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: 400 0.94rem/1.5 var(--sans);
+  color: inherit;
+  background: var(--papel);
+  border: 1px solid var(--linha);
+  border-radius: 5px;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 0.45rem;
+  cursor: pointer;
+  transition: border-color .12s, background .12s;
+}
+.opcao:hover:not([disabled]) { border-color: var(--marca); }
+.opcao[disabled] { cursor: default; }
+.opcao.certa {
+  border-color: var(--ok);
+  background: var(--ok-suave);
+  font-weight: 600;
+}
+.opcao.errada {
+  border-color: var(--erro);
+  background: var(--erro-suave);
+  text-decoration: line-through;
+}
+.retorno {
+  font: 400 0.9rem/1.6 var(--sans);
+  margin: 0.8rem 0 0;
+  padding-top: 0.8rem;
+  border-top: 1px dashed var(--linha);
+  display: none;
+}
+.retorno.visivel { display: block; }
+.placar {
+  font: 600 0.95rem var(--sans);
+  text-align: center;
+  margin-top: 1.3rem;
+  color: var(--tinta-fraca);
+  min-height: 1.4em;
+}
+
+/* --- rota -------------------------------------------------------------- */
+
+.etapa {
+  display: grid;
+  grid-template-columns: 2.4rem 1fr;
+  gap: 1rem;
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--linha);
+}
+.etapa:last-child { border-bottom: 0; }
+.etapa .n {
+  font: 600 1.3rem/1 var(--serif);
+  color: var(--contorno);
+  font-variant-numeric: tabular-nums;
+  padding-top: 0.15rem;
+}
+.etapa h4 { margin: 0 0 0.35rem; color: var(--tinta); font-size: 0.78rem; }
+.etapa p { font: 400 0.93rem/1.6 var(--sans); margin: 0 0 0.5rem; }
+.etapa .ganho {
+  font: 400 0.87rem/1.55 var(--sans);
+  color: var(--ok);
+  background: var(--ok-suave);
+  border-radius: 4px;
+  padding: 0.45rem 0.7rem;
+  display: inline-block;
+}
+
+/* --- rodape ------------------------------------------------------------ */
+
+.rodape {
+  margin-top: 4rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--linha);
+  font: 400 0.92rem/1.68 var(--sans);
+  color: var(--tinta-fraca);
+}
+.rodape h3 { font: 600 0.72rem/1.4 var(--sans); letter-spacing: 0.1em; text-transform: uppercase; margin: 1.8rem 0 0.5rem; color: var(--tinta-fraca); }
+.rodape h3:first-child { margin-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<div class="folha">
+
+<div class="chapeu">Fundamentos · Alves Assessoria</div>
+<h1>Astro em duas linguagens</h1>
+<p class="linha-fina">Você perguntou se o Astro “não carrega o JavaScript, e deixa em segundo
+plano”. Metade disso está certa — e a metade errada é justamente a que decide o seu
+orçamento de 15 KB.</p>
+
+<div class="veredito">
+  <span class="rot">A resposta curta, antes de tudo</span>
+  <p><strong>Sim, o Astro entrega zero JavaScript por padrão.</strong> Mas não porque ele
+  <em>adia</em> o JavaScript para segundo plano. É porque, na maior parte da página,
+  <strong>o JavaScript nunca chega a existir</strong>. Ele roda uma vez, na sua máquina, cospe
+  HTML, e some.</p>
+  <p><strong>O “segundo plano” existe, mas é outra coisa</strong> — é um recurso que
+  <em>você liga à mão</em>, componente por componente, escrevendo <code>client:idle</code> ou
+  <code>client:visible</code>. Não é automático, não vale para a página inteira, e não tem
+  nada a ver com “1 segundo”.</p>
+  <p>Guarde esta frase, porque ela é o eixo desta página inteira:
+  <strong>adiar não é o mesmo que não existir.</strong> JavaScript adiado ainda pesa no seu
+  orçamento. JavaScript que não existe pesa zero.</p>
+</div>
+
+<h2><span class="num">01 · A fronteira</span>Onde o JavaScript nasce e onde ele morre</h2>
+
+<p>Um componente <code>.astro</code> tem duas partes separadas por três traços — o
+<em>frontmatter</em>. Tudo que está <strong>acima</strong> dos traços roda uma vez, na sua
+máquina, durante o build. Tudo que sai <strong>abaixo</strong> é HTML.</p>
+
+<blockquote>
+<p>“Astro components are HTML-only templating components with <strong>no client-side
+runtime</strong>. (…) They don't render on the client. They render to HTML either at
+build-time or on-demand.”</p>
+<span class="fonte">Fonte primária: <a href="https://docs.astro.build/en/basics/astro-components/">Astro Docs — Components</a></span>
+</blockquote>
+
+<p>Aquele bloco cercado pelos traços — a documentação usa a palavra <em>fenced</em>, cercado —
+<strong>não é enviado ao navegador de ninguém</strong>. É por isso que a documentação diz que
+você pode buscar dados de uma API privada ali dentro com segurança: o visitante nunca vê
+aquele código, só o resultado dele.</p>
+
+<figure class="largo">
+<svg viewBox="0 0 760 330" role="img" aria-label="O código do frontmatter roda uma vez no build, na sua máquina, e produz HTML; só o que está na pasta dist atravessa a fronteira e chega ao navegador do visitante.">
+  <defs>
+    <marker id="seta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+    </marker>
+    <marker id="setaSv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--servidor)"/>
+    </marker>
+  </defs>
+
+  <!-- coluna 1 -->
+  <text x="20" y="28" font-family="var(--sans)" font-size="12" font-weight="600" fill="var(--servidor)" letter-spacing="1.2">NA SUA MÁQUINA · UMA VEZ</text>
+  <rect x="20" y="42" width="215" height="200" rx="8" fill="var(--servidor-suave)" stroke="var(--servidor)" stroke-width="1.5"/>
+  <text x="36" y="70" font-family="var(--mono)" font-size="12" fill="currentColor">src/pages/index.astro</text>
+  <text x="36" y="94" font-family="var(--mono)" font-size="12" fill="var(--servidor)">--- frontmatter ---</text>
+  <text x="36" y="114" font-family="var(--mono)" font-size="11" fill="currentColor">import advogados</text>
+  <text x="36" y="132" font-family="var(--mono)" font-size="11" fill="currentColor">advogados.map(...)</text>
+  <text x="36" y="156" font-family="var(--mono)" font-size="12" fill="var(--servidor)">-------------------</text>
+  <text x="36" y="180" font-family="var(--mono)" font-size="11" fill="currentColor">&lt;AdvogadoCard /&gt;</text>
+  <text x="36" y="206" font-family="var(--mono)" font-size="12" fill="currentColor">src/components/*.astro</text>
+  <text x="36" y="228" font-family="var(--mono)" font-size="12" fill="currentColor">src/data/advogados.json</text>
+
+  <!-- seta build -->
+  <line x1="248" y1="142" x2="308" y2="142" stroke="var(--servidor)" stroke-width="2" marker-end="url(#setaSv)"/>
+  <text x="278" y="132" text-anchor="middle" font-family="var(--mono)" font-size="11" fill="var(--servidor)">astro build</text>
+
+  <!-- coluna 2 -->
+  <text x="320" y="28" font-family="var(--sans)" font-size="12" font-weight="600" fill="var(--servidor)" letter-spacing="1.2">O QUE SOBRA: dist/</text>
+  <rect x="320" y="42" width="185" height="200" rx="8" fill="none" stroke="var(--contorno)" stroke-width="1.5"/>
+  <rect x="334" y="60" width="157" height="34" rx="4" fill="var(--servidor)"/>
+  <text x="412" y="82" text-anchor="middle" font-family="var(--mono)" font-size="11.5" fill="#fff">index.html</text>
+  <text x="412" y="112" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="currentColor">os 6 advogados já dentro</text>
+  <rect x="334" y="126" width="157" height="30" rx="4" fill="none" stroke="var(--contorno)"/>
+  <text x="412" y="146" text-anchor="middle" font-family="var(--mono)" font-size="10.5" fill="currentColor">_astro/x.a91f.css</text>
+  <rect x="334" y="168" width="157" height="30" rx="4" fill="none" stroke="var(--marca)" stroke-dasharray="4 3"/>
+  <text x="412" y="188" text-anchor="middle" font-family="var(--mono)" font-size="10.5" fill="var(--marca)">_astro/x.7b2e.js</text>
+  <text x="412" y="218" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--marca)">só se você escreveu JS</text>
+
+  <!-- fronteira -->
+  <line x1="530" y1="20" x2="530" y2="270" stroke="var(--contorno)" stroke-width="1.5" stroke-dasharray="6 5"/>
+  <text x="530" y="292" text-anchor="middle" font-family="var(--sans)" font-size="11" font-weight="600" fill="var(--tinta-fraca)">a fronteira</text>
+  <text x="530" y="308" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--tinta-fraca)">nada à esquerda chega ao visitante</text>
+
+  <!-- seta rede -->
+  <line x1="518" y1="142" x2="576" y2="142" stroke="currentColor" stroke-width="2" marker-end="url(#seta)"/>
+  <text x="548" y="132" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="currentColor">a cada visita</text>
+
+  <!-- coluna 3 -->
+  <text x="590" y="28" font-family="var(--sans)" font-size="12" font-weight="600" fill="var(--marca)" letter-spacing="1.2">NO CELULAR DELE</text>
+  <rect x="590" y="42" width="150" height="200" rx="8" fill="var(--marca-suave)" stroke="var(--marca)" stroke-width="1.5"/>
+  <text x="665" y="76" text-anchor="middle" font-family="var(--sans)" font-size="12" fill="currentColor">HTML pintado</text>
+  <text x="665" y="96" text-anchor="middle" font-family="var(--sans)" font-size="12" fill="currentColor">CSS aplicado</text>
+  <line x1="606" y1="116" x2="724" y2="116" stroke="var(--marca)" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="665" y="140" text-anchor="middle" font-family="var(--sans)" font-size="11.5" fill="var(--marca)">JS: só o que você</text>
+  <text x="665" y="156" text-anchor="middle" font-family="var(--sans)" font-size="11.5" fill="var(--marca)">escreveu à mão</text>
+  <text x="665" y="186" text-anchor="middle" font-family="var(--sans)" font-size="11" fill="currentColor">se ele falhar, o</text>
+  <text x="665" y="202" text-anchor="middle" font-family="var(--sans)" font-size="11" fill="currentColor">texto continua lá</text>
+</svg>
+<figcaption>O <code>advogados.map()</code> do frontmatter é JavaScript de verdade — mas ele
+roda na sua máquina, uma vez, e o que atravessa a fronteira é o HTML que ele produziu. O
+visitante nunca baixa esse laço.</figcaption>
+</figure>
+
+<div class="nota">
+<p><strong>Por que isso importa exatamente neste projeto.</strong> O
+<a href="https://github.com/FerndsTech/alves-assessoria/blob/master/docs/adr/0002-stack-e-orcamento-de-performance.md">ADR-0002</a>
+proibiu montar os cards de advogado no navegador a partir de um objeto JS — conteúdo primário
+tem que estar no HTML entregue, senão o Google não indexa e quem está sem pacote de dados não
+vê nada. O frontmatter do Astro é a resposta exata a essa restrição: você escreve um laço
+sobre os 6 advogados, e o que sai é HTML com os 6 advogados escritos por extenso.</p>
+</div>
+
+<h2><span class="num">02 · Vocabulário</span>Os quinze termos, nas duas linguagens</h2>
+
+<p>Cada cartão tem a <strong>fala natural</strong> — como você diria numa conversa — e o
+<strong>fundamento técnico</strong>, que é o que está escrito na documentação. Embaixo, a
+analogia e o termo vizinho de que ele se confunde. Se você consegue traduzir de um lado para o
+outro sem olhar, pegou.</p>
+
+<div class="dicionario-ctrl">
+  <input class="busca" id="busca" type="search" placeholder="Buscar termo…" aria-label="Buscar termo">
+  <button class="filtro" data-fam="todos" aria-pressed="true">Todos</button>
+  <button class="filtro" data-fam="fundamento" aria-pressed="false">Fundamento</button>
+  <button class="filtro" data-fam="javascript" aria-pressed="false">JavaScript</button>
+  <button class="filtro" data-fam="arquivos" aria-pressed="false">Arquivos</button>
+  <button class="filtro" data-fam="entrega" aria-pressed="false">Entrega</button>
+</div>
+
+<div id="dicionario">
+
+  <article class="termo" data-fam="fundamento">
+    <div class="termo-topo"><h3 class="termo-nome">Build step</h3><span class="familia">Fundamento</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“Tem uma etapa de montagem: eu rodo um comando e ele cospe a pasta pronta pra subir.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>Processo que roda no seu ambiente e transforma código-fonte em artefatos de entrega. Em Astro, <code>astro build</code> → <code>dist/</code>.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>A gráfica. Você entrega o arquivo aberto; ela devolve o impresso. O cliente recebe o impresso, não o arquivo aberto.</span>
+      <span><b>Não confunda</b>Com <em>servidor</em>. O build roda uma vez, quando você quer. O servidor roda a cada visita. Aqui não há servidor — só arquivos parados.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="fundamento">
+    <div class="termo-topo"><h3 class="termo-nome">Renderização no servidor <span style="font-weight:400;font-style:italic">(server-first)</span></h3><span class="familia">Fundamento</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“O HTML já chega pronto. O celular não precisa montar nada, só pintar o que recebeu.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>“Websites run faster when they render HTML on the server.” Astro “leverages server rendering over client-side rendering in the browser as much as possible.”</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Móvel montado × móvel em caixa. O primeiro você usa ao abrir; o segundo exige chave, manual e meia hora.</span>
+      <span><b>Não confunda</b>Com <em>build</em>. “Servidor” aqui inclui o build: o ponto é só que <strong>não é o celular do visitante</strong> que monta.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="javascript">
+    <div class="termo-topo"><h3 class="termo-nome">Zero JS por padrão</h3><span class="familia">JavaScript</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“Ele não manda JavaScript nenhum, a não ser que eu peça.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>“Zero JS, by default: Less client-side JavaScript to slow your site down.” O resultado é “zero JavaScript footprint added by default”.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Um contrato que começa em branco. Cada cláusula de JS você assina conscientemente, uma por uma.</span>
+      <span><b>Não confunda</b>Com <em>JS adiado</em>. Zero significa que o arquivo não existe. Adiado significa que ele existe e vai chegar mais tarde — e continua pesando bytes.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="javascript">
+    <div class="termo-topo"><h3 class="termo-nome">Hidratação</h3><span class="familia">JavaScript</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“O HTML já estava na tela, aí o JavaScript chega e ‘liga’ ele — daí o botão começa a funcionar.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>Processo em que o JS do cliente assume um HTML já renderizado no servidor, anexando estado e ouvintes de evento sem recriar o DOM.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>A vitrine da loja já montada, e o vendedor chegando depois para atender. Antes dele, você vê tudo; só não consegue comprar.</span>
+      <span><b>Não confunda</b>Com <em>renderizar</em>. Renderizar é desenhar na tela. Hidratar é dar comportamento ao que já está desenhado. O intervalo entre os dois é o desconforto do visitante.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="javascript">
+    <div class="termo-topo"><h3 class="termo-nome">Ilha <span style="font-weight:400;font-style:italic">(client island)</span></h3><span class="familia">JavaScript</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“A página é estática inteira, menos um pedacinho que se mexe — e só esse pedacinho carrega JavaScript.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>“An island is an enhanced UI component on an otherwise static page of HTML.” “A client island is an interactive JavaScript UI component that is hydrated separately from the rest of the page.”</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Ilhas num mar de HTML. O mar não precisa de barco; só as ilhas.</span>
+      <span><b>Não confunda</b>Com <em>qualquer região interativa</em>. Em Astro, “ilha” tem sentido estrito: é um componente de framework (React, Svelte, Vue) com uma diretiva <code>client:</code>. Um <code>&lt;script&gt;</code> solto num <code>.astro</code> <strong>não é ilha</strong> — veja a seção 07.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="javascript">
+    <div class="termo-topo"><h3 class="termo-nome">Ilha de servidor <span style="font-weight:400;font-style:italic">(server island)</span></h3><span class="familia">JavaScript</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“A página inteira fica no cache, e só um quadradinho é buscado na hora — sem JavaScript nenhum.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>“A server island is a UI component that server-renders its dynamic content separately from the rest of the page.”</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>O jornal impresso com um espaço em branco para o adesivo do dia.</span>
+      <span><b>Não confunda</b>Com <em>ilha de cliente</em>. As duas “ilham”, mas por motivos opostos: a de cliente resolve <em>interatividade</em>; a de servidor resolve <em>conteúdo que muda</em>. Neste projeto, nenhuma das duas é necessária — o site é 100% estático.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="javascript">
+    <div class="termo-topo"><h3 class="termo-nome"><code>client:*</code> — diretiva de cliente</h3><span class="familia">JavaScript</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“É onde eu digo <em>quando</em> aquele pedaço deve ganhar vida: já, quando sobrar folga, ou quando o cara rolar até lá.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>“Component attributes that determine <strong>when</strong> your component's JavaScript should be sent to the browser.” Sem ela, o componente vira HTML estático.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>A hora marcada do vendedor. Você não escolhe se ele existe — isso já foi decidido —, escolhe a que horas ele aparece.</span>
+      <span><b>Não confunda</b>Com <em>otimização automática</em>. É explícito e manual: você digita <code>client:visible</code> no componente. O Astro nunca decide isso por você.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="arquivos">
+    <div class="termo-topo"><h3 class="termo-nome">Componente <code>.astro</code></h3><span class="familia">Arquivos</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“É um pedaço de HTML que eu escrevo uma vez e reuso — tipo um bloco do Elementor, só que meu.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>“The basic building blocks of any Astro project (…) HTML-only templating components with no client-side runtime.”</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Um carimbo. Você desenha o carimbo uma vez e bate 6 vezes na página, trocando o nome a cada batida.</span>
+      <span><b>Não confunda</b>Com <em>componente React</em>. O <code>.astro</code> não tem estado, não tem ciclo de vida e nunca roda no navegador. É molde, não máquina.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="arquivos">
+    <div class="termo-topo"><h3 class="termo-nome">Frontmatter <span style="font-weight:400;font-style:italic">(script do componente)</span></h3><span class="familia">Arquivos</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“É o cercadinho de código lá em cima, entre os três tracinhos. O que está ali dentro fica ali dentro.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>Bloco entre <code>---</code> no topo do arquivo, com JavaScript/TypeScript que roda no build e <strong>não é enviado ao navegador</strong>. Lugar seguro para segredos e consultas.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>A cozinha do restaurante. O cliente come o prato; não vê a panela, a receita nem o preço do fornecedor.</span>
+      <span><b>Não confunda</b>Com <code>&lt;script&gt;</code>. O frontmatter roda <em>uma vez, na sua máquina</em>. O <code>&lt;script&gt;</code> roda <em>toda vez, no celular dele</em>. Mesma linguagem, dois mundos.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="arquivos">
+    <div class="termo-topo"><h3 class="termo-nome">Props e <code>&lt;slot /&gt;</code></h3><span class="familia">Arquivos</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“Props é o que eu passo pro carimbo mudar — nome, foto, OAB. Slot é o buraco onde eu enfio conteúdo qualquer.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>Props: atributos do componente, lidos via <code>Astro.props</code>, tipáveis. Slots: marcadores <code>&lt;slot /&gt;</code> que recebem o HTML filho, com versão nomeada e conteúdo padrão.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Props são os campos de um formulário impresso. Slot é o envelope: cabe o que você puser dentro.</span>
+      <span><b>Não confunda</b>Um com o outro. Props carregam <em>dados</em> (uma string, um número). Slot carrega <em>marcação</em> (outros elementos inteiros).</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="arquivos">
+    <div class="termo-topo"><h3 class="termo-nome">Roteamento por arquivo</h3><span class="familia">Arquivos</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“A URL é a pasta. Criou o arquivo, nasceu a página — não tem configuração de rota.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>“Pages routes are created for your site by adding supported file types to this directory.” <code>src/pages</code> é <strong>obrigatório</strong>: “Without it, your site will have no pages or routes!”</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>A gaveta do arquivo físico. O nome da pasta <em>é</em> o endereço; não existe um índice separado para manter em sincronia.</span>
+      <span><b>Não confunda</b>Com <code>src/components</code>. Componente não vira URL. Só o que está em <code>src/pages</code> vira página.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="javascript">
+    <div class="termo-topo"><h3 class="termo-nome"><code>&lt;script&gt;</code> dentro do <code>.astro</code></h3><span class="familia">JavaScript</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“JavaScript normal, do jeito que eu já escrevo — só que o Astro junta, minifica e coloca uma vez só.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>Por padrão o Astro processa o script: vira <code>type="module"</code>, os imports são empacotados, é TypeScript, é <strong>deduplicado</strong> (um componente usado 6 vezes inclui o script uma vez) e, se for pequeno, é embutido no HTML para poupar uma requisição.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Seu texto passando pelo revisor da editora antes de imprimir: é o seu texto, mas sai padronizado e sem repetição.</span>
+      <span><b>Não confunda</b>Com <em>ilha</em>. Ilha exige framework de UI instalado e diretiva <code>client:</code>. Isto aqui é JavaScript puro no HTML — e é quase certamente o que este projeto vai usar.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="entrega">
+    <div class="termo-topo"><h3 class="termo-nome">MPA × SPA</h3><span class="familia">Entrega</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“Cada página é uma página de verdade, e não um aplicativo que finge trocar de tela.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>Astro adota a “Multi-Page App (MPA) approach”. Frameworks como Next, Nuxt e SvelteKit foram “built for client-side rendering”, com “complexity and performance tradeoffs” que penalizam a primeira carga.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Livro × aplicativo de leitura. Virar a página do livro custa zero; o aplicativo precisa carregar antes de virar qualquer coisa.</span>
+      <span><b>Não confunda</b>Com <em>site antiquado</em>. MPA não é retrocesso — é a escolha certa quando o conteúdo é o produto, que é exatamente o caso de um one-pager de escritório.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="entrega">
+    <div class="termo-topo"><h3 class="termo-nome"><code>&lt;Image /&gt;</code> e <code>&lt;Picture /&gt;</code></h3><span class="familia">Entrega</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“Eu jogo a foto grande lá dentro e ele cria sozinho todos os tamanhos e formatos.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>Transformam dimensão, formato e qualidade no build; geram <code>srcset</code> responsivo; <code>&lt;Picture /&gt;</code> emite AVIF e WebP com fallback; aplicam <code>loading="lazy"</code> e <code>decoding="async"</code> por padrão; inferem as dimensões, o que evita CLS.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>O laboratório fotográfico que revela o mesmo negativo em seis tamanhos, sem você pedir um por um.</span>
+      <span><b>Não confunda</b><code>src/</code> com <code>public/</code>. Imagem em <code>src/</code> é processada e otimizada. Em <code>public/</code> é copiada “as-is, with no processing” — os 36 arquivos do orçamento não aparecem.</span>
+    </div>
+  </article>
+
+  <article class="termo" data-fam="entrega">
+    <div class="termo-topo"><h3 class="termo-nome"><code>dist/</code> e o hash no nome</h3><span class="familia">Entrega</span></div>
+    <div class="duas">
+      <div class="nat"><h5>Você diria</h5><p>“Cada arquivo sai com um códigozinho no nome; mudou o conteúdo, muda o código — daí dá pra mandar o navegador guardar pra sempre.”</p></div>
+      <div class="tec"><h5>O fundamento</h5><p>O build escreve em <code>_astro/</code> com nomes hasheados (<code>_astro/index.DRf8L97S.js</code>), próprios para cache de longo prazo com <code>Cache-Control: public, max-age=31536000, immutable</code>.</p></div>
+    </div>
+    <div class="termo-pe">
+      <span><b>Analogia</b>Número de edição no livro. Enquanto o número não muda, ninguém precisa conferir se mudou algo.</span>
+      <span><b>Não confunda</b>Com o <strong>HTML</strong>. O HTML <em>não</em> leva hash e por isso revalida a cada visita — é a decisão 6 do ADR-0002, e é o que permite publicar sem quebrar o cache de quem já visitou.</span>
+    </div>
+  </article>
+
+</div>
+
+<h2><span class="num">03 · O simulador</span>A pergunta do “segundo plano”, resolvida na mão</h2>
+
+<p>Aqui é onde a sua dúvida vira algo que se pode <em>ver</em>. Escolha uma diretiva e observe
+três coisas: quando o JavaScript chega, quanto ele custa no seu orçamento, e — a mais
+importante — <strong>o que o visitante vê se o JavaScript nunca chegar</strong>.</p>
+
+<div class="sim">
+  <div class="sim-botoes" role="group" aria-label="Escolha a diretiva">
+    <button data-d="nenhuma" aria-pressed="true">nenhuma</button>
+    <button data-d="load" aria-pressed="false">client:load</button>
+    <button data-d="idle" aria-pressed="false">client:idle</button>
+    <button data-d="visible" aria-pressed="false">client:visible</button>
+    <button data-d="media" aria-pressed="false">client:media</button>
+    <button data-d="only" aria-pressed="false">client:only</button>
+  </div>
+
+  <div class="barra-tempo" id="barra" aria-hidden="true"></div>
+  <div class="eixo"><span>0 s</span><span>1 s</span><span>2 s</span><span>3 s</span></div>
+
+  <div class="sim-saida" aria-live="polite" id="saida"></div>
+</div>
+
+<div class="legenda-svg">
+  <span><i class="chip" style="background:var(--servidor)"></i> HTML já pronto, pintado</span>
+  <span><i class="chip" style="background:var(--marca)"></i> JavaScript baixando</span>
+  <span><i class="chip" style="background:repeating-linear-gradient(45deg,var(--marca),var(--marca) 3px,transparent 3px,transparent 6px);border:1px solid var(--marca)"></i> hidratando</span>
+</div>
+
+<div class="aviso">
+<p><b>A leitura que decide o seu projeto.</b> Repare que trocar <code>client:load</code> por
+<code>client:idle</code> muda <em>quando</em>, nunca <em>quanto</em>. Os bytes são os mesmos
+nas quatro primeiras opções — e é por isso que o teto de 15 KB do ADR-0002 não se resolve
+escolhendo diretiva. Ele se resolve <strong>não criando a ilha</strong>.</p>
+</div>
+
+<h2><span class="num">04 · A comparação</span>Astro contra o resto do front-end</h2>
+
+<p>A pergunta “qual a diferença do Astro para as outras tecnologias” tem uma resposta curta:
+<strong>todas montam HTML — a diferença é onde e quando.</strong> É isso, e só isso, que o
+desenho abaixo mostra.</p>
+
+<figure class="largo">
+<svg viewBox="0 0 740 300" role="img" aria-label="Comparação de cinco tecnologias segundo o lugar onde o HTML é montado: na máquina do desenvolvedor, no servidor a cada visita, ou no navegador do visitante.">
+  <line x1="200" y1="46" x2="200" y2="272" stroke="var(--linha)" stroke-width="1"/>
+  <line x1="380" y1="46" x2="380" y2="272" stroke="var(--linha)" stroke-width="1"/>
+  <line x1="560" y1="46" x2="560" y2="272" stroke="var(--linha)" stroke-width="1"/>
+
+  <text x="290" y="26" text-anchor="middle" font-family="var(--sans)" font-size="11.5" font-weight="600" fill="var(--servidor)">NA SUA MÁQUINA</text>
+  <text x="290" y="40" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--tinta-fraca)">uma vez, no build</text>
+  <text x="470" y="26" text-anchor="middle" font-family="var(--sans)" font-size="11.5" font-weight="600" fill="var(--tinta-fraca)">NO SERVIDOR</text>
+  <text x="470" y="40" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--tinta-fraca)">a cada visita</text>
+  <text x="650" y="26" text-anchor="middle" font-family="var(--sans)" font-size="11.5" font-weight="600" fill="var(--marca)">NO CELULAR DELE</text>
+  <text x="650" y="40" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--tinta-fraca)">a cada visita</text>
+
+  <!-- linhas -->
+  <text x="14" y="76" font-family="var(--sans)" font-size="12.5" fill="currentColor">HTML à mão</text>
+  <line x1="14" y1="88" x2="726" y2="88" stroke="var(--linha)" stroke-dasharray="2 4"/>
+  <circle cx="290" cy="72" r="8" fill="var(--servidor)"/>
+  <text x="306" y="76" font-family="var(--sans)" font-size="10.5" fill="var(--tinta-fraca)">você mesmo, 12 vezes</text>
+
+  <text x="14" y="122" font-family="var(--sans)" font-size="12.5" fill="currentColor">WordPress / PHP</text>
+  <line x1="14" y1="134" x2="726" y2="134" stroke="var(--linha)" stroke-dasharray="2 4"/>
+  <circle cx="470" cy="118" r="8" fill="var(--contorno)"/>
+  <text x="486" y="122" font-family="var(--sans)" font-size="10.5" fill="var(--tinta-fraca)">banco + PHP a cada visita</text>
+
+  <text x="14" y="168" font-family="var(--sans)" font-size="12.5" fill="currentColor">React SPA (Vite)</text>
+  <line x1="14" y1="180" x2="726" y2="180" stroke="var(--linha)" stroke-dasharray="2 4"/>
+  <circle cx="650" cy="164" r="8" fill="var(--marca)"/>
+  <text x="480" y="168" text-anchor="end" font-family="var(--sans)" font-size="10.5" fill="var(--marca)">HTML vazio até o JS rodar</text>
+
+  <text x="14" y="214" font-family="var(--sans)" font-size="12.5" fill="currentColor">Next.js (SSR)</text>
+  <line x1="14" y1="226" x2="726" y2="226" stroke="var(--linha)" stroke-dasharray="2 4"/>
+  <circle cx="470" cy="210" r="8" fill="var(--contorno)"/>
+  <circle cx="650" cy="210" r="8" fill="var(--marca)"/>
+  <line x1="480" y1="210" x2="640" y2="210" stroke="var(--marca)" stroke-width="1.5" stroke-dasharray="4 3"/>
+  <text x="560" y="203" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--marca)">hidrata a página toda</text>
+
+  <text x="14" y="260" font-family="var(--sans)" font-size="12.5" font-weight="600" fill="var(--servidor)">Astro</text>
+  <circle cx="290" cy="256" r="9" fill="var(--servidor)"/>
+  <circle cx="650" cy="256" r="5" fill="none" stroke="var(--marca)" stroke-width="1.5" stroke-dasharray="3 2"/>
+  <line x1="300" y1="256" x2="640" y2="256" stroke="var(--servidor)" stroke-width="1.5"/>
+  <text x="470" y="249" text-anchor="middle" font-family="var(--sans)" font-size="10.5" fill="var(--servidor)">HTML atravessa inteiro, sem escala</text>
+  <text x="650" y="278" text-anchor="middle" font-family="var(--sans)" font-size="10" fill="var(--marca)">só as ilhas, se houver</text>
+</svg>
+<figcaption>A única diferença estrutural entre as cinco linhas é a posição da bola cheia: o
+lugar onde o HTML fica pronto. Astro põe essa bola o mais longe possível do celular do
+visitante — e deixa no celular apenas um círculo pontilhado, que pode nem existir.</figcaption>
+</figure>
+
+<div class="rolagem largo">
+<table>
+<caption>O mesmo em números e consequências, para este projeto</caption>
+<thead>
+<tr>
+  <th>Tecnologia</th>
+  <th>Quem monta o HTML</th>
+  <th>JS enviado por padrão</th>
+  <th>Os 12 lugares que repetem um advogado</th>
+  <th>Encaixe no ADR-0002</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>HTML à mão</td>
+  <td>Você, no editor</td>
+  <td>Zero</td>
+  <td>12 blocos duplicados; trocar o nome de um advogado é 12 edições</td>
+  <td>Viola “informação fictícia trocável sem refatoração”</td>
+</tr>
+<tr>
+  <td>WordPress</td>
+  <td>Servidor PHP + banco, a cada visita</td>
+  <td>Dezenas de KB (jQuery, tema, plugins)</td>
+  <td>Resolvido, via loop do tema</td>
+  <td>Estoura o teto de 15 KB de JS antes da primeira linha sua</td>
+</tr>
+<tr>
+  <td>React SPA (Vite)</td>
+  <td>O celular do visitante</td>
+  <td>~130 KB só do runtime</td>
+  <td>Resolvido, mas o conteúdo só existe depois do JS rodar</td>
+  <td>Vedado pelo ADR-0001: conteúdo primário tem que estar no HTML entregue</td>
+</tr>
+<tr>
+  <td>Next.js</td>
+  <td>Servidor, e o celular re-hidrata</td>
+  <td>Alto: hidrata a página toda</td>
+  <td>Resolvido</td>
+  <td>Exige servidor Node; o site é 100% estático (#9). Bytes acima do teto</td>
+</tr>
+<tr class="destaque">
+  <td>Astro</td>
+  <td>Sua máquina, no build</td>
+  <td>Zero</td>
+  <td>Resolvido: 1 componente + 1 arquivo de dados</td>
+  <td>Cabe. O JS do site é exatamente o que você escrever</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>A própria Astro afirma que sites migrados “load 40% faster with 90% less JavaScript”
+comparados a alternativas em React — número da casa, não de terceiro independente, e por isso
+vale como <em>direção</em>, não como promessa. O que <em>não</em> é opinião é o mecanismo:
+componente <code>.astro</code> não tem runtime de cliente, ponto.</p>
+
+<h2><span class="num">05 · Mapa mental</span>Astro visto de quem nunca abriu um</h2>
+
+<p>Cinco ramos. Clique para abrir. Cada folha traz o nome técnico e, embaixo, o que ela é na
+sua fala.</p>
+
+<div class="mapa largo">
+<div class="mapa-raiz">Site do Alves Assessoria, feito em Astro</div>
+
+<div class="ramo">
+  <button aria-expanded="false"><span class="sinal">+</span> 1 · Os arquivos que você vai ter <span class="subtit">7 lugares, e só isso</span></button>
+  <div class="ramo-corpo">
+  <ul class="folhas">
+    <li><span class="rot-f">src/pages/index.astro</span><span class="diz">A página. Como é um one-pager, esse arquivo praticamente <em>é</em> o site. Obrigatório: sem <code>src/pages</code> não existe página nenhuma.</span></li>
+    <li><span class="rot-f">src/layouts/Base.astro</span><span class="diz">O esqueleto que se repete: <code>&lt;head&gt;</code>, o <code>preload</code> da Spectral 600, os metadados. Escrito uma vez.</span></li>
+    <li><span class="rot-f">src/components/AdvogadoCard.astro</span><span class="diz">O carimbo do advogado. É ele que apaga as 12 duplicações.</span></li>
+    <li><span class="rot-f">src/data/advogados.json</span><span class="diz">Os 6 advogados como dado, não como HTML. Trocar um nome fictício por um real vira uma edição, não doze.</span></li>
+    <li><span class="rot-f">src/assets/fotos/</span><span class="diz">As fotos originais, grandes. Aqui dentro elas são processadas; em <code>public/</code> não seriam.</span></li>
+    <li><span class="rot-f">public/</span><span class="diz">O que passa direto, sem tratamento: <code>favicon</code>, <code>robots.txt</code>, o <code>_headers</code> da Cloudflare.</span></li>
+    <li><span class="rot-f">dist/</span><span class="diz">O resultado. É essa pasta que a Cloudflare publica — e é ela que o ADR-0002 manda versionar no git como seguro contra apodrecimento de dependência.</span></li>
+  </ul>
+  </div>
+</div>
+
+<div class="ramo">
+  <button aria-expanded="false"><span class="sinal">+</span> 2 · O que ele faz por você <span class="subtit">o motivo de existir build step</span></button>
+  <div class="ramo-corpo">
+  <ul class="folhas">
+    <li><span class="rot-f">Repetição sem duplicação</span><span class="diz">Os 6 cards e os 6 painéis saem do mesmo componente, alimentados pelo mesmo JSON. O #7 pode mexer no modelo de dados sem que ninguém reescreva HTML.</span></li>
+    <li><span class="rot-f">36 arquivos de imagem, de graça</span><span class="diz">6 fotos × 3 larguras × 2 formatos. <code>&lt;Picture /&gt;</code> gera AVIF e WebP com <code>srcset</code>; ninguém abre o Photoshop 36 vezes.</span></li>
+    <li><span class="rot-f">Nada de CLS nas fotos</span><span class="diz">Ele lê a dimensão da imagem no build e escreve no HTML. Uma das quatro metas do orçamento (CLS ≤ 0,10) sai quase de brinde.</span></li>
+    <li><span class="rot-f">Hash e cache eterno</span><span class="diz"><code>_astro/estilo.a91f.css</code>. Nome muda quando o conteúdo muda — é o que autoriza o <code>immutable</code> da decisão 6.</span></li>
+    <li><span class="rot-f">Script deduplicado e embutido</span><span class="diz">Um <code>&lt;script&gt;</code> num componente usado 6 vezes entra uma vez só; se for pequeno, entra dentro do HTML e economiza uma requisição.</span></li>
+  </ul>
+  </div>
+</div>
+
+<div class="ramo">
+  <button aria-expanded="false"><span class="sinal">+</span> 3 · Onde o JavaScript entra <span class="subtit">teto de 15 KB, o site inteiro</span></button>
+  <div class="ramo-corpo">
+  <ul class="folhas">
+    <li><span class="rot-f">Painel do advogado — FLIP na foto</span><span class="diz">~2 KB previstos. Abre e fecha o painel, anima só a foto por <code>transform</code>. Sem framework: <code>&lt;script&gt;</code> no <code>.astro</code>.</span></li>
+    <li><span class="rot-f">Animação do mapa</span><span class="diz">Os 4 pinos animam em CSS puro — custo zero de JS. O que sobra de JavaScript aqui é pouco ou nenhum.</span></li>
+    <li><span class="rot-f">Service worker</span><span class="diz">~1,5 KB. É o que faz o endereço e o telefone abrirem sem rede. Não é ilha nem componente: é arquivo próprio, registrado por um <code>&lt;script&gt;</code>.</span></li>
+    <li><span class="rot-f">Intro de desktop</span><span class="diz">Injetada por JS, <em>nunca</em> presente no HTML — se viesse no HTML e o JS falhasse, o visitante ficaria com tela cheia sobre o site.</span></li>
+    <li><span class="rot-f">Nenhuma ilha, provavelmente</span><span class="diz">Ilha exige instalar React/Svelte/Vue. Nada dessa lista precisa disso. O projeto usa Astro <em>sem nunca criar uma ilha</em> — e isso é uso correto, não uso incompleto.</span></li>
+  </ul>
+  </div>
+</div>
+
+<div class="ramo">
+  <button aria-expanded="false"><span class="sinal">+</span> 4 · O que ele <em>não</em> resolve <span class="subtit">para não esperar demais</span></button>
+  <div class="ramo-corpo">
+  <ul class="folhas">
+    <li><span class="rot-f">O desenho</span><span class="diz">Astro não tem opinião visual. Layout, cor e tipografia continuam sendo CSS escrito por você — é o #21, e o orçamento é que diz quanto cabe.</span></li>
+    <li><span class="rot-f">O orçamento</span><span class="diz">Ele facilita caber, mas não impede estourar. O gate que bloqueia o PR conferindo o tamanho do <code>dist/</code> é coisa sua, não dele.</span></li>
+    <li><span class="rot-f">Acessibilidade</span><span class="diz">Contraste, ordem de foco, <code>prefers-reduced-motion</code>: nada disso vem pronto. Astro entrega o HTML que você escreveu, inclusive o ruim.</span></li>
+    <li><span class="rot-f">Conteúdo e OAB</span><span class="diz">O que pode ser dito num site de advocacia é pesquisa do projeto, não característica de framework.</span></li>
+    <li><span class="rot-f">O apodrecimento do Node</span><span class="diz">Daqui a alguns anos o <code>npm install</code> pode não rodar. É custo assumido; a mitigação é o <code>dist/</code> versionado.</span></li>
+  </ul>
+  </div>
+</div>
+
+<div class="ramo">
+  <button aria-expanded="false"><span class="sinal">+</span> 5 · O que você precisa aprender de verdade <span class="subtit">quatro coisas</span></button>
+  <div class="ramo-corpo">
+  <ul class="folhas">
+    <li><span class="rot-f">Os três traços</span><span class="diz">Onde termina o que roda na sua máquina e começa o que vai para o celular. Se você tem isso, tem o Astro.</span></li>
+    <li><span class="rot-f">Componente + props</span><span class="diz">Escrever o carimbo e passar dados para ele. É 80% do trabalho real deste site.</span></li>
+    <li><span class="rot-f">&lt;Image /&gt; e &lt;Picture /&gt;</span><span class="diz">Porque as fotos são a maior linha variável do orçamento, e essa é a única parte da stack que mexe nelas.</span></li>
+    <li><span class="rot-f">Quando NÃO usar ilha</span><span class="diz">A decisão mais valiosa da lista, e a única que economiza bytes de verdade.</span></li>
+  </ul>
+  </div>
+</div>
+</div>
+
+<h2><span class="num">06 · Na prática</span>As 12 duplicações, em quinze linhas</h2>
+
+<p>Este é o arquivo que faz o trabalho. Leia de cima para baixo e repare onde está a fronteira.</p>
+
+<div class="codigo">
+<pre><span class="fence">---</span>
+<span class="cm">// ↑ daqui até os próximos três traços: roda na SUA máquina, uma vez.</span>
+<span class="cm">//   nada disto é baixado pelo visitante.</span>
+<span class="kw">import</span> advogados <span class="kw">from</span> <span class="sv">'../data/advogados.json'</span>;
+<span class="kw">import</span> AdvogadoCard <span class="kw">from</span> <span class="sv">'../components/AdvogadoCard.astro'</span>;
+<span class="kw">import</span> Base <span class="kw">from</span> <span class="sv">'../layouts/Base.astro'</span>;
+
+<span class="kw">const</span> emAtividade = advogados.<span class="sv">filter</span>(a =&gt; a.ativo);
+<span class="fence">---</span>
+
+<span class="cm">&lt;!-- ↓ daqui para baixo: isto VIRA HTML e é o que atravessa a rede --&gt;</span>
+&lt;<span class="sv">Base</span> titulo=<span class="sv">"Alves Assessoria"</span>&gt;
+  &lt;section id=<span class="sv">"advogados"</span>&gt;
+    {emAtividade.<span class="sv">map</span>(a =&gt; &lt;<span class="sv">AdvogadoCard</span> {...a} /&gt;)}
+  &lt;/section&gt;
+&lt;/<span class="sv">Base</span>&gt;</pre>
+</div>
+
+<p>Seis advogados no JSON viram seis cards no HTML de saída — <strong>escritos por extenso,
+com nome, OAB e biografia</strong>, exatamente como o Google precisa e como quem está sem
+pacote de dados precisa. O <code>map</code> não vai junto. Ele já terminou o trabalho dele
+antes do arquivo existir.</p>
+
+<p>Trocar o nome fictício “Dra. Fulana” pelo nome real de uma advogada é <strong>uma linha do
+JSON</strong>. Sem o build step, seriam doze edições espalhadas — e a restrição permanente do
+mapa (<em>“toda informação fictícia precisa ser trocável sem refatoração”</em>) estaria
+quebrada na prática, ainda que respeitada no papel.</p>
+
+<h2><span class="num">07 · As armadilhas</span>Quatro lugares onde isso te engana</h2>
+
+<h3>1. Confundir <code>&lt;script&gt;</code> com ilha</h3>
+<p>Este é o erro de vocabulário mais provável no seu caso, e ele já apareceu:
+o ADR-0002 diz que “o modelo de ilhas casa com as duas ilhas que de fato existem — painel do
+advogado e mapa”. Na linguagem estrita do Astro, isso não é bem verdade: <strong>ilha exige um
+framework de UI instalado</strong> (React, Svelte, Vue) e uma diretiva
+<code>client:</code>. Painel e mapa vão ser <code>&lt;script&gt;</code> em <code>.astro</code>
+— JavaScript puro, processado e deduplicado pelo Astro, mas <em>não</em> ilha.</p>
+<div class="nota">
+<p><strong>Isso invalida a decisão?</strong> Não. O que a decisão diz de substantivo — “existem
+duas regiões interativas e só elas precisam de JS” — continua exatamente certo, e a escolha do
+Astro continua bem fundamentada. O que muda é a palavra. Vale corrigir no ADR, porque
+“ilha” aqui está sendo usada no sentido frouxo de “região interativa”, e um leitor futuro
+pode entender que o projeto instala React — que é o oposto do que o orçamento quer.</p>
+</div>
+
+<h3>2. Achar que <code>client:visible</code> é sempre a opção econômica</h3>
+<p>É a de menor prioridade, e serve para “elementos abaixo da dobra ou tão pesados que você
+preferiria não carregá-los se o usuário nunca os vir”. Mas o padrão que ela convida —
+esconder o conteúdo até o JavaScript chegar — é <strong>expressamente proibido</strong> pelo
+ADR-0002: nada de estado inicial invisível dependente de JS. Com 24% dos usuários rurais
+não conseguindo abrir aplicativo nenhum ao fim do pacote, “o site abriu mas o texto não
+apareceu” é o pior desfecho disponível.</p>
+
+<h3>3. Botar a foto em <code>public/</code></h3>
+<p>Funciona, a foto aparece, e o orçamento estoura em silêncio: <code>public/</code> é copiado
+“as-is, with no processing”. Nada de AVIF, nada de <code>srcset</code>, nada de 70 KB por
+retrato. Regra prática: <strong>foto de conteúdo em <code>src/</code>; só ícone e arquivo de
+configuração em <code>public/</code></strong>.</p>
+
+<h3>4. Instalar React “só para um componentezinho”</h3>
+<p><code>client:only</code> é a diretiva que mais parece inofensiva e é a mais cara: ela
+“skips HTML server rendering, and renders only on the client”. Ou seja, aquele pedaço
+<strong>não existe no HTML entregue</strong> — que é precisamente o que o ADR-0001 veda para
+conteúdo primário. Se algum dia ela parecer necessária, a pergunta certa é por que o conteúdo
+não pode ser servido pronto.</p>
+
+<h2><span class="num">08 · A rota</span>Como aprender isto, em quatro sessões curtas</h2>
+
+<p>Cada etapa termina num ganho verificável — algo que você <em>vê</em> acontecer, não algo
+que você acredita ter entendido. Nenhuma exige tocar no site de verdade.</p>
+
+<div class="etapa">
+  <div class="n">1</div>
+  <div>
+    <h4>Ver a fronteira com os próprios olhos</h4>
+    <p>Rode <code>npm create astro@latest</code>, escolha o modelo mínimo, rode
+    <code>npm run build</code> e <strong>abra o <code>dist/index.html</code> num editor de
+    texto</strong>. Depois procure por qualquer arquivo <code>.js</code> dentro de
+    <code>dist/</code>.</p>
+    <p class="ganho">Ganho: você vai encontrar HTML completo e nenhum JavaScript. A frase “zero JS por padrão” deixa de ser slogan.</p>
+  </div>
+</div>
+
+<div class="etapa">
+  <div class="n">2</div>
+  <div>
+    <h4>Fazer o carimbo</h4>
+    <p>Crie um <code>AdvogadoCard.astro</code> com três props (nome, OAB, área) e renderize-o
+    seis vezes a partir de um array escrito na própria página. Depois mude o array e reconstrua.</p>
+    <p class="ganho">Ganho: as 12 duplicações do projeto deixam de ser um problema em aberto. Esta é a etapa que carrega 80% do valor.</p>
+  </div>
+</div>
+
+<div class="etapa">
+  <div class="n">3</div>
+  <div>
+    <h4>Soltar as imagens no pipeline</h4>
+    <p>Ponha uma foto pesada em <code>src/assets/</code>, use <code>&lt;Picture /&gt;</code>
+    com AVIF e WebP, reconstrua e olhe o <code>dist/</code>. Compare com a mesma foto posta em
+    <code>public/</code>.</p>
+    <p class="ganho">Ganho: você vê os 36 arquivos nascerem, e vê a versão em <code>public/</code> não nascer. A linha de 70 KB por foto vira algo controlável.</p>
+  </div>
+</div>
+
+<div class="etapa">
+  <div class="n">4</div>
+  <div>
+    <h4>Escrever o único JavaScript que este site precisa</h4>
+    <p>Um <code>&lt;script&gt;</code> dentro do componente que abre e fecha o painel. Reconstrua
+    e meça o tamanho do <code>.js</code> gerado contra o teto de 15 KB.</p>
+    <p class="ganho">Ganho: o orçamento do ADR-0002 deixa de ser tabela e vira número que você produziu. É a partir daqui que “otimizado” é verificável por você.</p>
+  </div>
+</div>
+
+<h2><span class="num">09 · Recuperação</span>Cinco perguntas, sem consultar acima</h2>
+
+<p>Responder de memória é o que fixa. Errar aqui é barato — errar no build, não.</p>
+
+<div id="quiz">
+
+<div class="pergunta" data-certa="1">
+  <p>Por que um componente <code>.astro</code> não envia JavaScript ao navegador?</p>
+  <button class="opcao" data-i="0">Porque ele adia o carregamento para depois da primeira pintura da tela</button>
+  <button class="opcao" data-i="1">Porque ele não tem runtime de cliente e vira HTML antes de ser enviado</button>
+  <button class="opcao" data-i="2">Porque ele comprime o script e o embute dentro da marcação da página</button>
+  <button class="opcao" data-i="3">Porque ele espera o navegador ficar ocioso para então baixar o pacote</button>
+  <p class="retorno">A documentação é literal: são “HTML-only templating components with no client-side runtime” e “don't render on the client”. Não há adiamento — há ausência. As outras três respostas descrevem coisas que o Astro sabe fazer, mas nenhuma delas é a razão.</p>
+</div>
+
+<div class="pergunta" data-certa="2">
+  <p>Qual é a diferença real entre <code>client:load</code> e <code>client:idle</code>?</p>
+  <button class="opcao" data-i="0">O primeiro empacota o código e o segundo mantém o código separado do resto</button>
+  <button class="opcao" data-i="1">O primeiro roda no servidor e o segundo roda somente dentro do navegador</button>
+  <button class="opcao" data-i="2">Ambos mandam os mesmos bytes; muda apenas o momento em que eles são pedidos</button>
+  <button class="opcao" data-i="3">Ambos mandam bytes iguais, mas o segundo remove o código não usado na tela</button>
+  <p class="retorno">A diretiva decide <em>quando</em> o JavaScript é enviado, nunca <em>quanto</em>. É por isso que trocar de diretiva não te ajuda a caber nos 15 KB: para o orçamento, adiar e não adiar dão no mesmo.</p>
+</div>
+
+<div class="pergunta" data-certa="0">
+  <p>Um <code>&lt;script&gt;</code> escrito dentro de um <code>.astro</code> é uma ilha?</p>
+  <button class="opcao" data-i="0">Não; ilha exige componente de framework de UI com diretiva de cliente</button>
+  <button class="opcao" data-i="1">Sim; qualquer bloco de código interativo da página conta como uma ilha</button>
+  <button class="opcao" data-i="2">Sim; o Astro converte esse bloco numa ilha durante a etapa de montagem</button>
+  <button class="opcao" data-i="3">Não; ilha exige que aquele trecho seja renderizado só depois da rolagem</button>
+  <p class="retorno">Ilha é termo estrito: componente React/Svelte/Vue com <code>client:*</code>. O <code>&lt;script&gt;</code> é JavaScript comum — processado, empacotado e deduplicado pelo Astro, mas sem framework por trás. É por isso que este projeto pode não ter nenhuma ilha.</p>
+</div>
+
+<div class="pergunta" data-certa="3">
+  <p>Onde deve ficar a foto de um advogado, e por quê?</p>
+  <button class="opcao" data-i="0">Em <code>public/</code>, porque de lá ela é servida sem etapa extra de processo</button>
+  <button class="opcao" data-i="1">Em <code>public/</code>, porque de lá o Astro consegue gerar as variantes menores</button>
+  <button class="opcao" data-i="2">Em <code>src/</code>, porque de lá ela é copiada exatamente como foi entregue</button>
+  <button class="opcao" data-i="3">Em <code>src/</code>, porque de lá o Astro gera AVIF, WebP e o srcset todo</button>
+  <p class="retorno">Imagem em <code>src/</code> é transformada, otimizada e empacotada. Em <code>public/</code> é copiada “as-is, with no processing”. Como as fotos são a maior linha variável do orçamento, essa escolha de pasta é uma decisão de bytes, não de organização.</p>
+</div>
+
+<div class="pergunta" data-certa="1">
+  <p>Por que o HTML do site não leva hash no nome, e os outros arquivos levam?</p>
+  <button class="opcao" data-i="0">Porque o HTML é grande demais e o cache do navegador rejeitaria guardá-lo</button>
+  <button class="opcao" data-i="1">Porque ele precisa revalidar sempre; é o que aponta para os arquivos novos</button>
+  <button class="opcao" data-i="2">Porque o hash só funciona em arquivos que o Astro tenha montado no build</button>
+  <button class="opcao" data-i="3">Porque o servidor da Cloudflare recusa nomes com código nos arquivos de rota</button>
+  <p class="retorno">Os assets com hash podem ser guardados por um ano (<code>immutable</code>) porque, se mudarem, mudam de nome. Alguém precisa avisar o navegador dos nomes novos — e esse alguém é o HTML, que por isso revalida a cada visita. É a decisão 6 do ADR-0002, e agora ela tem mecanismo, não só regra.</p>
+</div>
+
+<div class="placar" id="placar"></div>
+</div>
+
+<hr class="divisor">
+
+<div class="rodape">
+  <h3>A fonte primária, se você ler só uma coisa</h3>
+  <p><a href="https://docs.astro.build/en/concepts/islands/">Astro Docs — Islands architecture</a>.
+  São dez minutos, e é o texto que responde diretamente a pergunta que você fez. Depois dele,
+  <a href="https://docs.astro.build/en/basics/astro-components/">Components</a> — a página onde
+  está a frase sobre “no client-side runtime”. Se quiser a origem histórica da ideia, o termo
+  “Component Islands” foi cunhado por Katie Sylor-Miller, arquiteta de front-end da Etsy, em
+  2019, e escrito por
+  <a href="https://jasonformat.com/islands-architecture/">Jason Miller em <em>Islands
+  Architecture</em></a>.</p>
+
+  <h3>Como isto se liga ao resto do seu material</h3>
+  <p>Esta página é sobre <em>a stack</em>. O
+  <a href="https://claude.ai/code/artifact/a587a9b3-47e3-48c0-9160-ee92ec9a2635">Dicionário do
+  Fluxo</a> é sobre <em>o processo</em>, e o
+  <a href="https://claude.ai/code/artifact/7d49c3d2-6c6d-4078-b67a-757abf92df7b">Manual das
+  Skills</a> é sobre <em>as ferramentas</em>. As três se encontram no ADR-0002: foi o processo
+  que produziu a decisão, e é a stack que a cumpre.</p>
+
+  <h3>Pergunte</h3>
+  <p>Eu sou seu professor aqui, não só quem gerou esta página. Se ficou vago o que é
+  hidratação, por que uma SPA seria pior aqui, o que exatamente acontece quando o JavaScript
+  falha, ou como escrever o primeiro <code>.astro</code> — pergunte na conversa. Dúvida que
+  fica é dúvida que volta na hora do build.</p>
+</div>
+
+</div>
+
+<script>
+(function () {
+  // ---- dicionario: busca e filtro ----
+  var busca = document.getElementById('busca');
+  var termos = Array.prototype.slice.call(document.querySelectorAll('#dicionario .termo'));
+  var filtros = Array.prototype.slice.call(document.querySelectorAll('.filtro'));
+  var famAtiva = 'todos';
+
+  function aplicar() {
+    var q = (busca.value || '').toLowerCase().trim();
+    termos.forEach(function (t) {
+      var okFam = famAtiva === 'todos' || t.dataset.fam === famAtiva;
+      var okQ = !q || t.textContent.toLowerCase().indexOf(q) !== -1;
+      t.classList.toggle('oculto', !(okFam && okQ));
+    });
+  }
+  busca.addEventListener('input', aplicar);
+  filtros.forEach(function (b) {
+    b.addEventListener('click', function () {
+      famAtiva = b.dataset.fam;
+      filtros.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      aplicar();
+    });
+  });
+
+  // ---- simulador de diretiva ----
+  var DADOS = {
+    nenhuma: {
+      html: [0, 0.5],
+      js: null,
+      hid: null,
+      quando: 'Nunca. Não existe arquivo de JavaScript para este componente.',
+      bytes: '0 KB. Este componente não consome uma única linha do teto de 15 KB.',
+      falha: 'Nada acontece de errado — não há nada que possa falhar. O conteúdo está no HTML.',
+      vered: ['bom', 'É o padrão do Astro, e é o que a maior parte deste site vai usar.']
+    },
+    load: {
+      html: [0, 0.5], js: [0.5, 1.6], hid: [1.6, 2.0],
+      quando: 'Imediatamente, junto com o carregamento da página. Prioridade alta.',
+      bytes: 'O peso do framework + o do componente. Conta inteiro no teto.',
+      falha: 'O HTML do componente foi renderizado no servidor, então o conteúdo aparece — mas fica inerte, sem responder a clique.',
+      vered: ['meio', 'Só para o que precisa estar vivo de cara. Aqui, nada precisa.']
+    },
+    idle: {
+      html: [0, 0.5], js: [1.7, 2.5], hid: [2.5, 2.85],
+      quando: 'Depois que a carga inicial termina e o <code>requestIdleCallback</code> dispara. Você pode pôr um <code>timeout</code> em milissegundos como teto de espera.',
+      bytes: 'Idêntico ao <code>client:load</code>. Adiar não emagrece nada.',
+      falha: 'Igual: conteúdo visível, comportamento ausente. E o intervalo até o comportamento chegar é maior.',
+      vered: ['meio', 'É <em>isto</em> que você chamou de “segundo plano”. Existe — mas é opção sua, por componente, e não é gratuito.']
+    },
+    visible: {
+      html: [0, 0.5], js: [2.2, 2.9], hid: [2.9, 3.0],
+      quando: 'Só quando o componente entra na área visível da tela. Prioridade baixa. Aceita <code>rootMargin</code> para começar um pouco antes.',
+      bytes: 'Idêntico. Mas se o visitante nunca rolar até lá, os bytes de fato não são baixados.',
+      falha: 'Se o padrão for “invisível até hidratar”, a seção some. É a falha que o ADR-0002 proíbe expressamente.',
+      vered: ['meio', 'Ótima para coisa pesada abaixo da dobra. Perigosa se convidar estado inicial invisível.']
+    },
+    media: {
+      html: [0, 0.5], js: [1.9, 2.6], hid: [2.6, 2.9],
+      quando: 'Quando uma media query CSS passa a valer — por exemplo, só acima do ponto de quebra do desktop.',
+      bytes: 'Zero no celular, se a query não casar. É a única diretiva que <em>pode</em> economizar bytes para o seu público.',
+      falha: 'Nos aparelhos onde a query não casa, o componente nunca hidrata — de propósito. O HTML continua lá.',
+      vered: ['bom', 'É o parente conceitual da intro de desktop do ADR-0002: carregar só onde faz sentido.']
+    },
+    only: {
+      html: null, js: [0.4, 1.6], hid: [1.6, 2.1],
+      quando: 'Imediatamente — mas <strong>sem HTML nenhum vindo do servidor</strong>. Renderiza só no cliente.',
+      bytes: 'O mais caro dos seis, e o mais arriscado.',
+      falha: 'O bloco simplesmente não existe. Nem para o visitante, nem para o Google.',
+      vered: ['ruim', 'Vedado neste projeto para conteúdo primário. O ADR-0001 exige o conteúdo no HTML entregue.']
+    }
+  };
+
+  var barra = document.getElementById('barra');
+  var saida = document.getElementById('saida');
+  var botoes = Array.prototype.slice.call(document.querySelectorAll('.sim-botoes button'));
+  var ESC = 3; // segundos representados pela barra
+
+  function seg(classe, faixa, rotulo) {
+    if (!faixa) return '';
+    var e = (faixa[0] / ESC) * 100;
+    var l = ((faixa[1] - faixa[0]) / ESC) * 100;
+    return '<div class="seg ' + classe + '" style="left:' + e.toFixed(2) + '%;width:' + l.toFixed(2) + '%">' + rotulo + '</div>';
+  }
+
+  function render(chave) {
+    var d = DADOS[chave];
+    barra.innerHTML =
+      seg('html', d.html, 'HTML pronto') +
+      seg('js', d.js, 'JS baixando') +
+      seg('hid', d.hid, 'hidrata');
+
+    saida.innerHTML =
+      '<div class="sim-linha"><b>Quando chega</b><span>' + d.quando + '</span></div>' +
+      '<div class="sim-linha"><b>Custo em bytes</b><span>' + d.bytes + '</span></div>' +
+      '<div class="sim-linha"><b>Se o JS falhar</b><span>' + d.falha + '</span></div>' +
+      '<div class="sim-vered ' + d.vered[0] + '">' + d.vered[1] + '</div>';
+  }
+
+  botoes.forEach(function (b) {
+    b.addEventListener('click', function () {
+      botoes.forEach(function (o) { o.setAttribute('aria-pressed', String(o === b)); });
+      render(b.dataset.d);
+    });
+  });
+  render('nenhuma');
+
+  // ---- mapa mental ----
+  document.querySelectorAll('.ramo > button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var r = b.parentElement;
+      var aberto = r.classList.toggle('aberto');
+      b.setAttribute('aria-expanded', String(aberto));
+      b.querySelector('.sinal').textContent = aberto ? '−' : '+';
+    });
+  });
+
+  // ---- quiz ----
+  var perguntas = Array.prototype.slice.call(document.querySelectorAll('.pergunta'));
+  var total = perguntas.length, feitas = 0, acertos = 0;
+  var placar = document.getElementById('placar');
+
+  perguntas.forEach(function (q) {
+    var certa = Number(q.dataset.certa);
+    var retorno = q.querySelector('.retorno');
+    q.querySelectorAll('.opcao').forEach(function (b) {
+      b.addEventListener('click', function () {
+        if (q.dataset.respondida) return;
+        q.dataset.respondida = '1';
+        var escolha = Number(b.dataset.i);
+        if (escolha === certa) acertos++;
+        feitas++;
+        q.querySelectorAll('.opcao').forEach(function (o) {
+          o.disabled = true;
+          var i = Number(o.dataset.i);
+          if (i === certa) o.classList.add('certa');
+          else if (i === escolha) o.classList.add('errada');
+        });
+        retorno.classList.add('visivel');
+        placar.textContent = feitas === total
+          ? (acertos === total
+              ? 'Cinco de cinco. Vá rodar a etapa 1 da rota.'
+              : acertos + ' de ' + total + ' — releia os retornos das que escaparam.')
+          : feitas + ' de ' + total + ' respondidas';
+      });
+    });
+  });
+})();
+</script>
