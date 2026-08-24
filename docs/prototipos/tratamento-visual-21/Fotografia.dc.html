@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@600&family=Source+Sans+3:wght@400;600&display=swap">
+  <style>
+    :root{
+      --bg:#F7F8FA; --surface:#FFFFFF; --ink:#14171C; --muted:#5A6270;
+      --rule:#DDE1E7; --border:#8590A0; --accent:#A82520; --accent-soft:#FBEDEC;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);
+      font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+      font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    h2,h3{font-family:Spectral,"Iowan Old Style",Georgia,serif;font-weight:600;margin:0}
+    h2{font-size:36px;line-height:1.15}
+    h3{font-size:23px;line-height:1.3}
+    p{margin:0;text-wrap:pretty}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{color:#8C1E1A}
+    .micro{font-size:13px;line-height:1.4;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .small{font-size:15px;line-height:1.5}
+    .retrato{aspect-ratio:3/4;position:relative;overflow:hidden;background:#B9C1CC}
+    .figura{position:absolute;left:50%;transform:translateX(-50%);bottom:0}
+    .cabeca{width:96px;height:120px;border-radius:48px 48px 42px 42px;background:#6E7889;margin:0 auto}
+    .ombros{width:210px;height:120px;border-radius:96px 96px 0 0;background:#4E586A;margin-top:12px}
+  </style>
+</helmet>
+
+<div style="width:1440px;padding:64px;display:flex;flex-direction:column;gap:56px">
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <p class="micro">Item 2 do ticket</p>
+    <h2>Tratamento fotogr&aacute;fico &mdash; a uniformidade &eacute; o efeito</h2>
+    <p style="max-width:80ch;color:var(--muted)">As figuras abaixo s&atilde;o <strong>diagramas</strong>, n&atilde;o fotos: servem para julgar enquadramento e tratamento tonal, n&atilde;o rosto. A geometria (3:4, 1200&times;1600, at&eacute; 70 KB, zona segura central) j&aacute; est&aacute; contratada pelo modelo de dados do advogado; o que se decide aqui &eacute; o resto.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:300px 1fr;gap:48px;align-items:start">
+    <div class="retrato" style="width:300px">
+      <div class="figura"><div class="cabeca"></div><div class="ombros"></div></div>
+      <div style="position:absolute;left:12.5%;top:0;width:75%;height:100%;border-left:1px dashed rgba(168,37,32,.7);border-right:1px dashed rgba(168,37,32,.7)"></div>
+      <div style="position:absolute;left:0;top:8%;width:100%;border-top:1px dashed rgba(168,37,32,.7)"></div>
+      <div style="position:absolute;left:0;top:33.3%;width:100%;border-top:1px dashed rgba(168,37,32,.7)"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:20px;padding-top:8px">
+      <h3>Enquadramento: as tr&ecirc;s marcas que fazem os seis parecerem uma s&eacute;rie</h3>
+      <div style="display:flex;flex-direction:column;gap:12px;max-width:70ch">
+        <p><strong>Topo da cabe&ccedil;a a 8% da altura.</strong> Sem folga variando de foto para foto, que &eacute; o que denuncia montagem.</p>
+        <p><strong>Olhos na linha de um ter&ccedil;o.</strong> Constante nos seis; &eacute; a marca que o olho compara sem perceber.</p>
+        <p><strong>Corpo dentro dos 75% centrais.</strong> A zona segura que o modelo de dados exige: qualquer recorte &mdash; card pequeno, topo do painel de celular, metade da tela em desktop &mdash; continua enquadrando o rosto, e a margem lateral &eacute; sacrific&aacute;vel.</p>
+        <p style="color:var(--muted)">Corte na base logo abaixo dos ombros, altura de c&acirc;mera na linha dos olhos, mesma dist&acirc;ncia focal. Meio corpo com fundo de estante <em>n&atilde;o</em> vem junto: a refer&ecirc;ncia mostrou que o efeito vem da repeti&ccedil;&atilde;o, n&atilde;o do cen&aacute;rio.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:24px">
+    <h3>Tratamento tonal &mdash; venceu a cor natural dessaturada</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+        </div>
+        <p class="micro" style="color:var(--accent)">1 &middot; Cor natural, dessaturada &mdash; escolhido</p>
+        <p class="small" style="color:var(--muted)">Sem filtro. Pele real, satura&ccedil;&atilde;o reduzida cerca de 10% e fundo neutro frio. O mais barato de produzir e o mais f&aacute;cil de substituir quando a foto real chegar.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;filter:grayscale(1) contrast(1.06)">
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+        </div>
+        <p class="micro">2 &middot; Preto e branco &mdash; comparado</p>
+        <p class="small" style="color:var(--muted)">Uniformiza seis fotos tiradas em condi&ccedil;&otilde;es diferentes &mdash; que &eacute; exatamente o cen&aacute;rio quando as reais chegarem, uma por vez, por WhatsApp. Custo: distancia, e num p&uacute;blico idoso a foto colorida l&ecirc; como pessoa e a P&amp;B como institui&ccedil;&atilde;o.</p>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;filter:grayscale(1) contrast(1.04) sepia(.35) hue-rotate(180deg) saturate(1.6)">
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+          <div class="retrato"><div class="figura"><div class="cabeca" style="width:64px;height:80px;border-radius:32px 32px 28px 28px"></div><div class="ombros" style="width:140px;height:80px;border-radius:64px 64px 0 0"></div></div></div>
+        </div>
+        <p class="micro">3 &middot; Duotone nos neutros frios &mdash; comparado</p>
+        <p class="small" style="color:var(--muted)">Amarra a foto &agrave; paleta e uniformiza como a P&amp;B. Custo alto: pele em azul l&ecirc; como pe&ccedil;a de campanha, e o p&uacute;blico precisa reconhecer uma pessoa que vai atend&ecirc;-lo.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--rule);padding-top:32px">
+    <h3>O que o placeholder faz at&eacute; a foto real chegar</h3>
+    <p style="max-width:88ch;color:var(--muted)">Os seis retratos sint&eacute;ticos j&aacute; s&atilde;o a decis&atilde;o &mdash; e s&atilde;o produ&ccedil;&atilde;o, n&atilde;o decis&atilde;o. O que este ticket acrescenta &eacute; que <strong>eles nascem j&aacute; sob o tratamento escolhido acima</strong>: gerar os seis com o mesmo enquadramento, a mesma luz e o mesmo fundo &eacute; de gra&ccedil;a no prompt e imposs&iacute;vel de consertar depois. Com a cor natural escolhida, <strong>n&atilde;o h&aacute; filtro em CSS</strong>: a dessatura&ccedil;&atilde;o de ~10% e o fundo neutro frio entram na gera&ccedil;&atilde;o dos seis, e a foto real chega j&aacute; tratada. Isso tira uma linha de CSS do caminho cr&iacute;tico e faz a substitui&ccedil;&atilde;o ser troca de arquivo e nada mais.</p>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>

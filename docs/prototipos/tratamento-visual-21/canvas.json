@@ -1,0 +1,37 @@
+{
+  "pages": [
+    { "id": "page-1", "name": "Decidido" },
+    { "id": "page-2", "name": "Comparadas" }
+  ],
+  "artboards": [
+    { "file": "Main.dc.html",            "title": "C · Escala — a direção",        "page": "page-1", "x": 0,    "y": 0,    "w": 1440, "h": 2400 },
+    { "file": "PainelProporcao.dc.html", "title": "Painel · Proporção desigual",   "page": "page-1", "x": 1560, "y": 0,    "w": 1440, "h": 900 },
+    { "file": "Fotografia.dc.html",      "title": "Tratamento fotográfico",        "page": "page-1", "x": 0,    "y": 2550, "w": 1440, "h": 1500 },
+    { "file": "Estados.dc.html",         "title": "Estados e degradê",             "page": "page-1", "x": 1560, "y": 2550, "w": 1440, "h": 1450 },
+
+    { "file": "DirecaoA.dc.html",        "title": "A · Profundidade",              "page": "page-2", "x": 0,    "y": 0,    "w": 1440, "h": 2400 },
+    { "file": "DirecaoB.dc.html",        "title": "B · Textura",                   "page": "page-2", "x": 1560, "y": 0,    "w": 1440, "h": 2400 },
+    { "file": "DirecaoD.dc.html",        "title": "D · Ritmo",                     "page": "page-2", "x": 3120, "y": 0,    "w": 1440, "h": 2400 },
+    { "file": "PainelCentrado.dc.html",  "title": "Painel · Bloco centrado",       "page": "page-2", "x": 0,    "y": 2550, "w": 1440, "h": 900 },
+    { "file": "PainelDensidade.dc.html", "title": "Painel · Vazio gasto",          "page": "page-2", "x": 1560, "y": 2550, "w": 1440, "h": 900 }
+  ],
+  "annotations": [
+    {
+      "id": "nota-decidido",
+      "page": "page-1",
+      "x": 0,
+      "y": -300,
+      "w": 960,
+      "text": "DECIDIDO EM 24/08/2026\n\nA densidade mora na ESCALA: vazio e retrato grandes, e contraste extremo entre o rótulo de 13px e o título de 36px. Profundidade, textura e ritmo ficam quietos — a página não tem sombra de cartão, não tem grão e não tem faixa alternada.\n\nUma correção feita ao consolidar: a versão comparada usava 128px entre seções. O brief fixa 96px em desktop e este ticket aplica tokens, não os redefine — então a escala é gasta nas margens de 96px, no retrato de 384px e no vazio da coluna de rótulo, e o espaçamento entre seções fica nos 96px do brief.\n\nO herói é TIPOGRÁFICO: o elemento de LCP é o h1 em Spectral 600 pré-carregado, e a linha de 180 KB de imagem não é gasta na primeira tela.\n\nO painel de desktop resolve o vazio por proporção: foto em 58%, texto em 42%, alinhado ao topo. A medida de linha cai junto e aproxima dos 68 caracteres do brief."
+    },
+    {
+      "id": "nota-comparadas",
+      "page": "page-2",
+      "x": 0,
+      "y": -300,
+      "w": 960,
+      "text": "REGISTRO DO QUE FOI COMPARADO — nenhuma destas está viva.\n\nA · Profundidade — camadas e sombra precisa, herói com imagem. Gastava a linha de 180 KB do LCP na primeira tela, e sombra em cartão é o gesto mais imitado por template barato.\n\nB · Textura — grão em SVG, fio de 1px e campo tingido. Custava bytes e paint: grão com mix-blend em tela cheia é exatamente o que trava Android barato, contra o TBT do orçamento.\n\nD · Ritmo — filete vermelho, número e troca de campo a cada seção. Custo zero, mas faixa alternada é a linguagem mais comum de site de escritório.\n\nPainel · Bloco centrado — o vazio virava respiro simétrico, sem gastar nada.\nPainel · Vazio gasto — linhas de credencial com fio; as etiquetas de área beiravam selo, que a OAB veda."
+    }
+  ],
+  "launch": { "view": "canvas", "page": "page-1" }
+}

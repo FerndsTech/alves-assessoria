@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@600&family=Source+Sans+3:wght@400;600&display=swap">
+  <style>
+    :root{
+      --bg:#F7F8FA; --surface:#FFFFFF; --ink:#14171C; --muted:#5A6270;
+      --rule:#DDE1E7; --border:#8590A0; --accent:#A82520; --accent-soft:#FBEDEC;
+      --on-accent:#FFFFFF;
+      --lift-1:0 1px 2px rgba(20,23,28,.06), 0 2px 8px -2px rgba(20,23,28,.08);
+      --lift-2:0 1px 2px rgba(20,23,28,.06), 0 12px 32px -12px rgba(20,23,28,.20);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--ink);
+      font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+      font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    h2,h3{font-family:Spectral,"Iowan Old Style",Georgia,serif;font-weight:600;margin:0}
+    h2{font-size:36px;line-height:1.15}
+    h3{font-size:23px;line-height:1.3}
+    p{margin:0;text-wrap:pretty}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{color:#8C1E1A}
+    .micro{font-size:13px;line-height:1.4;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .small{font-size:15px;line-height:1.5}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;border-radius:4px;font-weight:600;border:1px solid transparent}
+    .p{background:var(--accent);color:var(--on-accent)}
+    .s{background:var(--surface);color:var(--ink);border-color:var(--border);font-weight:400}
+    .foco{outline:2px solid var(--accent);outline-offset:2px}
+    .col{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+    .bloco{display:flex;flex-direction:column;gap:24px;background:var(--surface);border:1px solid var(--rule);padding:32px}
+  </style>
+</helmet>
+
+<div style="width:1440px;padding:64px;display:flex;flex-direction:column;gap:48px">
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <p class="micro">Itens 4 e 5 do ticket</p>
+    <h2>Estados, detalhe fino, e onde o &ldquo;barato&rdquo; vaza</h2>
+    <p style="max-width:82ch;color:var(--muted)">Tudo abaixo respeita as tr&ecirc;s travas do or&ccedil;amento: anima&ccedil;&atilde;o s&oacute; em <code>transform</code> e <code>opacity</code>, nenhum estado inicial invis&iacute;vel dependente de JS, e <code>prefers-reduced-motion</code> valendo em toda largura.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px">
+
+    <div class="bloco">
+      <h3>Bot&atilde;o prim&aacute;rio</h3>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <div class="col"><a class="btn p" href="#">Confira seu benef&iacute;cio</a><span class="micro">repouso</span></div>
+        <div class="col"><a class="btn p" href="#" style="background:#8C1E1A">Confira seu benef&iacute;cio</a><span class="micro">hover &minus;8% de luz</span></div>
+        <div class="col"><a class="btn p foco" href="#">Confira seu benef&iacute;cio</a><span class="micro">foco 2px + 2px</span></div>
+      </div>
+      <p class="small" style="color:var(--muted)">Altura 52px (piso de toque &eacute; 44). Sem transla&ccedil;&atilde;o no hover &mdash; s&oacute; cor &mdash; porque bot&atilde;o que se move sob o dedo erra o alvo num Android lento.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Bot&atilde;o secund&aacute;rio e link</h3>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <div class="col"><a class="btn s" href="#">Como o desconto aparece</a><span class="micro">repouso</span></div>
+        <div class="col"><a class="btn s" href="#" style="background:var(--accent-soft);border-color:var(--accent);color:var(--accent)">Como o desconto aparece</a><span class="micro">hover</span></div>
+        <div class="col"><a class="btn s foco" href="#">Como o desconto aparece</a><span class="micro">foco</span></div>
+      </div>
+      <p class="small" style="color:var(--muted)">O contorno usa <code>--border</code> (3:1, exig&ecirc;ncia da WCAG 1.4.11 para componente), nunca <code>--rule</code>. Link em texto corrido: <a href="#">sublinhado no hover</a>, nunca s&oacute; cor.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Card do advogado</h3>
+      <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px">
+        <div class="col" style="width:100%">
+          <div style="width:100%;background:var(--surface);border:1px solid var(--rule);padding:12px">
+            <div style="aspect-ratio:3/4;background:linear-gradient(168deg,#E6E9EE,#C9CFD8)"></div>
+            <p class="small" style="padding-top:8px;font-weight:600">Helena Braga Correia</p>
+            <p class="micro" style="color:var(--accent)">Ver perfil &rarr;</p>
+          </div>
+          <span class="micro">repouso</span>
+        </div>
+        <div class="col" style="width:100%">
+          <div style="width:100%;background:var(--surface);border:1px solid var(--border);padding:12px;box-shadow:var(--lift-1);transform:translateY(-2px)">
+            <div style="aspect-ratio:3/4;background:linear-gradient(168deg,#E6E9EE,#C9CFD8);overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(168deg,#DFE3EA,#C0C7D2);transform:scale(1.03)"></div></div>
+            <p class="small" style="padding-top:8px;font-weight:600">Helena Braga Correia</p>
+            <p class="micro" style="color:var(--accent)">Ver perfil &rarr;</p>
+          </div>
+          <span class="micro">hover</span>
+        </div>
+        <div class="col" style="width:100%">
+          <div class="foco" style="width:100%;background:var(--surface);border:1px solid var(--rule);padding:12px">
+            <div style="aspect-ratio:3/4;background:linear-gradient(168deg,#E6E9EE,#C9CFD8)"></div>
+            <p class="small" style="padding-top:8px;font-weight:600">Helena Braga Correia</p>
+            <p class="micro" style="color:var(--accent)">Ver perfil &rarr;</p>
+          </div>
+          <span class="micro">foco de teclado</span>
+        </div>
+      </div>
+      <p class="small" style="color:var(--muted)">O hover move a foto (<code>scale</code> de 1.03) e n&atilde;o o card: &eacute; um <code>transform</code> dentro de um recorte, sem custo de layout. O texto de a&ccedil;&atilde;o fica vis&iacute;vel em repouso &mdash; afordância de clique &eacute; requisito, n&atilde;o enfeite.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>Revela&ccedil;&atilde;o no scroll &mdash; a regra que n&atilde;o se dobra</h3>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+        <div style="border:1px solid var(--rule);padding:20px;background:var(--bg);display:flex;flex-direction:column;gap:8px">
+          <span class="micro" style="color:var(--accent)">correto</span>
+          <p class="small">Estado inicial <strong>vis&iacute;vel</strong>: <code>opacity:1</code>, deslocado 12px. O JS s&oacute; retira o deslocamento.</p>
+          <div style="height:8px;background:var(--rule)"></div>
+          <div style="height:8px;background:var(--rule);width:70%"></div>
+        </div>
+        <div style="border:1px solid var(--rule);padding:20px;background:var(--bg);display:flex;flex-direction:column;gap:8px;opacity:.45">
+          <span class="micro" style="color:#8A5300">vedado</span>
+          <p class="small"><code>opacity:0</code> at&eacute; o <code>IntersectionObserver</code> disparar. JS falha, a se&ccedil;&atilde;o some.</p>
+          <div style="height:8px;background:var(--rule)"></div>
+          <div style="height:8px;background:var(--rule);width:70%"></div>
+        </div>
+      </div>
+      <p class="small" style="color:var(--muted)">Sob <code>prefers-reduced-motion</code>, tudo aqui vira fade cruzado sem movimento &mdash; em qualquer largura.</p>
+    </div>
+
+  </div>
+
+  <div class="bloco" style="border-color:var(--rule)">
+    <h3>Item 5 &mdash; o degrad&ecirc; escrito antes de faltar byte</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
+        <p class="micro">Sai primeiro</p>
+        <p class="small">A intro de desktop na primeira visita. J&aacute; &eacute; JS opcional e n&atilde;o toca o LCP que o gate mede; cortar n&atilde;o custa nada ao visitante de celular.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
+        <p class="micro">Sai em seguida</p>
+        <p class="small">O tratamento da massa de terra do mapa. Ele s&oacute; existe acima do ponto de quebra, e o mapa j&aacute; &eacute; decora&ccedil;&atilde;o: some sem tirar conte&uacute;do de ningu&eacute;m.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
+        <p class="micro">N&atilde;o sai</p>
+        <p class="small">Foco vis&iacute;vel, alvo de 44px, contraste AA e afordância de clique. N&atilde;o s&atilde;o enriquecimento &mdash; s&atilde;o a linha de base.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
