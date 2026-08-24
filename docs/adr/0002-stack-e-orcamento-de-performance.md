@@ -1,6 +1,7 @@
 # ADR-0002 — Stack de renderização e orçamento de performance
 
-- **Status:** ✅ **Aceito.**
+- **Status:** ✅ **Aceito**, com as decisões 2 e 3 **emendadas**.
+- **Emendado por:** [ADR-0003](0003-orcamento-folgado-para-profundidade.md) em 24/08/2026 — o orçamento de bytes e as metas de Core Web Vitals foram afrouxados para acomodar a direção visual com profundidade. A estrutura deste ADR (existe teto, existe gate, existem as três travas de animação) continua valendo.
 - **Data:** 22/08/2026
 - **Decisor:** Murilo (FerndsTech)
 - **Ticket de origem:** [Stack e orçamento de performance (#6)](https://github.com/FerndsTech/alves-assessoria/issues/6)
@@ -60,6 +61,8 @@ A alternativa de renderizar os cards no cliente a partir de um objeto JS **está
 
 ### 2. Metas de Core Web Vitals
 
+> ⚠️ **Emendado em 24/08/2026 pelo [ADR-0003](0003-orcamento-folgado-para-profundidade.md).** Os números abaixo não são mais os vigentes — consulte o ADR-0003. O critério e o instrumento não mudaram, só os valores.
+
 **Medição em laboratório, não em campo — e isso é fato, não preferência.** Dados de campo vêm do CrUX, que só publica relatório com volume de amostra suficiente; um one-pager de escritório local em quatro cidades do interior do Ceará não terá esse volume. Gate de campo seria gate que nunca dispara. Consequência: **INP fica fora do gate** por ser métrica exclusivamente de campo, e **TBT** entra como seu proxy de laboratório.
 
 Instrumento: **Lighthouse, preset mobile** (Slow 4G simulado — 1,6 Mbps, 150 ms RTT — e CPU 4×).
@@ -74,6 +77,8 @@ Instrumento: **Lighthouse, preset mobile** (Slow 4G simulado — 1,6 Mbps, 150 m
 São os limiares "bom" do Google, escolhidos entre eles e um conjunto mais estrito. A escolha é deliberada: a folga entre o estrito e o "bom" **é o orçamento que o #21 vai gastar** em enriquecimento visual.
 
 ### 3. Orçamento de bytes
+
+> ⚠️ **Emendado em 24/08/2026 pelo [ADR-0003](0003-orcamento-folgado-para-profundidade.md).** Os números abaixo não são mais os vigentes — consulte o ADR-0003. O critério e o instrumento não mudaram, só os valores.
 
 **Bytes transferidos, comprimidos** — é o que o pacote de dados do visitante paga. Peso em disco não interessa.
 
