@@ -1,0 +1,833 @@
+<title>Seção do Mapa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@600&family=Source+Sans+3:wght@400;600&display=swap">
+
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   TOKENS — cópia literal de docs/brand/brief-de-marca.md (#5).
+   Nenhuma cor deste protótipo é inventada.
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  --bg:          #F7F8FA;
+  --surface:     #FFFFFF;
+  --ink:         #14171C;
+  --muted:       #5A6270;
+  --rule:        #DDE1E7;
+  --border:      #8590A0;
+  --accent:      #A82520;
+  --accent-soft: #FBEDEC;
+  --on-accent:   #FFFFFF;
+  --caution:     #8A5300;
+  --caution-soft:#FDF3E3;
+  --ok:          #1E6B45;
+  --ok-soft:     #E8F4ED;
+
+  --land:        #ECEEF2;   /* massa de terra do SVG — derivado de --rule */
+  --land-line:   #C9CFD8;
+
+  --serif: "Spectral", Georgia, "Times New Roman", serif;
+  --sans:  "Source Sans 3", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* escala de 4px do brief — nenhum valor fora dela */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px; --s9: 96px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:          #101318;
+    --surface:     #181C23;
+    --ink:         #E7EBF1;
+    --muted:       #98A1B0;
+    --rule:        #282E38;
+    --border:      #5E6877;
+    --accent:      #E4635E;
+    --accent-soft: #26191A;
+    --on-accent:   #101318;
+    --caution:     #E3A648;
+    --caution-soft:#2B2113;
+    --ok:          #63BE90;
+    --ok-soft:     #142A20;
+    --land:        #1F242C;
+    --land-line:   #333B46;
+  }
+}
+:root[data-theme="dark"] {
+  --bg:          #101318;
+  --surface:     #181C23;
+  --ink:         #E7EBF1;
+  --muted:       #98A1B0;
+  --rule:        #282E38;
+  --border:      #5E6877;
+  --accent:      #E4635E;
+  --accent-soft: #26191A;
+  --on-accent:   #101318;
+  --caution:     #E3A648;
+  --caution-soft:#2B2113;
+  --ok:          #63BE90;
+  --ok-soft:     #142A20;
+  --land:        #1F242C;
+  --land-line:   #333B46;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  padding-bottom: 108px;           /* espaço da barra flutuante */
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 { font-family: var(--serif); font-weight: 600; text-wrap: balance; margin: 0; }
+
+.micro {
+  font-size: 13px; line-height: 1.4; font-weight: 600;
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+
+a { color: var(--accent); }
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--s1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHROME DO PROTÓTIPO — não faz parte do site. Fundo levemente
+   distinto para que a fronteira entre instrumento e peça seja óbvia.
+   ═══════════════════════════════════════════════════════════════ */
+.chrome { max-width: 1180px; margin: 0 auto; padding: var(--s7) var(--s5) 0; }
+
+.tag {
+  display: inline-block;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--caution);
+  background: var(--caution-soft);
+  border: 1px solid var(--caution);
+  border-radius: var(--s1);
+  padding: var(--s1) var(--s2);
+  margin-bottom: var(--s4);
+}
+
+.chrome h1 { font-size: 36px; line-height: 1.15; margin-bottom: var(--s3); }
+.chrome > p { color: var(--muted); max-width: 62ch; margin: 0 0 var(--s5); }
+
+.derivacoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--s3);
+  margin: 0 0 var(--s7);
+  padding: 0;
+  list-style: none;
+}
+.derivacoes li {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--rule);
+  border-radius: var(--s2);
+  padding: var(--s4);
+  font-size: 15px;
+  line-height: 1.5;
+}
+.derivacoes li.caiu   { border-left-color: var(--ok); }
+.derivacoes li.aberta { border-left-color: var(--accent); }
+.derivacoes .micro { display: block; margin-bottom: var(--s2); }
+.derivacoes .caiu   .micro { color: var(--ok); }
+.derivacoes .aberta .micro { color: var(--accent); }
+.derivacoes > li > b { display: block; margin-bottom: var(--s1); }
+.derivacoes span.txt { color: var(--muted); }
+
+/* ── Palco ─────────────────────────────────────────────────── */
+.palco-topo {
+  display: flex; flex-wrap: wrap; align-items: baseline;
+  gap: var(--s3) var(--s5);
+  margin-bottom: var(--s4);
+  padding-bottom: var(--s3);
+  border-bottom: 1px solid var(--rule);
+}
+.palco-topo .micro { color: var(--muted); }
+.palco-topo strong { font-family: var(--serif); font-size: 23px; font-weight: 600; }
+
+.palco {
+  display: flex; justify-content: center;
+  padding: var(--s5) 0 var(--s9);
+}
+.moldura {
+  container-type: inline-size;
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: var(--s2);
+  transition: width 240ms ease;
+  /* sem overflow:hidden aqui — ele mataria o position:sticky do mapa */
+}
+body[data-largura="celular"] .moldura {
+  width: 390px;
+  box-shadow: 0 var(--s2) var(--s6) rgb(0 0 0 / 0.12);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   A SEÇÃO — daqui para baixo é a peça sendo julgada.
+   ═══════════════════════════════════════════════════════════════ */
+.secao {
+  padding: var(--s9) var(--s7);
+  background: var(--bg);
+  border-radius: var(--s2);
+  position: relative;
+}
+@container (max-width: 640px) {
+  .secao { padding: var(--s8) var(--s5); }
+}
+
+.secao-cabeca { max-width: 60ch; margin-bottom: var(--s7); position: relative; z-index: 1; }
+.secao-cabeca .eyebrow { color: var(--accent); display: block; margin-bottom: var(--s3); }
+.secao-cabeca h2 { font-size: 36px; line-height: 1.15; margin-bottom: var(--s3); }
+@container (max-width: 640px) {
+  .secao-cabeca h2 { font-size: 28px; }
+  .secao-cabeca { margin-bottom: var(--s6); }
+}
+.secao-cabeca p { font-size: 19px; line-height: 1.55; color: var(--muted); margin: 0; }
+
+/* filete estrutural — o vermelho como identidade, jamais como alerta */
+.secao-cabeca h2::after {
+  content: "";
+  display: block;
+  width: var(--s7);
+  height: 2px;
+  background: var(--accent);
+  margin-top: var(--s4);
+}
+
+/* ── O desenho ─────────────────────────────────────────────── */
+.mapa { display: block; width: 100%; height: auto; }
+.mapa .terra { fill: var(--land); stroke: var(--land-line); stroke-width: 1.5; }
+.mapa .capital { fill: var(--muted); }
+.mapa .rotulo-capital {
+  font-family: var(--sans); font-size: 11px; fill: var(--muted);
+}
+.mapa .rotulo {
+  font-family: var(--sans); font-size: 13px; font-weight: 600; fill: var(--ink);
+  paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round;
+}
+
+.pino { cursor: pointer; }
+.pino .corpo { fill: var(--accent); }
+.pino .miolo { fill: var(--on-accent); }
+.pino .halo  { fill: var(--accent); opacity: 0; }
+.pino:hover .rotulo, .pino:focus-visible .rotulo { fill: var(--accent); }
+
+/* --- Animação 1: pulso contínuo (só transform e opacity) --- */
+body[data-anim="pulso"] .pino .halo { animation: pulso 2600ms ease-out infinite; }
+body[data-anim="pulso"] .pino:nth-of-type(2) .halo { animation-delay: 400ms; }
+body[data-anim="pulso"] .pino:nth-of-type(3) .halo { animation-delay: 800ms; }
+body[data-anim="pulso"] .pino:nth-of-type(4) .halo { animation-delay: 1200ms; }
+@keyframes pulso {
+  0%   { opacity: 0.45; transform: scale(0.35); }
+  70%  { opacity: 0;    transform: scale(1.9);  }
+  100% { opacity: 0;    transform: scale(1.9);  }
+}
+
+/* --- Animação 2: entrada em sequência (uma vez, na revelação) --- */
+body[data-anim="sequencia"] .pino .grupo {
+  animation: cair 520ms cubic-bezier(.2,.8,.3,1) both;
+}
+body[data-anim="sequencia"] .pino:nth-of-type(1) .grupo { animation-delay: 120ms; }
+body[data-anim="sequencia"] .pino:nth-of-type(2) .grupo { animation-delay: 260ms; }
+body[data-anim="sequencia"] .pino:nth-of-type(3) .grupo { animation-delay: 400ms; }
+body[data-anim="sequencia"] .pino:nth-of-type(4) .grupo { animation-delay: 540ms; }
+@keyframes cair {
+  from { opacity: 0; transform: translateY(-14px) scale(0.85); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* --- Animação 3: nenhuma --- */
+
+/* prefers-reduced-motion vale em TODA largura (ADR-0002, dec. 10):
+   reduz para fade cruzado, nunca para corte seco. */
+@media (prefers-reduced-motion: reduce) {
+  body[data-anim] .pino .halo  { animation: none; opacity: 0; }
+  body[data-anim] .pino .grupo { animation: aparece 300ms ease both; }
+  @keyframes aparece { from { opacity: 0; } to { opacity: 1; } }
+  .moldura, .bloco, .pino .corpo { transition-duration: 1ms !important; }
+}
+
+/* ── Os 4 blocos ───────────────────────────────────────────── */
+.blocos { display: grid; gap: var(--s4); }
+
+.bloco {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--s2);
+  padding: var(--s5);
+  scroll-margin-top: var(--s5);
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.bloco:target,
+.bloco.destacado {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.bloco h3 {
+  font-size: 23px; line-height: 1.3;
+  display: flex; align-items: center; gap: var(--s2);
+  margin-bottom: var(--s3);
+}
+.bloco h3 .marca {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); flex: none;
+}
+.bloco address {
+  font-style: normal; font-size: 17px; line-height: 1.6;
+  margin: 0 0 var(--s3);
+}
+.bloco .complemento { color: var(--caution); font-weight: 600; }
+.bloco .horario { font-size: 15px; color: var(--muted); margin: 0 0 var(--s4); }
+
+.quem {
+  border-top: 1px solid var(--rule);
+  padding-top: var(--s3);
+  margin-bottom: var(--s4);
+}
+.quem .micro { color: var(--muted); display: block; margin-bottom: var(--s2); }
+.quem ul { margin: 0; padding: 0; list-style: none; display: grid; gap: var(--s1); }
+.quem li { font-size: 15px; }
+.quem .dias { color: var(--muted); }
+
+.chegar {
+  display: inline-flex; align-items: center; gap: var(--s2);
+  min-height: 44px;                 /* alvo de toque do brief */
+  padding: 0 var(--s4);
+  border: 1px solid var(--border);
+  border-radius: var(--s1);
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 600; font-size: 15px;
+  background: var(--surface);
+  transition: background 140ms ease, border-color 140ms ease;
+}
+.chegar:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+.chegar svg { width: 16px; height: 16px; flex: none; }
+
+.fachada {
+  aspect-ratio: 3 / 2;
+  max-height: 180px;
+  background: var(--land);
+  border: 1px dashed var(--land-line);
+  border-radius: var(--s1);
+  margin-bottom: var(--s4);
+  display: grid; place-items: center;
+  color: var(--muted); font-size: 13px; text-align: center; padding: var(--s3);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VARIANTE A — mapa-instrumento
+   ═══════════════════════════════════════════════════════════════ */
+body[data-variante="a"] .layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+  gap: var(--s7);
+  align-items: start;
+}
+body[data-variante="a"] .blocos { grid-template-columns: 1fr; }
+/* O mapa fica preso enquanto os blocos rolam. Sem isto ele sai de vista
+   nos primeiros 400px e o "instrumento" deixa de instrumentar. */
+body[data-variante="a"] .mapa-caixa { position: sticky; top: var(--s5); }
+@container (max-width: 860px) {
+  body[data-variante="a"] .layout { grid-template-columns: 1fr; gap: var(--s6); }
+  body[data-variante="a"] .mapa-caixa { position: static; }
+}
+@container (max-width: 640px) {
+  body[data-variante="a"] .mapa-caixa { max-width: 260px; margin: 0 auto; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VARIANTE B — sem desenho
+   ═══════════════════════════════════════════════════════════════ */
+body[data-variante="b"] .mapa-caixa { display: none; }
+body[data-variante="b"] .blocos { grid-template-columns: repeat(2, 1fr); gap: var(--s5); }
+@container (max-width: 720px) {
+  body[data-variante="b"] .blocos { grid-template-columns: 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VARIANTE C — mapa-atmosfera
+   ═══════════════════════════════════════════════════════════════ */
+/* Mapa e blocos ocupam a MESMA célula da grade — é a sobreposição que faz
+   dele atmosfera. Sticky para que ele acompanhe a rolagem em vez de boiar
+   no meio de uma seção de 3000px. */
+body[data-variante="c"] .layout { display: grid; grid-template-columns: 1fr; }
+body[data-variante="c"] .mapa-caixa,
+body[data-variante="c"] .blocos { grid-area: 1 / 1; }
+body[data-variante="c"] .mapa-caixa {
+  position: sticky;
+  top: var(--s7);
+  height: min(66vh, 620px);
+  justify-self: end;
+  align-self: start;
+  display: grid; place-items: center;
+  pointer-events: none;
+  opacity: 0.45;
+  z-index: 0;
+}
+body[data-variante="c"] .mapa-caixa .mapa { height: 100%; width: auto; }
+body[data-variante="c"] .mapa .terra { fill: none; stroke: var(--land-line); stroke-width: 2; }
+body[data-variante="c"] .mapa .rotulo { stroke: none; fill: var(--muted); }
+body[data-variante="c"] .pino { pointer-events: auto; }
+body[data-variante="c"] .blocos {
+  grid-template-columns: minmax(0, 520px);
+  justify-self: start;
+  position: relative; z-index: 1;
+}
+@container (max-width: 860px) {
+  body[data-variante="c"] .mapa-caixa {
+    position: static; height: auto; max-width: 240px;
+    justify-self: center; margin-bottom: var(--s6);
+  }
+  body[data-variante="c"] .mapa-caixa .mapa { height: auto; width: 100%; }
+  body[data-variante="c"] .mapa-caixa,
+  body[data-variante="c"] .blocos { grid-area: auto; }
+  body[data-variante="c"] .blocos { grid-template-columns: 1fr; justify-self: stretch; }
+}
+
+/* ── Barra flutuante ───────────────────────────────────────── */
+.barra {
+  position: fixed; inset: auto 0 0 0; z-index: 50;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: var(--s3) var(--s5);
+  display: flex; flex-wrap: wrap; gap: var(--s3) var(--s6);
+  align-items: center; justify-content: center;
+  box-shadow: 0 -4px var(--s5) rgb(0 0 0 / 0.08);
+}
+.grupo-ctrl { display: flex; align-items: center; gap: var(--s2); }
+.grupo-ctrl > .micro { color: var(--muted); }
+.grupo-ctrl .opcoes { display: flex; gap: var(--s1); }
+.barra button {
+  font-family: var(--sans); font-size: 15px; font-weight: 600;
+  min-height: 36px; padding: 0 var(--s3);
+  border: 1px solid var(--border);
+  border-radius: var(--s1);
+  background: var(--surface); color: var(--ink);
+  cursor: pointer;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+.barra button:hover { border-color: var(--accent); color: var(--accent); }
+.barra button[aria-pressed="true"] {
+  background: var(--accent); color: var(--on-accent); border-color: var(--accent);
+}
+
+/* ── Painel de fechamento ──────────────────────────────────── */
+.fecho { max-width: 1180px; margin: 0 auto; padding: 0 var(--s5) var(--s9); }
+.fecho h2 { font-size: 28px; margin: var(--s7) 0 var(--s4); }
+.fecho h3 { font-size: 23px; margin: var(--s6) 0 var(--s3); }
+.fecho p, .fecho li { max-width: 68ch; }
+.fecho p { margin: 0 0 var(--s4); }
+.fecho ul { padding-left: var(--s5); display: grid; gap: var(--s2); margin: 0 0 var(--s4); }
+.fecho pre {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--s2);
+  padding: var(--s5);
+  overflow-x: auto;
+  font-size: 14px; line-height: 1.55;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Consolas, monospace;
+}
+.fecho pre .c { color: var(--muted); }
+.fecho pre .k { color: var(--accent); }
+.nota {
+  border-left: 3px solid var(--caution);
+  background: var(--caution-soft);
+  border-radius: 0 var(--s2) var(--s2) 0;
+  padding: var(--s4) var(--s5);
+  margin: 0 0 var(--s4);
+}
+.nota p:last-child { margin-bottom: 0; }
+</style>
+
+<div class="chrome">
+  <span class="tag">Protótipo descartável · ticket #10</span>
+  <h1>Seção do mapa: a forma dos 4 blocos ancorados</h1>
+  <p>
+    Três leituras da seção 6, com os mesmos fatos e os mesmos tokens. A pergunta que separa
+    as três não é estética — é <b>quanto o desenho do mapa precisa pesar</b> para que o
+    visitante encontre a unidade dele e o site diga “existimos em quatro praças”.
+  </p>
+
+  <ul class="derivacoes">
+    <li class="caiu">
+      <span class="micro">Caiu por derivação</span>
+      <b>Que mapa?</b>
+      <span class="txt">O <a href="https://github.com/FerndsTech/alves-assessoria/issues/6">#6</a>
+      já decidiu: SVG inline desenhado, ~15&nbsp;KB, e <b>vedado embutir mapa de terceiro</b>.
+      Sobra o que ele não decidiu — <i>o que o desenho mostra</i>.</span>
+    </li>
+    <li class="caiu">
+      <span class="micro">Caiu por derivação</span>
+      <b>Formulário ou só botão?</b>
+      <span class="txt">Três mortes independentes: o site é estático sem backend
+      (<a href="https://github.com/FerndsTech/alves-assessoria/issues/9">#9</a>), a LGPD não
+      incide justamente porque nada é coletado
+      (<a href="https://github.com/FerndsTech/alves-assessoria/issues/8">#8</a>), e a emenda
+      do <a href="https://github.com/FerndsTech/alves-assessoria/issues/17">#17</a> fixou o
+      bloco de CTA em <b>duas</b> aparições — e nenhuma é aqui.</span>
+    </li>
+    <li class="aberta">
+      <span class="micro">Aberta — julgue olhando</span>
+      <b>O desenho paga o que custa?</b>
+      <span class="txt">Variante <b>A</b> aposta que sim, <b>B</b> que não,
+      <b>C</b> que ele vale como atmosfera e não como instrumento.</span>
+    </li>
+    <li class="aberta">
+      <span class="micro">Aberta — julgue olhando</span>
+      <b>Mobile troca de forma?</b>
+      <span class="txt">Use o simulador de largura. O precedente do
+      <a href="https://github.com/FerndsTech/alves-assessoria/issues/20">#20</a> é
+      um componente, duas geometrias, um ponto de quebra.</span>
+    </li>
+  </ul>
+
+  <div class="palco-topo">
+    <span class="micro">Variante em exibição</span>
+    <strong id="titulo-variante">A — mapa-instrumento</strong>
+    <span class="micro" id="tese-variante" style="flex:1 1 260px;"></span>
+  </div>
+</div>
+
+<div class="palco">
+  <div class="moldura">
+    <section class="secao" id="unidades">
+      <div class="secao-cabeca">
+        <span class="micro eyebrow">Onde estamos</span>
+        <h2>Quatro escritórios no Ceará</h2>
+        <p id="lead-secao">
+          Do sertão central ao litoral leste. Atendimento presencial mediante hora marcada,
+          de segunda a sexta, das 08h às 16h.
+        </p>
+      </div>
+
+      <div class="layout">
+        <div class="mapa-caixa">
+          <svg class="mapa" viewBox="0 0 345 420" role="img"
+               aria-label="Mapa do Ceará com as quatro unidades assinaladas">
+            <path class="terra" d="M 1.7 11.6 L 26.5 6.6 L 48 6.6 L 76.1 3.3 L 107.6 8.3 L 138.2 14.1
+              L 167.1 26.5 L 197.7 49.6 L 220.9 63.7 L 239.9 77.7 L 253.2 92.6 L 269.7 113.3
+              L 287.1 127.3 L 302 138.1 L 324.3 150.5 L 344.2 160.4 L 330.9 187.7 L 314.4 212.5
+              L 301.2 239.8 L 287.1 266.2 L 273 292.7 L 259.8 317.5 L 248.2 340.6 L 229.2 358.8
+              L 208.5 377.8 L 191.9 398.5 L 182 419.2 L 163 405.1 L 142.3 394.4 L 117.5 383.6
+              L 96.8 372 L 77.8 350.6 L 57.9 320 L 51.3 286.9 L 66.2 253.8 L 77.8 229
+              L 66.2 195.9 L 47.2 167 L 34.7 133.9 L 24.8 96.7 L 11.6 59.5 L 1.7 26.5 Z"/>
+
+            <circle class="capital" cx="239.9" cy="78.5" r="2.5"/>
+            <text class="rotulo-capital" x="247" y="82">Fortaleza</text>
+
+            <!-- 4 pinos, posicionados por lat/lon reais -->
+            <a class="pino" href="#fortim" data-unidade="fortim">
+              <g class="grupo" style="transform-origin: 300px 138px;">
+                <circle class="halo" cx="300.3" cy="138.1" r="9" style="transform-origin: 300.3px 138.1px;"/>
+                <circle class="corpo" cx="300.3" cy="138.1" r="7"/>
+                <circle class="miolo" cx="300.3" cy="138.1" r="2.6"/>
+                <text class="rotulo" x="292" y="128" text-anchor="end">Fortim</text>
+              </g>
+            </a>
+            <a class="pino" href="#senador-pompeu" data-unidade="senador-pompeu">
+              <g class="grupo" style="transform-origin: 170px 232px;">
+                <circle class="halo" cx="169.6" cy="232.3" r="9" style="transform-origin: 169.6px 232.3px;"/>
+                <circle class="corpo" cx="169.6" cy="232.3" r="7"/>
+                <circle class="miolo" cx="169.6" cy="232.3" r="2.6"/>
+                <text class="rotulo" x="161" y="230" text-anchor="end">Senador Pompeu</text>
+              </g>
+            </a>
+            <a class="pino" href="#acopiara" data-unidade="acopiara">
+              <g class="grupo" style="transform-origin: 163px 274px;">
+                <circle class="halo" cx="163" cy="273.7" r="9" style="transform-origin: 163px 273.7px;"/>
+                <circle class="corpo" cx="163" cy="273.7" r="7"/>
+                <circle class="miolo" cx="163" cy="273.7" r="2.6"/>
+                <text class="rotulo" x="154" y="277" text-anchor="end">Acopiara</text>
+              </g>
+            </a>
+            <a class="pino" href="#juazeiro-do-norte" data-unidade="juazeiro-do-norte">
+              <g class="grupo" style="transform-origin: 174px 366px;">
+                <circle class="halo" cx="173.7" cy="366.3" r="9" style="transform-origin: 173.7px 366.3px;"/>
+                <circle class="corpo" cx="173.7" cy="366.3" r="7"/>
+                <circle class="miolo" cx="173.7" cy="366.3" r="2.6"/>
+                <text class="rotulo" x="182" y="370">Juazeiro do Norte</text>
+              </g>
+            </a>
+          </svg>
+        </div>
+
+        <div class="blocos">
+
+          <article class="bloco" id="acopiara">
+            <h3><span class="marca"></span>Acopiara</h3>
+            <div class="fachada">Foto da fachada — <a href="https://github.com/FerndsTech/alves-assessoria/issues/18">#18</a> ainda não entregou</div>
+            <address>Avenida Cazuzinha Marques, 150<br>Centro · Acopiara/CE</address>
+            <p class="horario">Seg a sex, 08h às 16h · mediante hora marcada</p>
+            <div class="quem">
+              <span class="micro">Quem atende aqui</span>
+              <ul>
+                <li>Helena Rocha Vasconcelos <span class="dias">· terças e quintas</span></li>
+                <li>Márcio Aleixo Bandeira <span class="dias">· segundas, quartas e sextas</span></li>
+              </ul>
+            </div>
+            <a class="chegar" href="https://www.google.com/maps/search/?api=1&amp;query=-6.0946,-39.4519">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0a5.5 5.5 0 0 0-5.5 5.5C2.5 9.6 8 16 8 16s5.5-6.4 5.5-10.5A5.5 5.5 0 0 0 8 0Zm0 7.6a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2Z"/></svg>
+              Como chegar
+            </a>
+          </article>
+
+          <article class="bloco" id="juazeiro-do-norte">
+            <h3><span class="marca"></span>Juazeiro do Norte</h3>
+            <div class="fachada">Foto da fachada — <a href="https://github.com/FerndsTech/alves-assessoria/issues/18">#18</a> ainda não entregou</div>
+            <address>Rua Padre Pedro Ribeiro, 120<br>Salesianos · Juazeiro do Norte/CE</address>
+            <p class="horario">Seg a sex, 08h às 16h · mediante hora marcada</p>
+            <div class="quem">
+              <span class="micro">Quem atende aqui</span>
+              <ul>
+                <li>Rafael Timóteo Alencar <span class="dias">· de segunda a sexta</span></li>
+                <li>Beatriz Nogueira Sampaio <span class="dias">· quartas e quintas</span></li>
+              </ul>
+            </div>
+            <a class="chegar" href="https://www.google.com/maps/search/?api=1&amp;query=-7.2130,-39.3153">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0a5.5 5.5 0 0 0-5.5 5.5C2.5 9.6 8 16 8 16s5.5-6.4 5.5-10.5A5.5 5.5 0 0 0 8 0Zm0 7.6a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2Z"/></svg>
+              Como chegar
+            </a>
+          </article>
+
+          <article class="bloco" id="senador-pompeu">
+            <h3><span class="marca"></span>Senador Pompeu</h3>
+            <div class="fachada">Foto da fachada — <a href="https://github.com/FerndsTech/alves-assessoria/issues/18">#18</a> ainda não entregou</div>
+            <address>Rua José Benigno Soares, 92<br>Caracará · Senador Pompeu/CE</address>
+            <p class="horario">Seg a sex, 08h às 16h · mediante hora marcada</p>
+            <div class="quem">
+              <span class="micro">Quem atende aqui</span>
+              <ul>
+                <li>Helena Rocha Vasconcelos <span class="dias">· segundas e quartas</span></li>
+                <li>Ivo Carvalho Meneses <span class="dias">· sextas</span></li>
+              </ul>
+            </div>
+            <a class="chegar" href="https://www.google.com/maps/search/?api=1&amp;query=-5.5906,-39.3728">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0a5.5 5.5 0 0 0-5.5 5.5C2.5 9.6 8 16 8 16s5.5-6.4 5.5-10.5A5.5 5.5 0 0 0 8 0Zm0 7.6a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2Z"/></svg>
+              Como chegar
+            </a>
+          </article>
+
+          <article class="bloco" id="fortim">
+            <h3><span class="marca"></span>Fortim</h3>
+            <div class="fachada">Foto da fachada — <a href="https://github.com/FerndsTech/alves-assessoria/issues/18">#18</a> ainda não entregou</div>
+            <address>Rua Joaquim Crisóstomo, 1049, <span class="complemento">sala 05</span><br>Fortim/CE</address>
+            <p class="horario">Seg a sex, 08h às 16h · mediante hora marcada</p>
+            <div class="quem">
+              <span class="micro">Quem atende aqui</span>
+              <ul>
+                <li>Lúcia Farias Pontes <span class="dias">· terças e quintas</span></li>
+              </ul>
+            </div>
+            <a class="chegar" href="https://www.google.com/maps/search/?api=1&amp;query=-4.4508,-37.7936">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0a5.5 5.5 0 0 0-5.5 5.5C2.5 9.6 8 16 8 16s5.5-6.4 5.5-10.5A5.5 5.5 0 0 0 8 0Zm0 7.6a2.1 2.1 0 1 1 0-4.2 2.1 2.1 0 0 1 0 4.2Z"/></svg>
+              Como chegar
+            </a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="fecho">
+  <h2>O que este protótipo põe em jogo</h2>
+
+  <h3>1. O desenho paga o que custa?</h3>
+  <p>
+    O mapa mostra um fato desconfortável que nenhuma lista de endereços mostra:
+    <b>três das quatro praças ficam empilhadas numa faixa estreita do sertão central</b>
+    — Senador Pompeu, Acopiara e Juazeiro do Norte quase na mesma longitude — e Fortim
+    está sozinha no litoral leste, a mais de 300&nbsp;km. Metade do desenho é Ceará vazio.
+  </p>
+  <p>
+    A favor dele: com toda prova social convencional vedada pela
+    <a href="https://github.com/FerndsTech/alves-assessoria/issues/2">pesquisa da OAB</a>,
+    “quatro portas físicas espalhadas pelo estado” é uma das poucas alegações de autoridade
+    que sobraram — e ela se vê num instante, não se lê.
+  </p>
+
+  <h3>2. O que a medição já mostrou</h3>
+  <p>
+    Três coisas apareceram ao construir, e nenhuma delas se via na pergunta do ticket:
+  </p>
+  <ul>
+    <li>
+      <b>A variante A dobra a altura da seção.</b> 3760px contra 1861px da B, no mesmo
+      desktop — porque pôr o mapa à esquerda espreme os 4 blocos numa coluna só. Foi preciso
+      <b>prender o mapa com <code>position: sticky</code></b> para que ele não saísse de vista
+      nos primeiros 400px; sem isso o “instrumento” some justo quando o visitante começa a
+      usá-lo. A variante C tem o mesmo problema e a mesma correção.
+    </li>
+    <li>
+      <b>Em 390px o mapa perde os rótulos.</b> Reduzido a 260px de largura, “Senador Pompeu”
+      e “Juazeiro do Norte” ficam ilegíveis e encostam no traço. O desenho <b>não</b> sobrevive
+      inteiro ao celular — ou perde os nomes e vira ornamento, ou muda de forma. Como ~99% do
+      público está no celular (<a href="https://github.com/FerndsTech/alves-assessoria/blob/master/docs/adr/0001-site-unico-responsivo-e-diferenciacao-do-desktop.md">ADR-0001</a>),
+      esta não é uma objeção de canto.
+    </li>
+    <li>
+      <b>Três dos quatro pinos quase se tocam.</b> Senador Pompeu, Acopiara e Juazeiro do
+      Norte caem quase na mesma longitude. Num mapa de 260px, os três viram uma mancha.
+    </li>
+  </ul>
+
+  <h3>3. Os blocos abrem ou já estão abertos?</h3>
+  <p>
+    Nas três variantes os quatro blocos estão <b>sempre visíveis</b>, e o pino é
+    <b>afordância de navegação, não de revelação</b>. Isso não é escolha estética:
+    o <a href="https://github.com/FerndsTech/alves-assessoria/issues/17">#17</a> já fixou que
+    em mobile “as localidades ficam abertas, porque endereço é o que este público vem buscar”,
+    e o ADR-0001 registra que o Google não carrega conteúdo que depende de clique.
+    O pino é um <code>&lt;a href="#acopiara"&gt;</code> — a mesma âncora para onde os
+    4 Business Profiles apontam.
+  </p>
+
+  <h3>4. O campo que falta e o que ele decide</h3>
+  <p>Proposta de esquema para a coleção <code>unidades</code> que o
+  <a href="https://github.com/FerndsTech/alves-assessoria/issues/7">#7</a> deixou para cá:</p>
+  <pre><span class="c">// src/content/config.ts</span>
+const unidade = z.object({
+  cidade:      z.string(),                    <span class="c">// "Acopiara"</span>
+  uf:          z.literal("CE"),
+  logradouro:  z.string(),                    <span class="c">// "Avenida Cazuzinha Marques, 150"</span>
+  bairro:      z.string().optional(),         <span class="c">// Fortim não tem</span>
+  complemento: z.string().optional(),         <span class="c">// "sala 05"</span>
+  <span class="k">geo</span>:         z.object({ lat: z.number(), lon: z.number() }),
+  fachada:     image().optional(),            <span class="c">// #18 ainda não entregou</span>
+  ordem:       z.number().int().positive(),
+});
+<span class="c">// slug = nome do arquivo = a âncora (#acopiara)</span>
+<span class="c">// quem atende ali NÃO é campo: deriva de advogado.atuacoes[].unidade</span></pre>
+  <p>
+    <code>geo</code> é o campo que faz o desenho deixar de ser ilustração: ele posiciona
+    o pino <b>e</b> monta o link “Como chegar”, então mapa e link nunca discordam.
+    Se ele não existir, alguém vai digitar a posição do pino à mão no SVG.
+  </p>
+
+  <div class="nota">
+    <p>
+      <b>Dois campos deliberadamente ausentes, e o motivo.</b>
+      <b>Horário</b> não entra: hoje é fato único do site inteiro (seg–sex, 08h–16h), e
+      repeti-lo quatro vezes é convidar quatro respostas diferentes. <b>Telefone</b> também
+      não: o <a href="https://github.com/FerndsTech/alves-assessoria/issues/9">#9</a> deixou
+      uma regra condicional que só o <a href="https://github.com/FerndsTech/alves-assessoria/issues/16">#16</a>
+      resolve. Se o #16 voltar dizendo que há telefone atendido em cada praça — ou horários
+      diferentes por porta —, os dois campos entram aqui, e é só isso que muda.
+    </p>
+  </div>
+
+  <h3>5. O que não foi decidido de propósito</h3>
+  <ul>
+    <li>
+      <b>O traçado do Ceará é rascunho.</b> Ele foi construído a partir de latitude e
+      longitude reais, então <b>as posições dos 4 pinos estão certas</b> — mas o contorno
+      é aproximado à mão. O desenho definitivo é o asset que o
+      <a href="https://github.com/FerndsTech/alves-assessoria/issues/6">#6</a> registrou como
+      inexistente, e precisa vir de geometria do IBGE simplificada para caber nos 15&nbsp;KB.
+    </li>
+    <li>
+      <b>O tratamento visual é do <a href="https://github.com/FerndsTech/alves-assessoria/issues/21">#21</a>.</b>
+      Aqui só há tokens do <a href="https://github.com/FerndsTech/alves-assessoria/issues/5">#5</a>
+      aplicados sem opinião. Textura, profundidade, tratamento da massa de terra — nada disso
+      foi tentado.
+    </li>
+    <li>
+      <b>A animação de revelação no scroll não está no seletor.</b> Ela existe no
+      <a href="https://github.com/FerndsTech/alves-assessoria/issues/6">#6</a> como decisão
+      geral da página, com a trava de não ter estado inicial invisível dependente de JS —
+      o que aqui significa que o pino nasce visível e a animação só o enfeita.
+    </li>
+  </ul>
+</div>
+
+<nav class="barra" aria-label="Controles do protótipo">
+  <div class="grupo-ctrl">
+    <span class="micro">Variante</span>
+    <div class="opcoes" role="group">
+      <button type="button" data-set="variante" data-val="a" aria-pressed="true">A · mapa-instrumento</button>
+      <button type="button" data-set="variante" data-val="b" aria-pressed="false">B · sem desenho</button>
+      <button type="button" data-set="variante" data-val="c" aria-pressed="false">C · mapa-atmosfera</button>
+    </div>
+  </div>
+  <div class="grupo-ctrl">
+    <span class="micro">Largura</span>
+    <div class="opcoes" role="group">
+      <button type="button" data-set="largura" data-val="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-set="largura" data-val="celular" aria-pressed="false">Celular 390px</button>
+    </div>
+  </div>
+  <div class="grupo-ctrl">
+    <span class="micro">Pino</span>
+    <div class="opcoes" role="group">
+      <button type="button" data-set="anim" data-val="pulso" aria-pressed="true">Pulso</button>
+      <button type="button" data-set="anim" data-val="sequencia" aria-pressed="false">Sequência</button>
+      <button type="button" data-set="anim" data-val="nenhuma" aria-pressed="false">Nenhuma</button>
+    </div>
+  </div>
+</nav>
+
+<script>
+const TESES = {
+  a: "O desenho é o instrumento: você acha sua cidade nele e desce para o bloco.",
+  b: "Endereço é o que o visitante veio buscar. O desenho não paga os 15 KB.",
+  c: "O desenho é atmosfera — carrega o alcance, não a navegação."
+};
+const NOMES = {
+  a: "A — mapa-instrumento",
+  b: "B — sem desenho",
+  c: "C — mapa-atmosfera"
+};
+
+const body = document.body;
+const params = new URLSearchParams(location.search);
+
+function aplicar(chave, valor, escrever) {
+  body.dataset[chave] = valor;
+  document.querySelectorAll('[data-set="' + chave + '"]').forEach(function (b) {
+    b.setAttribute("aria-pressed", String(b.dataset.val === valor));
+  });
+  if (chave === "variante") {
+    document.getElementById("titulo-variante").textContent = NOMES[valor];
+    document.getElementById("tese-variante").textContent = TESES[valor];
+  }
+  if (escrever) {
+    params.set(chave === "variante" ? "v" : chave, valor);
+    history.replaceState(null, "", "?" + params.toString());
+  }
+}
+
+aplicar("variante", params.get("v") || "a", false);
+aplicar("largura", params.get("largura") || "desktop", false);
+aplicar("anim", params.get("anim") || "pulso", false);
+
+document.querySelectorAll(".barra button").forEach(function (b) {
+  b.addEventListener("click", function () {
+    aplicar(b.dataset.set, b.dataset.val, true);
+  });
+});
+
+// Realce recíproco pino ↔ bloco — no site real isto é :target puro,
+// sem JS. Aqui existe para tornar a relação visível ao passar o mouse.
+document.querySelectorAll(".pino").forEach(function (p) {
+  const alvo = document.getElementById(p.dataset.unidade);
+  ["mouseenter", "focus"].forEach(function (ev) {
+    p.addEventListener(ev, function () { alvo.classList.add("destacado"); });
+  });
+  ["mouseleave", "blur"].forEach(function (ev) {
+    p.addEventListener(ev, function () { alvo.classList.remove("destacado"); });
+  });
+});
+</script>
