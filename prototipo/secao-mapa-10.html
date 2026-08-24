@@ -385,15 +385,13 @@ body[data-variante="c"] .blocos {
   justify-self: start;
   position: relative; z-index: 1;
 }
+/* DECIDIDO em 24/08/2026: abaixo do ponto de quebra o desenho SOME.
+   Ele é enriquecimento de desktop, e o conteúdo (endereços) vive nos
+   blocos — então a paridade do ADR-0001 continua de pé: o que diverge
+   é apresentação, não conteúdo. */
 @container (max-width: 860px) {
-  body[data-variante="c"] .mapa-caixa {
-    position: static; height: auto; max-width: 240px;
-    justify-self: center; margin-bottom: var(--s6);
-  }
-  body[data-variante="c"] .mapa-caixa .mapa { height: auto; width: 100%; }
-  body[data-variante="c"] .mapa-caixa,
-  body[data-variante="c"] .blocos { grid-area: auto; }
-  body[data-variante="c"] .blocos { grid-template-columns: 1fr; justify-self: stretch; }
+  body[data-variante="c"] .mapa-caixa { display: none; }
+  body[data-variante="c"] .blocos { grid-area: auto; grid-template-columns: 1fr; justify-self: stretch; }
 }
 
 /* ── Barra flutuante ───────────────────────────────────────── */
@@ -478,24 +476,25 @@ body[data-variante="c"] .blocos {
       do <a href="https://github.com/FerndsTech/alves-assessoria/issues/17">#17</a> fixou o
       bloco de CTA em <b>duas</b> aparições — e nenhuma é aqui.</span>
     </li>
-    <li class="aberta">
-      <span class="micro">Aberta — julgue olhando</span>
-      <b>O desenho paga o que custa?</b>
-      <span class="txt">Variante <b>A</b> aposta que sim, <b>B</b> que não,
-      <b>C</b> que ele vale como atmosfera e não como instrumento.</span>
+    <li class="caiu">
+      <span class="micro">Decidido em 24/08/2026</span>
+      <b>Venceu a C — mapa-atmosfera</b>
+      <span class="txt">O desenho carrega o <i>alcance</i>, não a navegação: contorno de
+      baixo contraste preso atrás dos blocos. A vence a leitura literal de “seção do mapa”,
+      mas dobra a altura da seção; B devolve bytes que, medidos, não eram problema.</span>
     </li>
-    <li class="aberta">
-      <span class="micro">Aberta — julgue olhando</span>
-      <b>Mobile troca de forma?</b>
-      <span class="txt">Use o simulador de largura. O precedente do
-      <a href="https://github.com/FerndsTech/alves-assessoria/issues/20">#20</a> é
-      um componente, duas geometrias, um ponto de quebra.</span>
+    <li class="caiu">
+      <span class="micro">Decidido em 24/08/2026</span>
+      <b>No celular o desenho some</b>
+      <span class="txt">Abaixo do ponto de quebra ele não existe. Não fere a paridade do
+      ADR-0001 porque o mapa é <b>decoração</b> — o endereço, que é o conteúdo, está nos
+      4 blocos nas duas larguras. Diverge apresentação, não conteúdo.</span>
     </li>
   </ul>
 
   <div class="palco-topo">
     <span class="micro">Variante em exibição</span>
-    <strong id="titulo-variante">A — mapa-instrumento</strong>
+    <strong id="titulo-variante">C — mapa-atmosfera</strong>
     <span class="micro" id="tese-variante" style="flex:1 1 260px;"></span>
   </div>
 </div>
@@ -645,7 +644,7 @@ body[data-variante="c"] .blocos {
 <div class="fecho">
   <h2>O que este protótipo põe em jogo</h2>
 
-  <h3>1. O desenho paga o que custa?</h3>
+  <h3>1. O desenho paga o que custa? Sim — e é 18× mais barato que o teto</h3>
   <p>
     O mapa mostra um fato desconfortável que nenhuma lista de endereços mostra:
     <b>três das quatro praças ficam empilhadas numa faixa estreita do sertão central</b>
@@ -658,6 +657,18 @@ body[data-variante="c"] .blocos {
     “quatro portas físicas espalhadas pelo estado” é uma das poucas alegações de autoridade
     que sobraram — e ela se vê num instante, não se lê.
   </p>
+  <div class="nota">
+    <p>
+      <b>A objeção de orçamento não se sustentou, e o número é este.</b>
+      O SVG deste protótipo — contorno de 42 pontos, 4 pinos, rótulos — pesa
+      <b>848 bytes comprimidos</b>. O teto que o
+      <a href="https://github.com/FerndsTech/alves-assessoria/issues/6">#6</a> fixou era
+      15&nbsp;KB. Sobram <b>14,5&nbsp;KB</b> de folga, e some junto a tentação de injetar o
+      desenho por JS só no desktop: ele fica <b>inline no HTML sempre</b>, escondido por CSS
+      no celular. Um <code>display: none</code> é mais barato, mais simples e mais robusto
+      que qualquer <code>matchMedia</code> — e não gasta linha do orçamento de JS.
+    </p>
+  </div>
 
   <h3>2. O que a medição já mostrou</h3>
   <p>
@@ -749,17 +760,34 @@ const unidade = z.object({
       <a href="https://github.com/FerndsTech/alves-assessoria/issues/6">#6</a> como decisão
       geral da página, com a trava de não ter estado inicial invisível dependente de JS —
       o que aqui significa que o pino nasce visível e a animação só o enfeita.
+      <b>Venceu a sequência:</b> os 4 pinos caem em cadência, uma vez só, e depois calam.
     </li>
   </ul>
+
+  <h3>6. A consequência que a decisão cria</h3>
+  <p>
+    Com o desenho ausente no celular e ~99% do público ali, <b>o mapa existe para uma
+    minoria</b> — e isso é coerente, não contraditório: o
+    <a href="https://github.com/FerndsTech/alves-assessoria/blob/master/docs/adr/0002-stack-e-orcamento-de-performance.md">ADR-0002</a>
+    já decidiu o enriquecimento na <b>direção aditiva</b>, com layouts próprios de desktop
+    entrando de graça. O mapa passa a ser mais um item dessa lista.
+  </p>
+  <p>
+    O que <b>não</b> muda com a largura: os 4 blocos, os endereços, os advogados que atendem
+    em cada praça, o link “Como chegar” e as âncoras <code>#acopiara</code>,
+    <code>#juazeiro-do-norte</code>, <code>#senador-pompeu</code> e <code>#fortim</code> —
+    para onde os 4 Business Profiles apontam. <b>É por isso que a paridade se mantém</b>:
+    nada que o Business Profile promete ao visitante depende do desenho.
+  </p>
 </div>
 
 <nav class="barra" aria-label="Controles do protótipo">
   <div class="grupo-ctrl">
     <span class="micro">Variante</span>
     <div class="opcoes" role="group">
-      <button type="button" data-set="variante" data-val="a" aria-pressed="true">A · mapa-instrumento</button>
+      <button type="button" data-set="variante" data-val="a" aria-pressed="false">A · mapa-instrumento</button>
       <button type="button" data-set="variante" data-val="b" aria-pressed="false">B · sem desenho</button>
-      <button type="button" data-set="variante" data-val="c" aria-pressed="false">C · mapa-atmosfera</button>
+      <button type="button" data-set="variante" data-val="c" aria-pressed="true">C · mapa-atmosfera</button>
     </div>
   </div>
   <div class="grupo-ctrl">
@@ -772,8 +800,8 @@ const unidade = z.object({
   <div class="grupo-ctrl">
     <span class="micro">Pino</span>
     <div class="opcoes" role="group">
-      <button type="button" data-set="anim" data-val="pulso" aria-pressed="true">Pulso</button>
-      <button type="button" data-set="anim" data-val="sequencia" aria-pressed="false">Sequência</button>
+      <button type="button" data-set="anim" data-val="pulso" aria-pressed="false">Pulso</button>
+      <button type="button" data-set="anim" data-val="sequencia" aria-pressed="true">Sequência</button>
       <button type="button" data-set="anim" data-val="nenhuma" aria-pressed="false">Nenhuma</button>
     </div>
   </div>
@@ -809,9 +837,9 @@ function aplicar(chave, valor, escrever) {
   }
 }
 
-aplicar("variante", params.get("v") || "a", false);
+aplicar("variante", params.get("v") || "c", false);
 aplicar("largura", params.get("largura") || "desktop", false);
-aplicar("anim", params.get("anim") || "pulso", false);
+aplicar("anim", params.get("anim") || "sequencia", false);
 
 document.querySelectorAll(".barra button").forEach(function (b) {
   b.addEventListener("click", function () {
