@@ -1,7 +1,8 @@
 # ADR-0002 — Stack de renderização e orçamento de performance
 
-- **Status:** ✅ **Aceito**, com as decisões 2 e 3 **emendadas**.
+- **Status:** ✅ **Aceito**, com as decisões 2, 3 e 5 **emendadas**.
 - **Emendado por:** [ADR-0003](0003-orcamento-folgado-para-profundidade.md) em 24/08/2026 — o orçamento de bytes e as metas de Core Web Vitals foram afrouxados para acomodar a direção visual com profundidade. A estrutura deste ADR (existe teto, existe gate, existem as três travas de animação) continua valendo.
+- **Emendado por:** [ADR-0004](0004-gate-de-acessibilidade.md) em 24/08/2026 — a decisão 5 listava **dois** portões mecânicos e passa a listar **três**: entra o gate de acessibilidade, bloqueante, pelo mesmo critério de determinismo que pôs o gate de bytes do lado duro.
 - **Data:** 22/08/2026
 - **Decisor:** Murilo (FerndsTech)
 - **Ticket de origem:** [Stack e orçamento de performance (#6)](https://github.com/FerndsTech/alves-assessoria/issues/6)
@@ -111,6 +112,8 @@ Somam-se: banda ilimitada no plano gratuito, build a partir do git (que o Astro 
 **O nome do domínio não é decidido aqui** — é fato do cliente, e vai para o [#16](https://github.com/FerndsTech/alves-assessoria/issues/16). O que este ADR fixa é que haverá domínio próprio com HTTPS.
 
 ### 5. Validação: bytes bloqueiam, Lighthouse informa
+
+> ⚠️ **Emendado em 24/08/2026 pelo [ADR-0004](0004-gate-de-acessibilidade.md).** Os dois portões abaixo continuam valendo tais como estão, mas **não são mais os únicos**: entra um terceiro, **o gate de acessibilidade, bloqueante**. Ele foi para o lado duro pelo critério desta mesma decisão — o axe é determinístico (mesmo HTML, mesmas violações, sem CPU no meio), então o argumento de ruído que pôs o Lighthouse do lado informativo não incide sobre ele. A conferência manual pré-publicação abaixo ganha quatro itens de acessibilidade; ver decisão 7 do ADR-0004.
 
 **Numa página estática, o orçamento de bytes é indicador antecedente do LCP** — não há servidor lento, consulta a banco nem renderização no cliente. Não se estoura LCP sem antes estourar bytes. É isso que permite pôr o gate duro na medição determinística.
 
