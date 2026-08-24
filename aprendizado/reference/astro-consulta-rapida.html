@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Referência — Astro, consulta rápida</title>
+<link rel="stylesheet" href="../assets/estilo.css">
+<style>
+  .anatomia {
+    background: var(--papel-caixa);
+    border: 1px solid var(--linha);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+  }
+  .anatomia pre {
+    margin: 0;
+    font: 400 0.82rem/1.75 var(--mono);
+    white-space: pre;
+  }
+  .anatomia .cm { color: var(--tinta-fraca); font-style: italic; }
+  .anatomia .mk { color: var(--marca); font-weight: 600; }
+
+  .par {
+    border-left: 3px solid var(--linha);
+    padding-left: 1.1rem;
+    margin: 0 0 1.4rem;
+  }
+  .par h4 {
+    font: 600 0.95rem/1.3 var(--mono);
+    color: var(--marca);
+    margin: 0 0 0.35rem;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .par p { font: 400 0.92rem/1.6 var(--sans); margin: 0 0 0.4rem; }
+  .par .vs { font: 400 0.85rem/1.55 var(--sans); color: var(--tinta-fraca); }
+  .par .vs b { color: var(--tinta); font-weight: 600; }
+
+  .arvore {
+    font: 400 0.85rem/1.9 var(--mono);
+    background: var(--papel-caixa);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    margin: 1.5rem 0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .arvore .c { color: var(--tinta-fraca); font-family: var(--sans); font-size: 0.82rem; }
+
+  .regra-curta {
+    font: 600 0.95rem/1.55 var(--sans);
+    background: var(--papel-caixa);
+    border-left: 3px solid var(--marca);
+    border-radius: 0 4px 4px 0;
+    padding: 0.8rem 1.1rem;
+    margin: 1.4rem 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="chapeu">Referência · consulta rápida</div>
+<h1>Astro</h1>
+<p class="linha-fina">O que você precisa ter à mão enquanto escreve. A explicação inteira está
+em <a href="https://claude.ai/code/artifact/9783dfde-6410-4ffc-8efc-91e0f0ede719">Astro em Duas
+Linguagens</a>.</p>
+
+<div class="regra-curta">
+A regra que resume tudo: <strong>acima dos três traços roda na sua máquina; abaixo vira HTML.
+JavaScript no navegador só existe se você escrever um <code>&lt;script&gt;</code> ou uma
+diretiva <code>client:</code>.</strong>
+</div>
+
+<h2>Anatomia de um <code>.astro</code></h2>
+
+<div class="anatomia">
+<pre><span class="mk">---</span>                              <span class="cm">← abre o frontmatter</span>
+import Card from '../components/Card.astro';
+import dados from '../data/advogados.json';
+const { titulo } = Astro.props;   <span class="cm">← props recebidas</span>
+<span class="mk">---</span>                              <span class="cm">← fecha. NADA acima cruza a rede.</span>
+
+&lt;section&gt;
+  &lt;h2&gt;{titulo}&lt;/h2&gt;            <span class="cm">← expressão JS no template</span>
+  {dados.map(d =&gt; &lt;Card {...d} /&gt;)}
+  &lt;slot /&gt;                       <span class="cm">← buraco para o HTML filho</span>
+&lt;/section&gt;
+
+&lt;style&gt;                          <span class="cm">← CSS com escopo neste componente</span>
+  section { display: grid; }
+&lt;/style&gt;
+
+&lt;script&gt;                         <span class="cm">← ESTE roda no navegador do visitante</span>
+  document.querySelector('button')?.addEventListener(...);
+&lt;/script&gt;</pre>
+</div>
+
+<h2>Estrutura de pastas</h2>
+
+<div class="arvore">src/
+  pages/        <span class="c">obrigatório — cada arquivo aqui vira uma URL</span>
+  layouts/      <span class="c">esqueletos reutilizados (head, preload de fonte)</span>
+  components/   <span class="c">os carimbos; NÃO viram URL</span>
+  styles/       <span class="c">convenção, não exigência</span>
+  assets/       <span class="c">imagens que devem ser otimizadas</span>
+  data/         <span class="c">convenção sua: os 6 advogados como JSON</span>
+public/         <span class="c">copiado as-is, sem processamento nenhum</span>
+astro.config.mjs
+dist/           <span class="c">a saída do build; é isto que a Cloudflare publica</span>
+  index.html    <span class="c">sem hash → revalida a cada visita</span>
+  _astro/       <span class="c">com hash → Cache-Control immutable, 1 ano</span></div>
+
+<h2>As seis diretivas de cliente</h2>
+
+<p>Só funcionam em componentes de <strong>framework de UI</strong> (React, Svelte, Vue) com a
+integração instalada. Sem diretiva, o componente vira HTML estático e não envia JS.</p>
+
+<div class="rolagem">
+<table>
+<thead><tr><th>Diretiva</th><th>Prioridade</th><th>Quando o JS carrega</th><th>Para quê</th></tr></thead>
+<tbody>
+<tr><td><code>nenhuma</code></td><td>—</td><td>Nunca; não há JS</td><td>O padrão. O que este projeto usa quase sempre</td></tr>
+<tr><td><code>client:load</code></td><td>Alta</td><td>Imediatamente, na carga da página</td><td>UI visível de cara que precisa responder já</td></tr>
+<tr><td><code>client:idle</code></td><td>Média</td><td>Após a carga inicial, no <code>requestIdleCallback</code>. Aceita <code>timeout</code> em ms</td><td>UI de baixa prioridade que não precisa responder de imediato</td></tr>
+<tr><td><code>client:visible</code></td><td>Baixa</td><td>Ao entrar na tela. Aceita <code>rootMargin</code></td><td>Abaixo da dobra, ou pesado demais para carregar à toa</td></tr>
+<tr><td><code>client:media</code></td><td>Baixa</td><td>Quando a media query passa a valer</td><td>Só numa faixa de tela — a única que economiza bytes no celular</td></tr>
+<tr><td><code>client:only="react"</code></td><td>—</td><td>Imediatamente, <strong>sem HTML do servidor</strong></td><td>Vedado para conteúdo primário neste projeto</td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="regra">
+<p><strong>A diretiva decide <em>quando</em>, nunca <em>quanto</em>.</strong> Os bytes de
+<code>client:load</code> e <code>client:idle</code> são idênticos. Para caber nos 15 KB do
+ADR-0002, a decisão que importa é não criar a ilha.</p>
+</div>
+
+<h2>Pares que se confundem</h2>
+
+<div class="par">
+  <h4>frontmatter × &lt;script&gt;</h4>
+  <p>Mesma linguagem, mundos opostos.</p>
+  <p class="vs"><b>frontmatter</b> roda uma vez, na sua máquina, no build. Nunca é enviado.
+  <br><b>&lt;script&gt;</b> roda toda vez, no celular do visitante. Sempre é enviado.</p>
+</div>
+
+<div class="par">
+  <h4>ilha × &lt;script&gt; em .astro</h4>
+  <p>Os dois deixam a página interativa; só um é “ilha”.</p>
+  <p class="vs"><b>Ilha</b> exige framework de UI instalado + diretiva <code>client:</code>.
+  <br><b>&lt;script&gt;</b> é JS puro; o Astro o empacota, deduplica e embute se for pequeno.
+  Este projeto provavelmente usa só isto.</p>
+</div>
+
+<div class="par">
+  <h4>renderizar × hidratar</h4>
+  <p>O intervalo entre os dois é o que o visitante sente como “travado”.</p>
+  <p class="vs"><b>Renderizar</b> é desenhar na tela.
+  <br><b>Hidratar</b> é ligar o comportamento no que já está desenhado.</p>
+</div>
+
+<div class="par">
+  <h4>src/ × public/</h4>
+  <p>Decisão de bytes disfarçada de decisão de organização.</p>
+  <p class="vs"><b>src/</b> é transformado, otimizado e empacotado — AVIF, WebP, <code>srcset</code>.
+  <br><b>public/</b> é copiado “as-is, with no processing”. Foto aqui = orçamento estourado em silêncio.</p>
+</div>
+
+<div class="par">
+  <h4>zero JS × JS adiado</h4>
+  <p>O par que resolve a pergunta original.</p>
+  <p class="vs"><b>Zero JS</b> significa que o arquivo não existe. Custo: 0 KB.
+  <br><b>Adiado</b> significa que ele existe e chega depois. Custo: o mesmo de sempre.</p>
+</div>
+
+<h2>Imagens</h2>
+
+<ul>
+<li><code>&lt;Image /&gt;</code> — transforma dimensão, formato e qualidade; infere as dimensões
+(evita CLS); aplica <code>loading="lazy"</code> e <code>decoding="async"</code> por padrão.</li>
+<li><code>&lt;Picture /&gt;</code> — emite <code>&lt;picture&gt;</code> com AVIF e WebP mais o
+fallback. É o que gera os 36 arquivos das 6 fotos.</li>
+<li>Fonte da imagem em <code>src/</code>, sempre, quando for conteúdo.</li>
+</ul>
+
+<h2>Como isto cumpre o ADR-0002</h2>
+
+<div class="rolagem">
+<table>
+<thead><tr><th>Exigência do ADR</th><th>O que no Astro cumpre</th></tr></thead>
+<tbody>
+<tr><td>Conteúdo primário no HTML entregue</td><td>Componente <code>.astro</code> vira HTML no build; o laço não vai junto</td></tr>
+<tr><td>Informação fictícia trocável sem refatoração</td><td>1 componente + 1 JSON no lugar de 12 blocos duplicados</td></tr>
+<tr><td>JS do site inteiro ≤ 15 KB</td><td>Zero por padrão; só o que você escrever. Scripts deduplicados</td></tr>
+<tr><td>Fotos ≤ 70 KB, AVIF, <code>srcset</code></td><td><code>&lt;Picture /&gt;</code> no pipeline de <code>src/</code></td></tr>
+<tr><td>Assets <code>immutable</code>, HTML revalidando</td><td><code>_astro/</code> com hash no nome; <code>index.html</code> sem hash</td></tr>
+<tr><td>CLS ≤ 0,10</td><td>Dimensões inferidas nas imagens</td></tr>
+<tr><td>Gate de bytes bloqueando o PR</td><td><strong>Não vem do Astro.</strong> É script seu conferindo o <code>dist/</code></td></tr>
+</tbody>
+</table>
+</div>
+
+<div class="rodape">
+  <h3>Fontes</h3>
+  <p>
+  <a href="https://docs.astro.build/en/basics/astro-components/">Components</a> ·
+  <a href="https://docs.astro.build/en/concepts/islands/">Islands</a> ·
+  <a href="https://docs.astro.build/en/reference/directives-reference/">Directives reference</a> ·
+  <a href="https://docs.astro.build/en/guides/client-side-scripts/">Client-side scripts</a> ·
+  <a href="https://docs.astro.build/en/guides/images/">Images</a> ·
+  <a href="https://docs.astro.build/en/basics/project-structure/">Project structure</a>
+  </p>
+
+  <h3>Onde está a explicação</h3>
+  <p><a href="https://claude.ai/code/artifact/9783dfde-6410-4ffc-8efc-91e0f0ede719">Astro em
+  Duas Linguagens</a> — os 15 termos nas duas linguagens, os diagramas da fronteira, o
+  simulador de diretivas, o mapa mental do projeto e a rota de quatro sessões.</p>
+</div>
+
+</body>
+</html>

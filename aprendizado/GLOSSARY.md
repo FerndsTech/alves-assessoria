@@ -56,3 +56,21 @@ Ainda sem evidência de uso correto. Promover para cima quando o Murilo os usar 
 - **Blast radius** — quantos lugares quebram de uma vez; é o que escolhe entre fatia e expand–contract
 - **Profundidade / seam / alavancagem / localidade** — o vocabulário de forma do código
 - **Higiene de contexto** — o que fica junto numa janela e onde se corta
+
+### Astro — apresentados em 24/08/2026
+
+Desenvolvidos por inteiro em [Astro em Duas Linguagens](https://claude.ai/code/artifact/9783dfde-6410-4ffc-8efc-91e0f0ede719)
+e resumidos na [consulta rápida](./reference/astro-consulta-rapida.html). Sem evidência de uso
+correto ainda. O teste de promoção é o **par**, não o termo isolado — ele só pegou quando
+consegue dizer a diferença entre os dois lados:
+
+- **Frontmatter × `<script>`** — roda na sua máquina uma vez × roda no celular dele toda vez
+- **Zero JS × JS adiado** — o arquivo não existe × o arquivo existe e chega depois
+- **Ilha × `<script>` em `.astro`** — exige framework de UI + `client:` × é JS puro empacotado
+- **Renderizar × hidratar** — desenhar na tela × ligar o comportamento no que já está desenhado
+- **`src/` × `public/`** — transformado e otimizado × copiado sem processamento
+- **Build step × servidor** — roda quando você manda × roda a cada visita
+- **MPA × SPA** — cada página é página × um aplicativo que finge trocar de tela
+
+Termos avulsos do mesmo conjunto: **diretiva de cliente**, **props/slot**, **roteamento por
+arquivo**, **ilha de servidor**, **hash de conteúdo**, **`<Picture />`**.

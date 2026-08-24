@@ -33,6 +33,15 @@ Preferências e observações sobre como ensinar o Murilo.
   entre termos vizinhos (névoa × ticket, handoff × compact, alavancagem × localidade). Ensinar
   termo sozinho não funciona com ele — ensinar o par funciona.
 
+- **Chega com modelo mental já formado, e costuma estar meio certo.** Em 24/08/2026 abriu a
+  sessão de Astro afirmando que ele "não carrega JavaScript e deixa em segundo plano em 1s" —
+  duas coisas verdadeiras fundidas numa falsa. Vale sempre perguntar o que ele já acha antes de
+  expor: a aula fica melhor partindo da correção do que da folha em branco.
+- **Pede as duas linguagens sem ser lembrado.** Não é mais preferência declarada uma vez; é
+  hábito. Tratar como permanente.
+- **Pede o visual explicitamente** ("diagramas ou então desenhos", "mapa mental"). Texto sozinho
+  não basta — cada mecanismo importante merece uma figura que mostre o mecanismo, não o nome dele.
+
 - Pensa em **paralelismo** naturalmente — perguntou como tocar logo, layout e assets
   enquanto o wayfinder roda. Lições sobre o fluxo devem tratar dependência e bloqueio
   como tema central, não como nota de rodapé.
