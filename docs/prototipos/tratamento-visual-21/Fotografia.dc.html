@@ -96,6 +96,26 @@
   </div>
 
   <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--rule);padding-top:32px">
+    <p class="micro" style="color:var(--accent)">Novo em 24/08/2026 &mdash; a virada para a profundidade criou este requisito</p>
+    <h3>A foto de fachada do her&oacute;i</h3>
+    <p style="max-width:88ch;color:var(--muted)">Com o her&oacute;i tipogr&aacute;fico, esta foto n&atilde;o existia. Com o her&oacute;i fotogr&aacute;fico, ela &eacute; o <strong>elemento de LCP da p&aacute;gina inteira</strong> &mdash; a primeira coisa que o visitante v&ecirc; e a que o gate mede.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;padding-top:8px">
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
+        <p class="micro">Geometria</p>
+        <p class="small">Panor&acirc;mica, 16:9 ou mais larga, com o assunto &agrave; direita: o cart&atilde;o de texto ocupa a esquerda e cobre at&eacute; 55% da largura em desktop. At&eacute; <strong>400 KB</strong> pelo ADR-0003, em AVIF com <code>srcset</code>.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
+        <p class="micro">Tratamento</p>
+        <p class="small">Mesmo tratamento dos retratos &mdash; cor natural, satura&ccedil;&atilde;o reduzida ~10% &mdash; e um v&eacute;u escuro em CSS por cima, n&atilde;o na imagem. O v&eacute;u &eacute; o que garante o contraste AA do cart&atilde;o e sobrevive a trocar a foto.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid #8A5300;padding-top:16px">
+        <p class="micro" style="color:#8A5300">Vedado pela OAB</p>
+        <p class="small">Nada que afirme sobre <strong>tamanho, estrutura ou ostenta&ccedil;&atilde;o</strong> do escrit&oacute;rio &mdash; Prov. 205 art. 6&ordm;. Pr&eacute;dio imponente, andar inteiro, vista de cidade grande: fora. Fachada s&oacute;bria de porta de rua no interior &eacute; o que a norma permite, e &eacute; tamb&eacute;m o que o p&uacute;blico reconhece.</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px;border-top:1px solid var(--rule);padding-top:32px">
     <h3>O que o placeholder faz at&eacute; a foto real chegar</h3>
     <p style="max-width:88ch;color:var(--muted)">Os seis retratos sint&eacute;ticos j&aacute; s&atilde;o a decis&atilde;o &mdash; e s&atilde;o produ&ccedil;&atilde;o, n&atilde;o decis&atilde;o. O que este ticket acrescenta &eacute; que <strong>eles nascem j&aacute; sob o tratamento escolhido acima</strong>: gerar os seis com o mesmo enquadramento, a mesma luz e o mesmo fundo &eacute; de gra&ccedil;a no prompt e imposs&iacute;vel de consertar depois. Com a cor natural escolhida, <strong>n&atilde;o h&aacute; filtro em CSS</strong>: a dessatura&ccedil;&atilde;o de ~10% e o fundo neutro frio entram na gera&ccedil;&atilde;o dos seis, e a foto real chega j&aacute; tratada. Isso tira uma linha de CSS do caminho cr&iacute;tico e faz a substitui&ccedil;&atilde;o ser troca de arquivo e nada mais.</p>
   </div>

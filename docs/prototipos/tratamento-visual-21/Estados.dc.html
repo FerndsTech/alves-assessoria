@@ -42,7 +42,7 @@
   <div style="display:flex;flex-direction:column;gap:12px">
     <p class="micro">Itens 4 e 5 do ticket</p>
     <h2>Estados, detalhe fino, e onde o &ldquo;barato&rdquo; vaza</h2>
-    <p style="max-width:82ch;color:var(--muted)">Tudo abaixo respeita as tr&ecirc;s travas do or&ccedil;amento: anima&ccedil;&atilde;o s&oacute; em <code>transform</code> e <code>opacity</code>, nenhum estado inicial invis&iacute;vel dependente de JS, e <code>prefers-reduced-motion</code> valendo em toda largura.</p>
+    <p style="max-width:82ch;color:var(--muted)">O teto subiu com o ADR-0003, mas as tr&ecirc;s travas ficaram de p&eacute; e tudo abaixo as respeita: anima&ccedil;&atilde;o s&oacute; em <code>transform</code> e <code>opacity</code>, nenhum estado inicial invis&iacute;vel dependente de JS, e <code>prefers-reduced-motion</code> valendo em toda largura.</p>
   </div>
 
   <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px">
@@ -79,7 +79,7 @@
           <span class="micro">repouso</span>
         </div>
         <div class="col" style="width:100%">
-          <div style="width:100%;background:var(--surface);border:1px solid var(--border);padding:12px;box-shadow:var(--lift-1);transform:translateY(-2px)">
+          <div style="width:100%;background:var(--surface);border:1px solid transparent;padding:12px;box-shadow:var(--lift-2);transform:translateY(-6px)">
             <div style="aspect-ratio:3/4;background:linear-gradient(168deg,#E6E9EE,#C9CFD8);overflow:hidden"><div style="width:100%;height:100%;background:linear-gradient(168deg,#DFE3EA,#C0C7D2);transform:scale(1.03)"></div></div>
             <p class="small" style="padding-top:8px;font-weight:600">Helena Braga Correia</p>
             <p class="micro" style="color:var(--accent)">Ver perfil &rarr;</p>
@@ -95,7 +95,7 @@
           <span class="micro">foco de teclado</span>
         </div>
       </div>
-      <p class="small" style="color:var(--muted)">O hover move a foto (<code>scale</code> de 1.03) e n&atilde;o o card: &eacute; um <code>transform</code> dentro de um recorte, sem custo de layout. O texto de a&ccedil;&atilde;o fica vis&iacute;vel em repouso &mdash; afordância de clique &eacute; requisito, n&atilde;o enfeite.</p>
+      <p class="small" style="color:var(--muted)">Na dire&ccedil;&atilde;o da profundidade o card <strong>sobe 6px e a sombra aprofunda</strong>, e a foto faz <code>scale(1.05)</code> dentro do recorte &mdash; dois <code>transform</code> e uma sombra, sem custo de layout. O texto de a&ccedil;&atilde;o fica vis&iacute;vel em repouso &mdash; afordância de clique &eacute; requisito, n&atilde;o enfeite.</p>
     </div>
 
     <div class="bloco">
@@ -120,19 +120,20 @@
   </div>
 
   <div class="bloco" style="border-color:var(--rule)">
-    <h3>Item 5 &mdash; o degrad&ecirc; escrito antes de faltar byte</h3>
+    <h3>Item 5 &mdash; o degrad&ecirc; de custo, reescrito sob o or&ccedil;amento folgado</h3>
+    <p class="small" style="color:var(--muted);max-width:88ch">O ADR-0003 subiu o teto de JS de 15 para <strong>100 KB</strong> e o total de 1 para <strong>3 MB</strong>, e o LCP passou de 2,5 s para 3,5 s. Quase nada precisa sair &mdash; mas a ordem continua escrita, porque decidir o corte com o site pronto &eacute; conversa pol&iacute;tica.</p>
     <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px">
       <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
         <p class="micro">Sai primeiro</p>
-        <p class="small">A intro de desktop na primeira visita. J&aacute; &eacute; JS opcional e n&atilde;o toca o LCP que o gate mede; cortar n&atilde;o custa nada ao visitante de celular.</p>
+        <p class="small">A <strong>paralaxe do her&oacute;i</strong>. &Eacute; o efeito com maior custo por quadro e o de menor retorno: quem chega pelo celular com pacote no fim do m&ecirc;s n&atilde;o rola devagar o bastante para v&ecirc;-la.</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
         <p class="micro">Sai em seguida</p>
-        <p class="small">O tratamento da massa de terra do mapa. Ele s&oacute; existe acima do ponto de quebra, e o mapa j&aacute; &eacute; decora&ccedil;&atilde;o: some sem tirar conte&uacute;do de ningu&eacute;m.</p>
+        <p class="small">A <strong>intro de desktop</strong> da primeira visita. J&aacute; &eacute; JS opcional, j&aacute; n&atilde;o toca o LCP que o gate mede, e ~99% do p&uacute;blico chega pelo celular e nunca a v&ecirc;.</p>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;border-top:2px solid var(--accent);padding-top:16px">
         <p class="micro">N&atilde;o sai</p>
-        <p class="small">Foco vis&iacute;vel, alvo de 44px, contraste AA e afordância de clique. N&atilde;o s&atilde;o enriquecimento &mdash; s&atilde;o a linha de base.</p>
+        <p class="small">Foco vis&iacute;vel, alvo de 44px, contraste AA, afordância de clique &mdash; e as <strong>tr&ecirc;s travas de anima&ccedil;&atilde;o</strong>, que o ADR-0003 manteve de prop&oacute;sito. N&atilde;o s&atilde;o enriquecimento; s&atilde;o a linha de base.</p>
       </div>
     </div>
   </div>

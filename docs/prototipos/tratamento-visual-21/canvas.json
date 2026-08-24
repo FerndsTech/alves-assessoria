@@ -4,14 +4,16 @@
     { "id": "page-2", "name": "Comparadas" }
   ],
   "artboards": [
-    { "file": "Main.dc.html",            "title": "C · Escala — a direção",        "page": "page-1", "x": 0,    "y": 0,    "w": 1440, "h": 2400 },
-    { "file": "PainelProporcao.dc.html", "title": "Painel · Proporção desigual",   "page": "page-1", "x": 1560, "y": 0,    "w": 1440, "h": 900 },
-    { "file": "Fotografia.dc.html",      "title": "Tratamento fotográfico",        "page": "page-1", "x": 0,    "y": 2550, "w": 1440, "h": 1500 },
-    { "file": "Estados.dc.html",         "title": "Estados e degradê",             "page": "page-1", "x": 1560, "y": 2550, "w": 1440, "h": 1450 },
+    { "file": "Main.dc.html",             "title": "A · Profundidade — a direção",  "page": "page-1", "x": 0,    "y": 0,    "w": 1440, "h": 2600 },
+    { "file": "MicroInteracoes.dc.html",  "title": "Micro-interações (passe o mouse)", "page": "page-1", "x": 1560, "y": 0,    "w": 1440, "h": 1300 },
+    { "file": "PainelProporcao.dc.html",  "title": "Painel · Proporção desigual",   "page": "page-1", "x": 1560, "y": 1450, "w": 1440, "h": 900 },
+    { "file": "Fotografia.dc.html",       "title": "Tratamento fotográfico",        "page": "page-1", "x": 0,    "y": 2750, "w": 1440, "h": 1900 },
+    { "file": "Estados.dc.html",          "title": "Estados e degradê",             "page": "page-1", "x": 1560, "y": 2750, "w": 1440, "h": 1500 },
 
-    { "file": "DirecaoA.dc.html",        "title": "A · Profundidade",              "page": "page-2", "x": 0,    "y": 0,    "w": 1440, "h": 2400 },
+    { "file": "DirecaoC.dc.html",        "title": "C · Escala",                    "page": "page-2", "x": 0,    "y": 0,    "w": 1440, "h": 2300 },
     { "file": "DirecaoB.dc.html",        "title": "B · Textura",                   "page": "page-2", "x": 1560, "y": 0,    "w": 1440, "h": 2400 },
     { "file": "DirecaoD.dc.html",        "title": "D · Ritmo",                     "page": "page-2", "x": 3120, "y": 0,    "w": 1440, "h": 2400 },
+    { "file": "DirecaoA.dc.html",        "title": "A · Profundidade (versão comparada)", "page": "page-2", "x": 4680, "y": 0, "w": 1440, "h": 2400 },
     { "file": "PainelCentrado.dc.html",  "title": "Painel · Bloco centrado",       "page": "page-2", "x": 0,    "y": 2550, "w": 1440, "h": 900 },
     { "file": "PainelDensidade.dc.html", "title": "Painel · Vazio gasto",          "page": "page-2", "x": 1560, "y": 2550, "w": 1440, "h": 900 }
   ],
@@ -20,17 +22,25 @@
       "id": "nota-decidido",
       "page": "page-1",
       "x": 0,
-      "y": -300,
-      "w": 960,
-      "text": "DECIDIDO EM 24/08/2026\n\nA densidade mora na ESCALA: vazio e retrato grandes, e contraste extremo entre o rótulo de 13px e o título de 36px. Profundidade, textura e ritmo ficam quietos — a página não tem sombra de cartão, não tem grão e não tem faixa alternada.\n\nUma correção feita ao consolidar: a versão comparada usava 128px entre seções. O brief fixa 96px em desktop e este ticket aplica tokens, não os redefine — então a escala é gasta nas margens de 96px, no retrato de 384px e no vazio da coluna de rótulo, e o espaçamento entre seções fica nos 96px do brief.\n\nO herói é TIPOGRÁFICO: o elemento de LCP é o h1 em Spectral 600 pré-carregado, e a linha de 180 KB de imagem não é gasta na primeira tela.\n\nO painel de desktop resolve o vazio por proporção: foto em 58%, texto em 42%, alinhado ao topo. A medida de linha cai junto e aproxima dos 68 caracteres do brief."
+      "y": -340,
+      "w": 980,
+      "text": "A DIREÇÃO É PROFUNDIDADE — virada do dono do projeto em 24/08/2026\n\nA escala venceu de manhã e foi trocada no mesmo dia, depois de olhar. O que passa a valer: camada, sombra em rampa de quatro níveis, e o herói com FOTO DE FACHADA como elemento de LCP.\n\nO que a virada custa, e foi aceito: a linha de 180 KB de imagem passa a ser gasta na primeira tela; a foto de fachada — que ninguém produziu — entra no caminho crítico, porque não dá para julgar o herói sem ela.\n\nO ORÇAMENTO FOI AFROUXADO pelo ADR-0003: JS de 15 → 100 KB, total de 1 → 3 MB, LCP de 2,5 → 3,5 s. As três travas de animação ficaram de pé de propósito — não são orçamento, são modo de falha.\n\nO que NÃO mudou: as 7 seções e a ordem, o modelo de dados, os limites da OAB, os tokens do brief, o painel em 58/42, e a foto em cor natural dessaturada."
+    },
+    {
+      "id": "nota-micro",
+      "page": "page-1",
+      "x": 1560,
+      "y": -180,
+      "w": 700,
+      "text": "Os três primeiros palcos respondem ao mouse de verdade — passe por cima. Os três últimos rodam em laço só para você ver o gesto; no site eles disparam uma vez, na revelação."
     },
     {
       "id": "nota-comparadas",
       "page": "page-2",
       "x": 0,
       "y": -300,
-      "w": 960,
-      "text": "REGISTRO DO QUE FOI COMPARADO — nenhuma destas está viva.\n\nA · Profundidade — camadas e sombra precisa, herói com imagem. Gastava a linha de 180 KB do LCP na primeira tela, e sombra em cartão é o gesto mais imitado por template barato.\n\nB · Textura — grão em SVG, fio de 1px e campo tingido. Custava bytes e paint: grão com mix-blend em tela cheia é exatamente o que trava Android barato, contra o TBT do orçamento.\n\nD · Ritmo — filete vermelho, número e troca de campo a cada seção. Custo zero, mas faixa alternada é a linguagem mais comum de site de escritório.\n\nPainel · Bloco centrado — o vazio virava respiro simétrico, sem gastar nada.\nPainel · Vazio gasto — linhas de credencial com fio; as etiquetas de área beiravam selo, que a OAB veda."
+      "w": 980,
+      "text": "REGISTRO DO QUE FOI COMPARADO — nenhuma destas está viva.\n\nC · Escala — venceu na primeira rodada e caiu na revisão do mesmo dia. Vazio e retrato grandes, herói tipográfico, custo zero em bytes. O que a derrubou não foi argumento: foi olhar a profundidade e preferir.\n\nB · Textura — grão em SVG e campo tingido. Custava paint em Android barato sem entregar nada que o público de celular fosse ver.\n\nD · Ritmo — filete vermelho, número e troca de campo a cada seção. Custo zero, mas faixa alternada é a linguagem mais comum de site de escritório.\n\nA · Profundidade (versão comparada) — o artboard original, antes de virar o modelo. Fica para comparar o que mudou na promoção.\n\nPainel · Bloco centrado — o vazio virava respiro simétrico, sem gastar nada.\nPainel · Vazio gasto — linhas de credencial com fio; as etiquetas de área beiravam selo, que a OAB veda. Voltou a ser coerente com a profundidade — se você quiser reabrir, é aqui."
     }
   ],
   "launch": { "view": "canvas", "page": "page-1" }

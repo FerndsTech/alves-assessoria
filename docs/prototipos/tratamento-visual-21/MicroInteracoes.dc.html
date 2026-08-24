@@ -1,0 +1,194 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:wght@600&family=Source+Sans+3:wght@400;600&display=swap">
+  <style>
+    :root{
+      --bg:#F7F8FA; --ground:#EDEFF3; --surface:#FFFFFF; --ink:#14171C; --muted:#5A6270;
+      --rule:#DDE1E7; --border:#8590A0; --accent:#A82520; --accent-soft:#FBEDEC;
+      --on-accent:#FFFFFF;
+      --lift-1:0 1px 2px rgba(20,23,28,.06), 0 2px 8px -2px rgba(20,23,28,.10);
+      --lift-2:0 1px 3px rgba(20,23,28,.07), 0 10px 24px -10px rgba(20,23,28,.18);
+      --ease:cubic-bezier(.2,0,0,1);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--ground);color:var(--ink);
+      font-family:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+      font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    h2,h3{font-family:Spectral,"Iowan Old Style",Georgia,serif;font-weight:600;margin:0}
+    h2{font-size:36px;line-height:1.15}
+    h3{font-size:23px;line-height:1.3}
+    p{margin:0;text-wrap:pretty}
+    a{color:var(--accent);text-decoration:none}
+    a:hover{color:#8C1E1A}
+    .micro{font-size:13px;line-height:1.4;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .small{font-size:15px;line-height:1.5}
+    .bloco{background:var(--surface);border-radius:8px;box-shadow:var(--lift-1);padding:28px;display:flex;flex-direction:column;gap:16px}
+    .palco{background:var(--ground);border-radius:4px;padding:24px;display:flex;align-items:center;justify-content:center;min-height:190px;overflow:hidden}
+    code{font-size:14px;background:var(--bg);padding:1px 5px;border-radius:3px}
+
+    /* 1 · card do advogado — hover de verdade */
+    .adv{width:150px;background:var(--surface);border-radius:8px;box-shadow:var(--lift-1);overflow:hidden;
+      transition:transform 200ms var(--ease), box-shadow 200ms var(--ease);cursor:pointer}
+    .adv .foto{aspect-ratio:3/4;overflow:hidden}
+    .adv .foto i{display:block;width:100%;height:100%;background:linear-gradient(168deg,#E6E9EE,#C9CFD8);
+      transition:transform 320ms var(--ease)}
+    .adv .cta{color:var(--accent);font-weight:600;font-size:13px;text-decoration:underline;
+      text-decoration-color:transparent;text-underline-offset:4px;transition:text-decoration-color 200ms}
+    .adv:hover{transform:translateY(-6px);box-shadow:var(--lift-2)}
+    .adv:hover .foto i{transform:scale(1.05)}
+    .adv:hover .cta{text-decoration-color:currentColor}
+
+    /* 2 · botões — hover e press de verdade */
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 28px;
+      border-radius:4px;font-weight:600;border:1px solid transparent;cursor:pointer;
+      transition:background-color 160ms linear, transform 90ms var(--ease)}
+    .bp{background:var(--accent);color:var(--on-accent);box-shadow:var(--lift-1)}
+    .bp:hover{background:#8C1E1A}
+    .bp:active{transform:scale(.98)}
+    .bs{background:var(--surface);color:var(--ink);border-color:var(--border);font-weight:400}
+    .bs:hover{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+    .bs:active{transform:scale(.98)}
+
+    /* 3 · cartão de área — hover de verdade */
+    .area{width:280px;background:var(--surface);border-radius:8px;box-shadow:var(--lift-1);padding:20px;
+      transition:transform 200ms var(--ease), box-shadow 200ms var(--ease);cursor:pointer}
+    .area .fio{width:28px;height:3px;background:var(--accent);transition:width 240ms var(--ease)}
+    .area:hover{transform:translateY(-4px);box-shadow:var(--lift-2)}
+    .area:hover .fio{width:56px}
+
+    /* 4 · revelação no scroll — laço */
+    .rev > *{animation:rev 4s var(--ease) infinite}
+    .rev > *:nth-child(2){animation-delay:.09s}
+    .rev > *:nth-child(3){animation-delay:.18s}
+    @keyframes rev{
+      0%,10%{transform:translateY(16px)} 30%,90%{transform:translateY(0)} 100%{transform:translateY(16px)}
+    }
+
+    /* 5 · FLIP da foto ao abrir o painel — laço */
+    @keyframes flip{
+      0%,12%{transform:translate(0,0) scale(1)}
+      45%,80%{transform:translate(96px,-14px) scale(1.9)}
+      100%{transform:translate(0,0) scale(1)}
+    }
+    .flip{width:56px;height:75px;background:linear-gradient(168deg,#E6E9EE,#C9CFD8);border-radius:4px;
+      transform-origin:left top;animation:flip 4.2s var(--ease) infinite;box-shadow:var(--lift-1)}
+
+    /* 6 · pinos do mapa — sequência, uma vez por revelação */
+    @keyframes pino{
+      0%,8%{transform:translateY(-10px);opacity:0} 26%,88%{transform:translateY(0);opacity:1}
+      100%{transform:translateY(-10px);opacity:0}
+    }
+    .pino{width:14px;height:14px;border-radius:50% 50% 50% 0;background:var(--accent);
+      transform:rotate(-45deg);animation:pino 4.4s var(--ease) infinite}
+    .pino:nth-child(2){animation-delay:.12s} .pino:nth-child(3){animation-delay:.24s} .pino:nth-child(4){animation-delay:.36s}
+
+    @media (prefers-reduced-motion: reduce){
+      *{animation:none !important;transition-duration:120ms !important}
+      .adv:hover, .area:hover{transform:none}
+    }
+  </style>
+</helmet>
+
+<div style="width:1440px;padding:64px;display:flex;flex-direction:column;gap:40px">
+
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <p class="micro">Invent&aacute;rio de movimento &middot; passe o mouse nos tr&ecirc;s primeiros</p>
+    <h2>Micro-intera&ccedil;&otilde;es sob o or&ccedil;amento folgado</h2>
+    <p style="max-width:84ch;color:var(--muted)">Os tr&ecirc;s primeiros palcos respondem ao mouse de verdade; os tr&ecirc;s &uacute;ltimos rodam em la&ccedil;o s&oacute; para voc&ecirc; ver o gesto &mdash; no site eles disparam uma vez, na revela&ccedil;&atilde;o. Tudo aqui usa apenas <code>transform</code> e <code>opacity</code>.</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+
+    <div class="bloco">
+      <h3>1 &middot; Card do advogado</h3>
+      <div class="palco">
+        <div class="adv">
+          <div class="foto"><i></i></div>
+          <div style="padding:14px;display:flex;flex-direction:column;gap:4px">
+            <p style="font-weight:600;font-size:15px">Helena Braga Correia</p>
+            <p class="micro" style="font-size:11px">OAB/CE 000.000</p>
+            <p class="cta">Ver perfil &rarr;</p>
+          </div>
+        </div>
+      </div>
+      <p class="small" style="color:var(--muted)">Sobe 6px, a sombra aprofunda, a foto faz <code>scale(1.05)</code> dentro do recorte e o sublinhado do CTA aparece. 200ms; a foto em 320ms, porque a massa maior pede tempo maior.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>2 &middot; Bot&otilde;es</h3>
+      <div class="palco" style="gap:12px;flex-wrap:wrap">
+        <span class="btn bp">Confira seu benef&iacute;cio</span>
+        <span class="btn bs">Como aparece</span>
+      </div>
+      <p class="small" style="color:var(--muted)">Hover &eacute; <strong>s&oacute; cor</strong>, 160ms. O movimento fica no <em>press</em>: <code>scale(.98)</code> em 90ms, que devolve tato sem deslocar o alvo antes do toque.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>3 &middot; Cart&atilde;o de &aacute;rea</h3>
+      <div class="palco">
+        <div class="area">
+          <div class="fio"></div>
+          <p style="font-weight:600;padding-top:12px">Cart&atilde;o com desconto na aposentadoria</p>
+          <p class="small" style="color:var(--muted);padding-top:6px">Chamado de RMC ou RCC.</p>
+        </div>
+      </div>
+      <p class="small" style="color:var(--muted)">Sobe 4px &mdash; menos que o card do advogado, porque n&atilde;o abre nada. O filete cresce de 28 para 56px: sinaliza vivo sem prometer clique que leva a outro lugar.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>4 &middot; Revela&ccedil;&atilde;o no scroll</h3>
+      <div class="palco">
+        <div class="rev" style="display:flex;flex-direction:column;gap:10px;width:100%;max-width:240px">
+          <div style="height:12px;background:var(--rule);border-radius:2px"></div>
+          <div style="height:12px;background:var(--rule);border-radius:2px;width:80%"></div>
+          <div style="height:12px;background:var(--rule);border-radius:2px;width:60%"></div>
+        </div>
+      </div>
+      <p class="small" style="color:var(--muted)">Escalonado em 90ms por elemento, deslocamento de 16px. <strong>O conte&uacute;do nunca come&ccedil;a invis&iacute;vel</strong> &mdash; a opacidade fica em 1 e o JS s&oacute; retira o deslocamento. JS falhou, a se&ccedil;&atilde;o est&aacute; l&aacute;.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>5 &middot; Abertura do painel</h3>
+      <div class="palco" style="justify-content:flex-start;padding-left:48px">
+        <div class="flip"></div>
+      </div>
+      <p class="small" style="color:var(--muted)">FLIP <strong>s&oacute; na foto</strong>, 320ms em <code>cubic-bezier(.2,0,0,1)</code>. Texto e bot&atilde;o entram em fade: contra-escala em texto &eacute; onde o FLIP fica feio. J&aacute; decidido no ADR-0002.</p>
+    </div>
+
+    <div class="bloco">
+      <h3>6 &middot; Pinos do mapa</h3>
+      <div class="palco">
+        <div style="display:flex;gap:22px;align-items:center">
+          <span class="pino"></span><span class="pino"></span><span class="pino"></span><span class="pino"></span>
+        </div>
+      </div>
+      <p class="small" style="color:var(--muted)">Caem em cad&ecirc;ncia de 120ms ao revelar a se&ccedil;&atilde;o, <strong>uma vez s&oacute;</strong>, e depois calam. Pulso cont&iacute;nuo foi rejeitado no [#10] por puxar para linguagem de aplicativo de consumo.</p>
+    </div>
+
+  </div>
+
+  <div class="bloco" style="gap:20px">
+    <h3>O que o or&ccedil;amento folgado comprou &mdash; e o que ele n&atilde;o dispensa</h3>
+    <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <p class="micro" style="color:var(--accent)">Agora cabe</p>
+        <p class="small">Biblioteca de anima&ccedil;&atilde;o ligada ao scroll (a ordem de 35 KB comprimidos) dentro do teto de <strong>100 KB de JS</strong>. Paralaxe leve na foto do her&oacute;i. A intro de desktop na primeira visita. Sombra em rampa de quatro n&iacute;veis, que custa CSS e n&atilde;o JS.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <p class="micro" style="color:#8A5300">Continua valendo</p>
+        <p class="small">S&oacute; <code>transform</code> e <code>opacity</code> &mdash; animar <code>width</code> ou <code>top</code> engasga em qualquer celular barato, e obedecer &eacute; de gra&ccedil;a. Nenhum estado inicial invis&iacute;vel dependente de JS. <code>prefers-reduced-motion</code> em toda largura, reduzindo para fade cruzado.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+</body>
+</html>
