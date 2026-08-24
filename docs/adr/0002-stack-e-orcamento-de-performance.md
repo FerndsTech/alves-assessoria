@@ -185,6 +185,14 @@ Cada bloco de unidade leva o **endereço em texto** (o NAP que a pesquisa do [#4
 
 A **forma** dos 4 blocos permanece com o [#10](https://github.com/FerndsTech/alves-assessoria/issues/10); o que sai daqui é o teto e a vedação.
 
+> ✅ **Resolvido em 24/08/2026 pelo [#10](https://github.com/FerndsTech/alves-assessoria/issues/10)**, com duas correções a esta decisão.
+>
+> **(1) O teto de ~15 KB era 18× generoso demais.** O SVG medido — contorno de 42 pontos, 4 pinos, rótulos — pesa **848 bytes comprimidos**. A vedação a mapa de terceiro segue firme e é o que importava; o número de 15 KB deixa de ser restrição de projeto e vira folga disponível ao [#21](https://github.com/FerndsTech/alves-assessoria/issues/21) para tratar a massa de terra.
+>
+> **(2) O desenho não existe no celular.** Abaixo do ponto de quebra ele sai por `display: none`, porque em 260px os rótulos ficam ilegíveis e três dos quatro pinos se sobrepõem. Isso o alinha à decisão 9 — enriquecimento **aditivo**, de desktop — e **não** fere a paridade de conteúdo do ADR-0001, porque o mapa é decoração: endereço, quem atende, dias e link de rota vivem nos 4 blocos, entregues nas duas larguras.
+>
+> Consequência prática: **nada de `matchMedia` para injetar o desenho.** Ele fica inline no HTML sempre. O JS economizado é o ponto — a decisão 3 fez do teto de JS um alarme contra dependência silenciosa, e um `display: none` não dispara alarme nenhum.
+
 ---
 
 ## Consequências
@@ -192,10 +200,10 @@ A **forma** dos 4 blocos permanece com o [#10](https://github.com/FerndsTech/alv
 - **"Otimizado" passa a ter critério de verificação.** A afirmação que o ADR-0001 marcava como não verificável agora tem sete linhas de tabela e quatro limiares.
 - **O #21 fica destravado e nasce restrito.** O enriquecimento visual tem um teto conhecido antes de começar.
 - **O #7 tem resposta ao item que dependia daqui:** existe build step.
-- **O #10 herda teto e vedação:** ~15 KB de SVG, nenhum mapa de terceiro embutido.
+- **O #10 herda teto e vedação:** ~15 KB de SVG, nenhum mapa de terceiro embutido. ✅ **Consumido em 24/08/2026** — a vedação segurou, o teto sobrou (848 bytes medidos), e o desenho saiu do celular. Ver a nota na decisão 11.
 - **O #12 recebe um fato novo e desconfortável:** URLs de pré-visualização de deploy são **públicas e indexáveis** em todos os planos gratuitos — proteção por senha é recurso pago. A premissa de _"o cliente valida por link sem o modo demonstração"_ precisa ser reexaminada lá.
 - **A questão de auto-avanço e WCAG 2.2.2 deixa de existir**, com a queda do carrossel.
-- **Duas dependências de arte ficam abertas:** o SVG do mapa não existe, e a variante clara da logo não será produzida enquanto o tema escuro estiver fora.
+- **Duas dependências de arte ficam abertas:** o SVG do mapa não existe, e a variante clara da logo não será produzida enquanto o tema escuro estiver fora. **Sobre a primeira, em 24/08/2026:** o que falta virou **fidelidade**, não bytes — geometria do IBGE simplificada —, e as posições dos 4 pinos já estão resolvidas por latitude e longitude reais.
 
 ---
 
