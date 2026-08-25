@@ -3,6 +3,7 @@ node_modules/
 test-results/
 playwright-report/
 relatorio-lighthouse.html
+.scratch/
 .env
 .env.production
 .DS_Store
