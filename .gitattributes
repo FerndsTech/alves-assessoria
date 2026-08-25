@@ -1,0 +1,7 @@
+# O `dist/` é a **cópia construída versionada** (ADR-0002, decisão 1), e o valor
+# dela é ser byte a byte o que o build produziu. Normalizar fim de linha na
+# entrada e na saída faria a cópia divergir do artefato em quem clona no Windows
+# — e uma cópia que não é o artefato não é seguro contra nada.
+dist/** -text
+
+*.woff2 binary

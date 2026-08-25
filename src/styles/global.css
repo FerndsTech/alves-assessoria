@@ -16,15 +16,20 @@
   --on-accent: #ffffff;
 
   /*
-   * Os `woff2` auto-hospedados ainda não entraram: o `preload` do Spectral 600 é
-   * uma linha nomeada do orçamento (150 KB de fonte, 40 KB no preload), e ela
-   * chega junto com o gate que a mede. Até lá a página cai na pilha de fallback
-   * de propósito, e não por esquecimento — o que falta é o `@font-face` com
-   * `font-display: swap` e o fallback com `size-adjust` casando as métricas,
-   * que é o que impede a troca de gerar CLS.
+   * Os `woff2` são auto-hospedados: as declarações reais estão em `fontes.css`,
+   * geradas por `npm run fontes`; os fallbacks com métrica casada estão logo
+   * abaixo desta lista de tokens.
+   *
+   * A ordem da pilha não é decorativa. Cada nome de fallback está preso a **uma**
+   * fonte de sistema por `local()`, com `size-adjust` calculado contra ela: o
+   * primeiro par serve Windows e macOS, o segundo serve o Android, que é o
+   * aparelho de 99% deste público e não tem Georgia nem Arial. O último trecho é
+   * a pilha nua, para quem não tiver nenhuma das quatro.
    */
-  --fonte-titulo: "Spectral", Georgia, "Times New Roman", serif;
-  --fonte-texto: "Source Sans 3", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --fonte-titulo: "Spectral", "Spectral em Georgia", "Spectral em Noto Serif", Georgia,
+    "Times New Roman", serif;
+  --fonte-texto: "Source Sans 3", "Source Sans em Arial", "Source Sans em Roboto", -apple-system,
+    "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
   /* Espaçamento entre seções: 96px em desktop, 64px em mobile (brief). */
   --ritmo-secao: 64px;
@@ -39,6 +44,57 @@
     --ritmo-secao: 96px;
     --margem-lateral: 96px;
   }
+}
+
+/* ── Fallback de fonte ─────────────────────────────────────────────────────
+ * O que impede a troca de fonte de gerar CLS. **CLS é o único número que o
+ * ADR-0003 se recusou a afrouxar** — layout que pula não é lentidão, é defeito,
+ * e este público erra o toque quando o alvo se move.
+ *
+ * Os números saem de `npm run metricas-de-fonte`, que os calcula a partir dos
+ * `woff2` reais e da fonte de sistema de cada linha. Não são chutados, e mexer
+ * neles é rodar o script de novo — não editar a porcentagem à mão.
+ *
+ * `size-adjust` casa a **largura** e depende de qual fonte o aparelho tem; os
+ * três `*-override` copiam as métricas verticais da fonte real e valem para
+ * qualquer fallback. São eles que fixam a altura da linha, que é de onde o
+ * salto viria.
+ */
+
+@font-face {
+  font-family: "Spectral em Georgia";
+  src: local("Georgia");
+  size-adjust: 102.22%;
+  ascent-override: 103.6%;
+  descent-override: 45.3%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Spectral em Noto Serif";
+  src: local("Noto Serif");
+  size-adjust: 94.13%;
+  ascent-override: 112.5%;
+  descent-override: 49.19%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Sans em Arial";
+  src: local("Arial");
+  size-adjust: 88.3%;
+  ascent-override: 115.97%;
+  descent-override: 45.3%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Sans em Roboto";
+  src: local("Roboto");
+  size-adjust: 89.12%;
+  ascent-override: 114.9%;
+  descent-override: 44.88%;
+  line-gap-override: 0%;
 }
 
 *,

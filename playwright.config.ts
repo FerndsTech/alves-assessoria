@@ -9,6 +9,9 @@ import { defineConfig, devices } from "@playwright/test";
  * execuções.
  */
 
+/** Os arquivos que não são asserção de navegador, e por isso não se repetem por largura. */
+const SEM_NAVEGADOR = [/sem-javascript\.spec\.ts$/, /orcamento\.spec\.ts$/];
+
 const PORTA = 4321;
 export const URL_BASE = `http://127.0.0.1:${PORTA}`;
 
@@ -26,14 +29,28 @@ export default defineConfig({
 
   projects: [
     {
+      /*
+       * A régua do gate de bytes, testada sem navegador nenhum.
+       *
+       * **Não é uma segunda costura sobre o site** — a proibição que o spec #23
+       * escreveu vale para asserções sobre a página, e não há nenhuma aqui. O que
+       * roda é a lógica do instrumento: qual arquivo cai em qual linha, o que
+       * conta comprimido, qual variante uma visita paga. Sem isso, o gate pode
+       * ficar verde por medir a coisa errada, que é o único modo de falha que um
+       * gate não pode ter.
+       */
+      name: "orcamento",
+      testMatch: /orcamento\.spec\.ts$/,
+    },
+    {
       name: "desktop",
       use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } },
-      testIgnore: /sem-javascript\.spec\.ts$/,
+      testIgnore: SEM_NAVEGADOR,
     },
     {
       name: "celular",
       use: { ...devices["Pixel 7"] },
-      testIgnore: /sem-javascript\.spec\.ts$/,
+      testIgnore: SEM_NAVEGADOR,
     },
     {
       // A robustez sem JS é asserção própria, não uma terceira largura:
