@@ -1,8 +1,8 @@
-import { spawn } from "node:child_process";
+import { spawn, type ChildProcess } from "node:child_process";
 import { appendFile, writeFile } from "node:fs/promises";
 import { setTimeout as esperar } from "node:timers/promises";
 import { fileURLToPath } from "node:url";
-import { chromium } from "@playwright/test";
+import { chromium, type Browser } from "@playwright/test";
 import lighthouse from "lighthouse";
 import { LIMIARES_DE_CWV, type Metrica } from "./orcamento/tabela.ts";
 
@@ -55,18 +55,33 @@ function formatar(valor: number, { unidade, casas }: { unidade: string; casas: n
   return `${valor.toFixed(casas)}${unidade}`;
 }
 
-/** O mesmo servidor da costura: mesmo build, mesmo `dist/`, mesma forma de servir. */
-const servidor = spawn(process.execPath, [`${RAIZ}tests/harness/servidor.ts`], {
-  cwd: RAIZ,
-  env: { ...process.env, PORTA: String(PORTA) },
-  stdio: "inherit",
-});
-
-const navegador = await chromium.launch({
-  args: [`--remote-debugging-port=${PORTA_DO_CHROME}`],
-});
+/**
+ * O servidor e o navegador nascem **dentro** do `try`, e não antes dele.
+ *
+ * `chromium.launch()` é a linha que mais quebra deste script — navegador não
+ * instalado no runner, sandbox recusada — e quebrar antes do `try` é sair com
+ * código 1, que é justamente o que este arquivo promete nunca fazer. Uma falha
+ * de infraestrutura do farol reprovaria o PR pela porta dos fundos.
+ */
+let servidor: ChildProcess | undefined;
+let navegador: Browser | undefined;
 
 try {
+  /** O mesmo servidor da costura: mesmo build, mesmo `dist/`, mesma forma de servir. */
+  servidor = spawn(process.execPath, [`${RAIZ}tests/harness/servidor.ts`], {
+    cwd: RAIZ,
+    env: { ...process.env, PORTA: String(PORTA) },
+    stdio: "inherit",
+  });
+  // Falha de spawn chega como evento, e evento `error` sem ouvinte derruba o
+  // processo por fora do `catch`. Ouvi-lo converte a queda no caminho normal de
+  // "o servidor não respondeu", que este script já sabe reportar sem reprovar.
+  servidor.on("error", (erro) => console.error(`O servidor do farol não subiu: ${erro.message}`));
+
+  navegador = await chromium.launch({
+    args: [`--remote-debugging-port=${PORTA_DO_CHROME}`],
+  });
+
   await esperarOServidor();
 
   const execucao = await lighthouse(URL_BASE, {
@@ -149,6 +164,8 @@ try {
     );
   }
 } finally {
-  await navegador.close();
-  servidor.kill();
+  // Nem a limpeza pode reprovar: um `close()` que falha depois de o relatório
+  // já estar escrito não é informação sobre o site.
+  if (navegador !== undefined) await navegador.close().catch(() => {});
+  servidor?.kill();
 }

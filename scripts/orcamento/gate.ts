@@ -51,8 +51,14 @@ function rotuloCompleto(medicao: MedicaoDeLinha): string {
     : `${medicao.rotulo} (${medicao.responsavel})`;
 }
 
-const arquivos = await lerDist(DIST).catch(() => {
-  throw new Error(`Não há ${DIST} para medir. Rode \`npm run build\` antes do gate.`);
+// Só a ausência do dist/ vira conselho de rodar o build. Um disco cheio ou uma
+// permissão negada sobem como vieram: gate que traduz toda falha de IO para "não
+// há dist" é gate que manda a pessoa rodar `npm run build` pela terceira vez.
+const arquivos = await lerDist(DIST).catch((erro: unknown) => {
+  if (erro instanceof Error && "code" in erro && erro.code === "ENOENT") {
+    throw new Error(`Não há ${DIST} para medir. Rode \`npm run build\` antes do gate.`);
+  }
+  throw erro;
 });
 const medicoes = medir(arquivos);
 const estouradas = medicoes.filter((medicao) => medicao.estourou);
