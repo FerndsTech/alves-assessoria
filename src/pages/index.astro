@@ -1,0 +1,26 @@
+---
+import Cabecalho from "../components/Cabecalho.astro";
+import Heroi from "../components/Heroi.astro";
+import Base from "../layouts/Base.astro";
+import { NOME_DO_ESCRITORIO } from "../lib/copy";
+
+/**
+ * O one-pager. **Zero rota além da raiz**: endereçamento interno é sempre
+ * fragmento, nunca rota.
+ *
+ * A ordem das sete seções é fixa — herói → áreas de atuação → confira seu
+ * benefício → advogados → quem somos → mapa → rodapé. Existe o herói; as outras
+ * seis chegam nos tickets seguintes, e os dois botões do herói apontam desde já
+ * para os fragmentos que elas vão ocupar.
+ */
+---
+
+<Base
+  titulo={`${NOME_DO_ESCRITORIO} — advocacia em fraude bancária contra beneficiários do INSS`}
+  descricao="Escritório de direito bancário no Ceará. Entenda os descontos no seu benefício do INSS e descubra sozinho se o seu caso precisa de advogado."
+>
+  <Cabecalho />
+  <main>
+    <Heroi />
+  </main>
+</Base>

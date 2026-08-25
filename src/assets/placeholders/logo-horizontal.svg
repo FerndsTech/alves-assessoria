@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="80" viewBox="0 0 320 80" role="img" aria-label="">
+  <title>Placeholder da logo horizontal</title>
+  <rect x="0" y="16" width="48" height="48" fill="#A82520"/>
+  <rect x="12" y="28" width="24" height="24" fill="#F7F8FA"/>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#14171C">
+    <text x="64" y="42" font-size="22" letter-spacing="1">Alves Assessoria</text>
+  </g>
+  <text x="64" y="62" font-family="Arial, Helvetica, sans-serif" font-size="11" fill="#5A6270" letter-spacing="3">PLACEHOLDER DA LOGO</text>
+</svg>

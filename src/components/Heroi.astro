@@ -1,0 +1,50 @@
+---
+import { Image } from "astro:assets";
+import { HEROI } from "../lib/copy";
+import { PLACEHOLDERS } from "../lib/placeholders";
+import { ALT_DA_FACHADA } from "../lib/texto-alternativo";
+
+/**
+ * O herói **roteia, não converte**: foto de fachada, frase de efeito, descrição
+ * do serviço e dois botões internos. **Nenhum WhatsApp na primeira tela** — a
+ * porta lateral que o #17 e o #22 fecharam, cada um a seu tempo.
+ *
+ * A foto de fachada é o **elemento de LCP da página inteira**: vem primeiro no
+ * documento, com `fetchpriority="high"`, carregamento ansioso e caixa reservada.
+ */
+const { fachadaDoHeroi } = PLACEHOLDERS;
+---
+
+<section class="heroi" id="heroi">
+  <Image
+    class="heroi__fachada"
+    id="fachada-do-heroi"
+    src={fachadaDoHeroi}
+    widths={[720, 1280, 1600]}
+    sizes="100vw"
+    alt={ALT_DA_FACHADA}
+    fetchpriority="high"
+    loading="eager"
+    decoding="async"
+    data-placeholder="asset"
+  />
+
+  <div class="heroi__conteudo">
+    <h1 data-placeholder="copy">{HEROI.fraseDeEfeito}</h1>
+    <p class="heroi__descricao" data-placeholder="copy">{HEROI.descricao}</p>
+
+    <div class="heroi__botoes">
+      {
+        HEROI.botoes.map((botao, indice) => (
+          <a
+            class:list={["botao", indice === 0 ? "botao--primario" : "botao--secundario"]}
+            href={botao.destino}
+            data-placeholder="copy"
+          >
+            {botao.texto}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

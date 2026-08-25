@@ -1,0 +1,26 @@
+{
+  "name": "alves-assessoria",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check && tsc --noEmit -p tsconfig.tests.json",
+    "test": "playwright test",
+    "placeholders": "node ./scripts/gerar-placeholders.ts"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^26.3.0",
+    "astro": "^7.2.6",
+    "axe-core": "^4.10.0",
+    "sharp": "^0.35.3",
+    "typescript": "^5.7.0"
+  }
+}

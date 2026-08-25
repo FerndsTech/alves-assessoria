@@ -1,0 +1,28 @@
+---
+import { NOME_DO_ESCRITORIO } from "../lib/copy";
+import { PLACEHOLDERS } from "../lib/placeholders";
+import { altDaLogo } from "../lib/texto-alternativo";
+
+/**
+ * O cabeçalho carrega **uma coisa só**: a logo horizontal à esquerda, sem link.
+ *
+ * A logo não é link porque as duas opções são ruins: `href="/"` recarrega a
+ * página inteira, e `#topo` empilha histórico para não fazer nada. Sem menu,
+ * então também não há navegação por âncora, nem a exceção de sanfona que um
+ * menu traria.
+ *
+ * Zero JS e nenhuma fonte de CLS: a logo tem `width` e `height` declarados.
+ */
+const { logoHorizontal } = PLACEHOLDERS;
+---
+
+<header class="cabecalho">
+  <img
+    class="cabecalho__logo"
+    src={logoHorizontal.src}
+    width={logoHorizontal.width}
+    height={logoHorizontal.height}
+    alt={altDaLogo(NOME_DO_ESCRITORIO)}
+    data-placeholder="asset"
+  />
+</header>

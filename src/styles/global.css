@@ -1,0 +1,234 @@
+/*
+ * Tokens do brief de marca (docs/brand/brief-de-marca.md), que é a fonte da
+ * verdade. Só o tema claro é publicado (ADR-0002, decisão 8); os tokens escuros
+ * existem, estão verificados, e ficam guardados até haver variante clara da logo.
+ */
+
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --ink: #14171c;
+  --muted: #5a6270;
+  --rule: #dde1e7; /* divisor decorativo — fino de propósito */
+  --border: #8590a0; /* contorno de componente — passa em 3:1 */
+  --accent: #a82520;
+  --accent-soft: #fbedec;
+  --on-accent: #ffffff;
+
+  /*
+   * Os `woff2` auto-hospedados ainda não entraram: o `preload` do Spectral 600 é
+   * uma linha nomeada do orçamento (150 KB de fonte, 40 KB no preload), e ela
+   * chega junto com o gate que a mede. Até lá a página cai na pilha de fallback
+   * de propósito, e não por esquecimento — o que falta é o `@font-face` com
+   * `font-display: swap` e o fallback com `size-adjust` casando as métricas,
+   * que é o que impede a troca de gerar CLS.
+   */
+  --fonte-titulo: "Spectral", Georgia, "Times New Roman", serif;
+  --fonte-texto: "Source Sans 3", -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+  /* Espaçamento entre seções: 96px em desktop, 64px em mobile (brief). */
+  --ritmo-secao: 64px;
+  --margem-lateral: 24px;
+
+  /* O anel de foco. Nunca sai — está na parte do degradê de custo que não cede. */
+  --foco: var(--accent);
+}
+
+@media (min-width: 900px) {
+  :root {
+    --ritmo-secao: 96px;
+    --margem-lateral: 96px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Fragmento é o único endereçamento interno do site; a rolagem até ele
+     respeita a preferência de movimento logo abaixo. */
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--fonte-texto);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-text-size-adjust: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--fonte-titulo);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Brief: h1 52px, caindo para 36px abaixo de 640px. É um passo, não uma rampa
+   fluida — a rampa produziria tamanhos que a escala não contém. */
+h1 {
+  font-size: 36px;
+  line-height: 1.1;
+}
+
+@media (min-width: 640px) {
+  h1 {
+    font-size: 52px;
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+:where(a, button, [tabindex]):focus-visible {
+  outline: 2px solid var(--foco);
+  outline-offset: 2px;
+}
+
+/*
+ * `prefers-reduced-motion` vale em toda largura de tela — é preferência de
+ * pessoa, não de tela (ADR-0002, decisão 10).
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── Cabeçalho ─────────────────────────────────────────────────────────────
+ * Faixa opaca com sombra que **rola junto com o herói e sai da tela com ele**.
+ * Não é `sticky` nem `fixed`: não há menu para prender ali, e barra persistente
+ * come altura de tela num público que lê ampliado.
+ */
+.cabecalho {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgb(20 23 28 / 6%), 0 4px 12px rgb(20 23 28 / 6%);
+  padding: 16px var(--margem-lateral);
+}
+
+.cabecalho__logo {
+  display: block;
+  height: 32px;
+  width: auto;
+}
+
+/* ── Herói ─────────────────────────────────────────────────────────────────
+ * Roteia, não converte. A foto de fachada é o elemento de LCP da página inteira.
+ */
+.heroi {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: var(--ritmo-secao) var(--margem-lateral);
+  color: var(--on-accent);
+  overflow: hidden;
+
+  /* Dentro do herói o anel de foco é branco: o vermelho da marca sobre o véu
+     escuro não chega aos 3:1 que um indicador de foco exige. */
+  --foco: var(--on-accent);
+}
+
+.heroi__fachada {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+ * O véu. `rgba(20, 23, 28, 0.72)` é o número da exceção de `incomplete` do gate
+ * de acessibilidade: com ele, o pior fundo composto possível é rgb(86, 88, 92),
+ * e texto branco sobre ele dá 7.13:1. Mexer neste alfa é refazer aquela conta.
+ */
+.heroi::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(
+    to top,
+    rgb(20 23 28 / 82%) 0%,
+    rgb(20 23 28 / 72%) 55%,
+    rgb(20 23 28 / 72%) 100%
+  );
+}
+
+.heroi__conteudo {
+  max-width: 46ch;
+}
+
+.heroi__descricao {
+  font-size: 19px;
+  line-height: 1.55;
+  margin: 24px 0 0;
+}
+
+.heroi__botoes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+/* ── Botões ────────────────────────────────────────────────────────────────
+ * Alvo de toque de 44px e o botão **não se move no hover** — as duas regras de
+ * estado que não são estéticas.
+ */
+.botao {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-family: var(--fonte-texto);
+  font-size: 17px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease;
+}
+
+.botao--primario {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* O hover não tem token próprio no brief, e o brief é a fonte da verdade da
+   cor — então ele reusa um par já verificado em vez de inventar um vermelho:
+   `--on-accent` sobre `--ink` é o mesmo 17.96:1 de `ink` sobre `surface`,
+   invertido. O tratamento definitivo pertence ao ticket de tratamento visual. */
+.botao--primario:hover {
+  background: var(--ink);
+}
+
+.botao--secundario {
+  background: var(--surface);
+  color: var(--accent);
+}
+
+.botao--secundario:hover {
+  background: var(--accent-soft);
+}
