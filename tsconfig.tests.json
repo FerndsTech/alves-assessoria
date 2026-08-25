@@ -4,6 +4,7 @@
     "types": ["node"],
     "module": "esnext",
     "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
     "noEmit": true
   },
   "include": ["tests/**/*.ts", "scripts/**/*.ts", "playwright.config.ts"]

@@ -3,6 +3,9 @@ import { stat } from "node:fs/promises";
 import { createServer, type ServerResponse } from "node:http";
 import { extname, join, normalize, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+// Extensão explícita: este é o único módulo que roda sob `node` puro, fora do
+// transform do Playwright, e o ESM do Node exige o `.ts`.
+import { construir } from "./construir.ts";
 
 /**
  * A segunda metade da costura: **servir a saída estática**.
@@ -13,7 +16,7 @@ import { fileURLToPath } from "node:url";
  * primeiro plano, também tira a costura da dependência de uma escolha de CLI que
  * pode mudar de novo — ela precisa de um servidor de arquivos, não do Astro.
  *
- * Ele serve exatamente o `dist/` que o `globalSetup` acabou de construir, e nada
+ * Ele constrói o site e serve exatamente esse `dist/`, e nada
  * mais. Toda falha vira resposta: uma exceção não tratada aqui derrubaria o
  * servidor no meio da suíte, e a suíte inteira falharia por um motivo que não é
  * o do site.
@@ -98,6 +101,10 @@ const servidor = createServer(async (requisicao, resposta) => {
     else resposta.destroy();
   }
 });
+
+// Constrói antes de escutar. A primeira resposta do servidor já é do site
+// recém-construído — nunca de um `dist/` que sobrou da execução passada.
+construir();
 
 servidor.listen(PORTA, "127.0.0.1", () => {
   console.log(`dist/ servido em http://127.0.0.1:${PORTA}`);

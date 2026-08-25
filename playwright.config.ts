@@ -4,9 +4,9 @@ import { defineConfig, devices } from "@playwright/test";
  * A costura única do projeto (spec #23, "Testing Decisions"): construir o site,
  * servir a saída estática e dirigir um navegador sem interface contra ela.
  *
- * Um comando só — `npm test` —, idêntico no local e no CI: o `globalSetup`
- * constrói, o `webServer` serve o `dist/` recém-construído, e nada é
- * reaproveitado entre execuções.
+ * Um comando só — `npm test` —, idêntico no local e no CI: o `webServer`
+ * constrói o site e só então passa a servi-lo, e nada é reaproveitado entre
+ * execuções.
  */
 
 const PORTA = 4321;
@@ -46,9 +46,6 @@ export default defineConfig({
       testMatch: /sem-javascript\.spec\.ts$/,
     },
   ],
-
-  // Construir o site é a primeira metade da costura; ela roda antes de tudo.
-  globalSetup: "./tests/harness/construir.ts",
 
   webServer: {
     command: "node ./tests/harness/servidor.ts",
