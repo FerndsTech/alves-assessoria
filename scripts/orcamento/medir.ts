@@ -144,6 +144,19 @@ const POR_EXTENSAO: Partial<Record<string, Linha>> = {
   ".woff2": "fontes",
 };
 
+/**
+ * A marca `data-orcamento` que nomeia os arquivos de cada linha medida por
+ * conjunto — e a única diferença entre as duas é a **marca**, não a conta.
+ *
+ * As duas leem conjuntos de escolha e pagam a maior variante de cada um; o que
+ * decide se os conjuntos são somados ou cobrados um a um é o `criterio` da
+ * tabela, e não um `if` sobre o `id` daqui.
+ */
+const MARCA_POR_LINHA: Partial<Record<Linha, string>> = {
+  "imagem-do-lcp": "lcp",
+  "foto-de-advogado": "foto-de-advogado",
+};
+
 export function medir(arquivos: ArquivoDoDist[]): MedicaoDeLinha[] {
   const bytes = new Map(arquivos.map((arquivo) => [arquivo.caminho, bytesTransferidos(arquivo)]));
   const documentos = arquivos.filter((arquivo) => arquivo.caminho.endsWith(".html"));
@@ -177,26 +190,27 @@ export function medir(arquivos: ArquivoDoDist[]): MedicaoDeLinha[] {
   }
 
   const preloads = new Set(preloadsDeFonte(documento));
-  const lcp = conjuntosMarcados(documento, "lcp");
-  const fotos = conjuntosMarcados(documento, "foto-de-advogado");
 
   return ORCAMENTO.map(({ id, rotulo, teto, criterio }): MedicaoDeLinha => {
     let medido = 0;
     let responsavel: string | null = null;
+    const marca = MARCA_POR_LINHA[id];
 
     if (id === "total") {
       medido = total;
     } else if (id === "preload-de-fonte") {
       medido = [...preloads].reduce((soma, url) => soma + peso(url), 0);
-    } else if (id === "imagem-do-lcp") {
-      medido = lcp.reduce((soma, conjunto) => soma + maiorDoConjunto(conjunto).bytes, 0);
-    } else if (id === "foto-de-advogado") {
-      // O número da linha é o da foto mais pesada, e é ela que o relatório
-      // nomeia: "a linha estourou" sem dizer qual foto manda quem lê o PR
-      // refazer a medição à mão.
-      for (const conjunto of fotos) {
+    } else if (marca !== undefined) {
+      for (const conjunto of conjuntosMarcados(documento, marca)) {
         const maior = maiorDoConjunto(conjunto);
-        if (maior.bytes > medido) ({ bytes: medido, caminho: responsavel } = maior);
+        if (criterio === "soma") {
+          medido += maior.bytes;
+        } else if (maior.bytes > medido) {
+          // Cobrada uma a uma, a linha vale pela mais pesada — e é ela que o
+          // relatório nomeia: "a linha estourou" sem dizer qual foto manda quem
+          // lê o PR refazer a medição à mão.
+          ({ bytes: medido, caminho: responsavel } = maior);
+        }
       }
     } else {
       for (const arquivo of arquivos) {
