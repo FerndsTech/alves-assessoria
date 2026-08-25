@@ -1,5 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { baixarWoff2, cssDoGoogle, urlDoWoff2 } from "./google-fonts.ts";
 
 /**
  * Baixa os `woff2` da marca do Google Fonts para `public/fontes/` e escreve o
@@ -24,16 +25,12 @@ const RAIZ = fileURLToPath(new URL("..", import.meta.url));
 const DESTINO = `${RAIZ}public/fontes`;
 const FOLHA = `${RAIZ}src/styles/fontes.css`;
 
-/** Sem User-Agent de navegador moderno, o Google devolve `ttf` em vez de `woff2`. */
-const UA =
-  "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-  "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-
-const CSS =
-  "https://fonts.googleapis.com/css2" +
-  "?family=Spectral:wght@600" +
-  "&family=Source+Sans+3:wght@400;600" +
-  "&display=swap";
+/** As famílias da marca, na consulta que o `css2` do Google espera. */
+const CONSULTA = [
+  "family=Spectral:wght@600",
+  "family=Source+Sans+3:wght@400;600",
+  "display=swap",
+].join("&");
 
 const SUBCONJUNTOS = new Set(["latin", "latin-ext"]);
 
@@ -66,7 +63,7 @@ function extrairFaces(css: string): Face[] {
     if (!SUBCONJUNTOS.has(subconjunto!)) continue;
     const familia = /font-family: '([^']+)'/.exec(corpo!)?.[1];
     const peso = /font-weight: ([^;]+);/.exec(corpo!)?.[1];
-    const url = /url\((https[^)]+)\)/.exec(corpo!)?.[1];
+    const url = urlDoWoff2(corpo!);
     const unicodeRange = /unicode-range: ([^;]+);/.exec(corpo!)?.[1];
     if (familia === undefined || peso === undefined) continue;
     if (url === undefined || unicodeRange === undefined) continue;
@@ -84,12 +81,6 @@ function extrairFaces(css: string): Face[] {
   return faces;
 }
 
-async function buscar(url: string): Promise<Response> {
-  const resposta = await fetch(url, { headers: { "user-agent": UA } });
-  if (!resposta.ok) throw new Error(`${resposta.status} ao buscar ${url}`);
-  return resposta;
-}
-
 function declaracao(face: Face): string {
   return [
     `/* ${face.subconjunto} */`,
@@ -104,8 +95,7 @@ function declaracao(face: Face): string {
   ].join("\n");
 }
 
-const css = await (await buscar(CSS)).text();
-const faces = extrairFaces(css);
+const faces = extrairFaces(await cssDoGoogle(CONSULTA));
 if (faces.length === 0) throw new Error("Nenhuma face latin/latin-ext no CSS devolvido pelo Google.");
 
 // O Source Sans 3 é variável: o mesmo arquivo serve 400 e 600, e o Google
@@ -118,7 +108,7 @@ const baixados = new Set<string>();
 for (const face of faces) {
   if (baixados.has(face.arquivo)) continue;
   baixados.add(face.arquivo);
-  const bytes = Buffer.from(await (await buscar(face.url)).arrayBuffer());
+  const bytes = await baixarWoff2(face.url);
   await writeFile(`${DESTINO}/${face.arquivo}`, bytes);
   console.log(`${face.arquivo.padEnd(34)} ${String(bytes.length).padStart(7)} B`);
 }

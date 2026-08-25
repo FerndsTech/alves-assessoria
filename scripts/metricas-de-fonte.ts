@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import * as fontkit from "fontkit";
+import { baixarWoff2, cssDoGoogle, urlDoWoff2 } from "./google-fonts.ts";
 
 /**
  * Calcula os números do `@font-face` de fallback — `size-adjust`,
@@ -46,19 +47,11 @@ const doDisco = (caminho: string): Origem["carregar"] => () => readFile(caminho)
 const doGoogle =
   (familia: string, peso: number): Origem["carregar"] =>
   async () => {
-    const ua =
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 " +
-      "(KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
-    const css = await (
-      await fetch(
-        `https://fonts.googleapis.com/css2?family=${encodeURIComponent(familia)}:wght@${peso}`,
-        { headers: { "user-agent": ua } },
-      )
-    ).text();
+    const css = await cssDoGoogle(`family=${encodeURIComponent(familia)}:wght@${peso}`);
     const bloco = /\/\* latin \*\/\s*@font-face \{([\s\S]*?)\}/.exec(css);
-    const url = bloco === null ? null : /url\((https[^)]+)\)/.exec(bloco[1]!)?.[1];
-    if (url === undefined || url === null) throw new Error(`Sem face latin para ${familia}`);
-    return Buffer.from(await (await fetch(url, { headers: { "user-agent": ua } })).arrayBuffer());
+    const url = bloco === null ? undefined : urlDoWoff2(bloco[1]!);
+    if (url === undefined) throw new Error(`Sem face latin para ${familia}`);
+    return baixarWoff2(url);
   };
 
 /** A fonte real e as fontes de sistema em que ela vai cair enquanto não chega. */
