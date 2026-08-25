@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+# O CI inteiro nasce junto com a primeira fatia vertical, e o gate de
+# acessibilidade nasce dentro dele (ADR-0004, contexto, fato 1). Enfiado depois,
+# alguém teria de mexer no arranjo do qual todos os testes dependem.
+jobs:
+  costura:
+    name: Costura — navegador sobre o site construído
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Verificação de tipos
+        run: npm run check
+
+      - name: Navegador sem interface
+        run: npx playwright install --with-deps chromium
+
+      # Um comando só, o mesmo que se roda no local: constrói o site, serve a
+      # saída estática e dirige o navegador contra ela — com o axe injetado na
+      # mesma sessão. Qualquer violação WCAG A/AA reprova, e `incomplete` sem
+      # justificativa escrita também.
+      - name: Costura
+        run: npm test
+
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-playwright
+          path: |
+            playwright-report/
+            test-results/
+          retention-days: 7

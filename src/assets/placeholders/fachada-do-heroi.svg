@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="">
+  <title>Placeholder da foto de fachada</title>
+  <rect width="1600" height="900" fill="#14171C"/>
+  <rect x="0" y="620" width="1600" height="280" fill="#1B1F26"/>
+  <g fill="#232830">
+    <rect x="120" y="200" width="420" height="420"/>
+    <rect x="600" y="120" width="380" height="500"/>
+    <rect x="1040" y="250" width="440" height="370"/>
+  </g>
+  <g fill="#2C323C">
+    <rect x="160" y="250" width="120" height="150"/><rect x="320" y="250" width="120" height="150"/>
+    <rect x="160" y="440" width="120" height="150"/><rect x="320" y="440" width="120" height="150"/>
+    <rect x="640" y="180" width="130" height="170"/><rect x="810" y="180" width="130" height="170"/>
+    <rect x="640" y="390" width="130" height="170"/><rect x="810" y="390" width="130" height="170"/>
+    <rect x="1080" y="300" width="150" height="140"/><rect x="1290" y="300" width="150" height="140"/>
+    <rect x="1080" y="480" width="150" height="140"/><rect x="1290" y="480" width="150" height="140"/>
+  </g>
+  <rect x="0" y="612" width="1600" height="8" fill="#A82520"/>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#5A6270">
+    <text x="800" y="790" font-size="34" text-anchor="middle" letter-spacing="6">PLACEHOLDER</text>
+    <text x="800" y="838" font-size="22" text-anchor="middle" letter-spacing="2">foto de fachada &#183; 16:9 &#183; producao externa</text>
+  </g>
+</svg>
