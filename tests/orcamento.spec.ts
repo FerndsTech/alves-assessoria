@@ -1,6 +1,7 @@
 import { brotliCompressSync } from "node:zlib";
 import { expect, test } from "@playwright/test";
 import { medir, type ArquivoDoDist } from "../scripts/orcamento/medir.ts";
+import { ORCAMENTO, type Linha } from "../scripts/orcamento/tabela.ts";
 
 /**
  * O **instrumento** do gate de bytes, e só ele.
@@ -32,6 +33,21 @@ function linha(medicoes: ReturnType<typeof medir>, nome: string) {
   return encontrada;
 }
 
+/**
+ * O teto da linha, **lido da tabela** e nunca transcrito.
+ *
+ * Os casos que exercitam a borda — o arquivo que mede exatamente o teto, o que
+ * mede um byte a mais — precisam de um número concreto, e é aqui que a tentação
+ * de copiar 150 KB para dentro do teste aparece. Copiar faria deste arquivo uma
+ * terceira cópia da tabela, e a que `tabela.ts` promete não existir: subir um
+ * teto no ADR passaria a reprovar um teste que continua certo.
+ */
+function teto(id: Linha): number {
+  const declarada = ORCAMENTO.find((item) => item.id === id);
+  if (declarada === undefined) throw new Error(`Linha ausente da tabela: ${id}`);
+  return declarada.teto;
+}
+
 test.describe("a régua do orçamento de bytes", () => {
   test("HTML e CSS medem comprimidos: é o que o pacote de dados paga", () => {
     const html = documento(REPETITIVO);
@@ -56,13 +72,13 @@ test.describe("a régua do orçamento de bytes", () => {
   test("estourar o teto reprova, e medir exatamente o teto não", () => {
     const noTeto = medir([
       arquivo("index.html", documento()),
-      arquivo("fontes/a.woff2", Buffer.alloc(150 * 1024)),
+      arquivo("fontes/a.woff2", Buffer.alloc(teto("fontes"))),
     ]);
     expect(linha(noTeto, "fontes").estourou).toBe(false);
 
     const acima = medir([
       arquivo("index.html", documento()),
-      arquivo("fontes/a.woff2", Buffer.alloc(150 * 1024 + 1)),
+      arquivo("fontes/a.woff2", Buffer.alloc(teto("fontes") + 1)),
     ]);
     expect(linha(acima, "fontes").estourou).toBe(true);
   });
@@ -95,6 +111,12 @@ test.describe("a régua do orçamento de bytes", () => {
   });
 
   test("a foto de advogado é medida uma a uma, não somada", () => {
+    // Duas fotos que cabem sozinhas e estouram somadas: é exatamente aqui que
+    // confundir `cada` com `soma` reprovaria um PR que não devia reprovar.
+    const menor = Math.round(teto("foto-de-advogado") * 0.6);
+    const maior = Math.round(teto("foto-de-advogado") * 0.7);
+    expect(menor + maior).toBeGreaterThan(teto("foto-de-advogado"));
+
     const medicoes = medir([
       arquivo(
         "index.html",
@@ -103,11 +125,11 @@ test.describe("a régua do orçamento de bytes", () => {
             '<img src="/b.webp" data-orcamento="foto-de-advogado">',
         ),
       ),
-      arquivo("a.webp", Buffer.alloc(100 * 1024)),
-      arquivo("b.webp", Buffer.alloc(110 * 1024)),
+      arquivo("a.webp", Buffer.alloc(menor)),
+      arquivo("b.webp", Buffer.alloc(maior)),
     ]);
 
-    expect(linha(medicoes, "foto-de-advogado").medido).toBe(110 * 1024);
+    expect(linha(medicoes, "foto-de-advogado").medido).toBe(maior);
     expect(linha(medicoes, "foto-de-advogado").estourou).toBe(false);
   });
 
