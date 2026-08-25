@@ -139,4 +139,4 @@ jobs:
             exit 0
           fi
           git commit -m "dist/: cópia construída de ${GITHUB_SHA::7}"
-          git push
+          git push origin HEAD:master

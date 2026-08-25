@@ -20,7 +20,9 @@ import { LIMIARES_DE_CWV, type Metrica } from "./orcamento/tabela.ts";
  * nomeiam. Trocá-lo torna o número incomparável com a série anterior, que é a
  * única coisa que este script produz de valor.
  *
- * **Sai sempre com código 0.** É a asserção mais importante do arquivo.
+ * **Sai sempre com código 0**, inclusive quando ele próprio quebra. É a asserção
+ * mais importante do arquivo — e quando não mede, ele diz que não mediu, no log
+ * e no resumo do job.
  */
 
 const RAIZ = fileURLToPath(new URL("..", import.meta.url));
@@ -129,6 +131,21 @@ try {
         ),
         "",
       ].join("\n"),
+    );
+  }
+} catch (erro) {
+  // O farol quebrar não pode derrubar o CI: seria o gate ruidoso que os dois
+  // ADRs recusaram, só que sem nem medir nada. Mas silêncio também não serve —
+  // um farol que parou de funcionar e ninguém viu é pior que nenhum.
+  const motivo = erro instanceof Error ? erro.message : String(erro);
+  console.error(`\nO farol não conseguiu medir: ${motivo}`);
+  console.error("Isto não reprova nada — mas também não é medição. Vale investigar.");
+
+  const resumo = process.env.GITHUB_STEP_SUMMARY;
+  if (resumo !== undefined) {
+    await appendFile(
+      resumo,
+      `## Farol — Lighthouse (informativo)\n\n**Não mediu neste commit:** ${motivo}\n\n`,
     );
   }
 } finally {
