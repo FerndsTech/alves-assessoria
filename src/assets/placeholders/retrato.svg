@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="768" height="1024" viewBox="0 0 768 1024" role="img" aria-label="">
+  <title>Placeholder de retrato de advogado</title>
+  <!--
+    O enquadramento é o do spec #23 e vale para a foto real: topo da cabeça a 8%
+    da altura (y=82), olhos na linha de um terço (y=341), corpo nos 75% centrais
+    (x de 96 a 672). A zona segura central existe para que qualquer recorte —
+    o 4:5 do card, o 3:4 do painel — continue enquadrando o rosto.
+  -->
+  <rect width="768" height="1024" fill="{{FUNDO}}"/>
+  <g fill="{{SILHUETA}}">
+    <path d="M324 540 h120 v150 h-120 z"/>
+    <path d="M104 1024 c0 -190 80 -300 280 -300 s280 110 280 300 z"/>
+    <ellipse cx="384" cy="341" rx="186" ry="259"/>
+  </g>
+  <!-- A linha dos olhos, no terço. Some sob o grão; existe para conferir o
+       enquadramento a olho quando o desenho é aberto sozinho. -->
+  <rect x="96" y="340" width="576" height="2" fill="{{FUNDO}}" opacity="0.35"/>
+  <text x="384" y="392" font-family="Georgia, 'Times New Roman', serif" font-size="150"
+        fill="{{FUNDO}}" text-anchor="middle" letter-spacing="8">{{INICIAIS}}</text>
+  <!--
+    A tarja fica acima do rodapé do arquivo porque o card recorta o 3:4 em 4:5,
+    e o recorte tira 32px de cima e 32px de baixo. Colada no fundo, a segunda
+    linha do requisito sairia da tela exatamente onde ela precisa ser lida.
+  -->
+  <rect x="0" y="898" width="768" height="86" fill="#14171C" opacity="0.82"/>
+  <rect x="0" y="892" width="768" height="6" fill="#A82520"/>
+  <g font-family="Georgia, 'Times New Roman', serif" fill="#DDE1E7" text-anchor="middle">
+    <text x="384" y="934" font-size="24" letter-spacing="5">PLACEHOLDER</text>
+    <text x="384" y="964" font-size="17" letter-spacing="1">retrato &#183; 3:4 &#183; producao externa</text>
+  </g>
+</svg>

@@ -23,6 +23,21 @@ test.describe("com JavaScript desligado", () => {
     expect(texto.length).toBeGreaterThan(40);
   });
 
+  test('os seis advogados continuam alcançáveis: o "ver mais" não é script', async ({ page }) => {
+    /*
+     * Os três de baixo ficam atrás de um `<details>`, e é por isso que eles
+     * continuam existindo aqui. Um disclosure em JS os teria transformado em
+     * conteúdo que **nunca aparece** para quem ficou sem pacote de dados no meio
+     * do carregamento — e metade dos advogados do escritório seria invisível sem
+     * que nada na tela indicasse que faltava alguém.
+     */
+    await expect(page.locator("#advogados .advogado")).toHaveCount(6);
+    await expect(page.locator("#advogados .advogado:visible")).toHaveCount(3);
+
+    await page.locator("#advogados details summary").click();
+    await expect(page.locator("#advogados .advogado:visible")).toHaveCount(6);
+  });
+
   test("nenhum elemento nasce transparente", async ({ page }) => {
     const transparentes = await page.evaluate(() =>
       [...document.body.querySelectorAll("*")]

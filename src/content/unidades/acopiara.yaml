@@ -1,0 +1,17 @@
+# Unidade **fictícia**. Endereço, complemento e fachada são placeholder; a
+# cidade e as coordenadas são reais, porque é delas que sai o pino do mapa e o
+# link de "Como chegar" — e um pino fictício não teria como ser conferido.
+#
+# Requisito: os endereços das quatro praças são fato do cliente, pendentes do
+# #16. Trocar é trocar as strings deste arquivo.
+#
+# O nome do arquivo é o slug, e o slug é a âncora: `#acopiara`.
+cidade: Acopiara
+uf: CE
+logradouro: Rua Coronel José Alves, 210
+bairro: Centro
+geo:
+  lat: -6.0958
+  lon: -39.4522
+fachada: ../../assets/placeholders/fachada-de-acopiara.jpg
+ordem: 1

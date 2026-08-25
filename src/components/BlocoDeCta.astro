@@ -1,0 +1,55 @@
+---
+import { CTA, linkDeWhatsapp } from "../lib/copy";
+
+/**
+ * **O bloco de CTA de quatro elementos**, criado aqui e que reaparece **uma
+ * única outra vez**, no rodapé (#33). Uma terceira aparição foi derrubada duas
+ * vezes — no #17 e no #22 —, e é por isso que ele é componente: três chamadas
+ * seriam visíveis num `grep`, três blocos escritos à mão não seriam.
+ *
+ * Os quatro, na ordem em que a pessoa precisa deles:
+ *
+ * 1. **texto de assunto** — o que ela vai mandar,
+ * 2. **botão** — o verbo é *"Falar"*, nunca *"Agendar"*,
+ * 3. **horário visível**, ali perto e não no rodapé,
+ * 4. **alternativa de telefone**, condicional e ausente enquanto o #16 não
+ *    trouxer o fato.
+ *
+ * O texto de assunto aparece na tela **e** vai pré-preenchido no `wa.me`, e é
+ * uma string só. O motivo é o público: *"não saber o que escrever"* é obstáculo
+ * real, e mostrar a frase antes do clique é o que faz o botão deixar de ser um
+ * salto no escuro. Duas strings — uma para ler, outra para enviar — seriam dois
+ * lugares para divergir, e a que diverge é sempre a que o visitante manda.
+ *
+ * Nenhum backend, nenhuma coleta, nenhuma LGPD por este canal: `wa.me` e mais
+ * nada. Quem envia é o visitante, do próprio aparelho, pelo app dele.
+ */
+---
+
+<div class="cta" data-cta>
+  <p class="cta__assunto" data-placeholder="copy">{CTA.assunto}</p>
+
+  <a
+    class="botao botao--primario cta__botao"
+    href={linkDeWhatsapp(CTA.whatsapp, CTA.assunto)}
+    data-placeholder="copy"
+  >
+    {CTA.botao}
+  </a>
+
+  <p class="cta__horario" data-placeholder="copy">{CTA.horario}</p>
+
+  {
+    /*
+      O quarto elemento. `null` enquanto o #16 não disser se há quem atenda o
+      telefone nas quatro praças — quatro números tocando em salas vazias são
+      piores que nenhum, porque quem não usa WhatsApp e liga no vazio perde o
+      único caminho que tinha.
+    */
+    CTA.telefone !== null && (
+      <p class="cta__telefone">
+        Sem WhatsApp? <a href={`tel:+${CTA.telefone}`}>{CTA.telefone}</a>
+      </p>
+    )
+  }
+</div>

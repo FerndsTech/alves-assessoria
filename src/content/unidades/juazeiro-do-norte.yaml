@@ -1,0 +1,13 @@
+# Unidade **fictícia** — ver o requisito escrito em `acopiara.yaml`.
+#
+# O nome do arquivo é o slug, e o slug é a âncora: `#juazeiro-do-norte`.
+cidade: Juazeiro do Norte
+uf: CE
+logradouro: Rua São Pedro, 745
+bairro: Centro
+complemento: sala 05
+geo:
+  lat: -7.2131
+  lon: -39.3153
+fachada: ../../assets/placeholders/fachada-de-juazeiro-do-norte.jpg
+ordem: 2

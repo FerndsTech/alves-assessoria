@@ -1,0 +1,18 @@
+# Advogado **fictício** — ver o requisito escrito em
+# `ana-beatriz-vasconcelos.yaml`.
+nome: Maria Célia Andrade
+nomeCurto: Célia
+oab:
+  numero: "000.000"
+  uf: CE
+descricao: Graduação em Direito pela Universidade Federal do Ceará. Especialização em Direito Civil. Atuação em repetição de indébito contra instituição financeira.
+areas:
+  - Direito civil
+  - Direito do consumidor
+  - Direito bancário
+foto: retrato-maria-celia-andrade.jpg
+whatsapp: "5588999900005"
+atuacoes:
+  - unidade: senador-pompeu
+    dias: [segunda, terca, quarta]
+ordem: 5

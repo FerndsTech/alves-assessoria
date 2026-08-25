@@ -1,0 +1,12 @@
+# Unidade **fictícia** — ver o requisito escrito em `acopiara.yaml`.
+#
+# O nome do arquivo é o slug, e o slug é a âncora: `#senador-pompeu`.
+cidade: Senador Pompeu
+uf: CE
+logradouro: Avenida Coronel Antônio Pinto, 88
+bairro: Centro
+geo:
+  lat: -5.5883
+  lon: -39.3689
+fachada: ../../assets/placeholders/fachada-de-senador-pompeu.jpg
+ordem: 3

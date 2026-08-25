@@ -31,3 +31,50 @@ export const PLACEHOLDERS = {
    */
   logoHorizontal,
 } as const;
+
+/**
+ * Requisito do retrato: **3:4**, cor natural dessaturada ~10% e **sem filtro em
+ * CSS** — o tratamento entra na geração, então trocar por foto real é trocar
+ * arquivo. Teto de 120 KB comprimidos por foto (ADR-0003).
+ *
+ * O enquadramento é o mesmo nos seis, e é ele que faz a grade parecer uma grade:
+ * topo da cabeça a 8% da altura, olhos na linha de um terço, corpo nos 75%
+ * centrais, e **zona segura central** para que qualquer recorte — o 4:5 do card,
+ * o 3:4 do painel — continue enquadrando o rosto.
+ *
+ * **Uma foto só por advogado.** Duas quebrariam o FLIP do painel (#30), que só é
+ * honesto porque é literalmente a mesma imagem que cresce.
+ */
+const RETRATOS = import.meta.glob<ImageMetadata>("../assets/placeholders/retrato-*.jpg", {
+  eager: true,
+  import: "default",
+});
+
+/**
+ * O retrato de um advogado, a partir do **nome do arquivo** que a collection
+ * guarda em `foto`.
+ *
+ * Por que um registro e não `foto: image()` no schema: nenhum template contém o
+ * caminho de um asset (convenção de placeholder), e o campo é `z.string()` no
+ * contrato que veio do #7. O `import.meta.glob` é o que mantém as duas coisas
+ * verdadeiras ao mesmo tempo — o dado nomeia um arquivo, e um lugar só sabe onde
+ * arquivos moram.
+ *
+ * Nome que não existe **quebra o build**, e é para quebrar: um advogado sem
+ * retrato renderizaria um buraco onde deveria estar o rosto de uma pessoa, e o
+ * contrato já diz que `foto` é obrigatório e sem fallback.
+ */
+export function retratoDe(foto: string): ImageMetadata {
+  const encontrado = RETRATOS[`../assets/placeholders/${foto}`];
+  if (encontrado === undefined) {
+    const disponiveis = Object.keys(RETRATOS)
+      .map((caminho) => caminho.split("/").pop())
+      .join(", ");
+    throw new Error(
+      `Nenhum retrato chamado "${foto}" em src/assets/placeholders/. Disponíveis: ` +
+        `${disponiveis}. O campo \`foto\` da collection guarda o nome do arquivo, e ` +
+        `trocar a foto de um advogado é trocar o arquivo ou trocar esta string.`,
+    );
+  }
+  return encontrado;
+}

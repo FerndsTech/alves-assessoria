@@ -1,0 +1,20 @@
+# Advogado **fictício** — ver o requisito escrito em
+# `ana-beatriz-vasconcelos.yaml`.
+nome: Raimundo Nonato Filho
+# `nomeCurto` existe para o caso em que derivar o primeiro token erraria: o
+# painel diz "Falar com <primeiro nome>", e aqui o primeiro token sozinho não é
+# como a pessoa é chamada.
+nomeCurto: Nonato
+oab:
+  numero: "000.000"
+  uf: CE
+descricao: Graduação em Direito pela Universidade de Fortaleza. Especialização em Direito do Consumidor. Atuação em descontos não autorizados em benefício do INSS.
+areas:
+  - Direito do consumidor
+  - Direito bancário
+foto: retrato-raimundo-nonato-filho.jpg
+whatsapp: "5588999900002"
+atuacoes:
+  - unidade: juazeiro-do-norte
+    dias: [segunda, terca, quarta, quinta, sexta]
+ordem: 2
