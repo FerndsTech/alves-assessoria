@@ -46,6 +46,8 @@ Bytes transferidos, comprimidos — o critério do ADR-0002 não muda, só os n�
 
 A linha de `preload` **não sobe**: continua sendo só o Spectral 600. Ela é caminho crítico, e é a única linha desta tabela em que folga não compra nada.
 
+> ✅ **Implementada em 24/08/2026 pelo [#26](https://github.com/FerndsTech/alves-assessoria/issues/26).** A tabela acima é o **registro da decisão**; a cópia que a máquina lê vive em `scripts/orcamento/tabela.ts`, e é de lá que o gate mede. Não há uma terceira: nem o README nem o CI repetem número nenhum. **Mudar um teto é mudar no módulo e emendar este ADR** — se isso doer, é o sintoma pretendido.
+
 ### 2. Novas metas de Core Web Vitals
 
 Mesmo instrumento — Lighthouse, preset mobile, Slow 4G simulado e CPU 4×.
@@ -56,6 +58,8 @@ Mesmo instrumento — Lighthouse, preset mobile, Slow 4G simulado e CPU 4×.
 | CLS | ≤ 0,10 | **≤ 0,10** — sem mudança |
 | TBT | ≤ 200 ms | **≤ 400 ms** |
 | Score Performance | ≥ 90 | **≥ 80** |
+
+> ✅ **Implementada em 24/08/2026 pelo [#26](https://github.com/FerndsTech/alves-assessoria/issues/26)**, junto dos tetos de bytes e no mesmo módulo — `scripts/orcamento/tabela.ts`. O farol lê os quatro limiares de lá e os **reporta sem nunca reprovar**.
 
 **CLS não afrouxa, e isso não é rigor decorativo.** Layout que pula não é lentidão, é defeito — e o público que este site atende erra o toque quando o alvo se move. Folga em CLS não compra liberdade nenhuma de design; só esconde bug.
 

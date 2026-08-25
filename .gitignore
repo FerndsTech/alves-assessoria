@@ -1,8 +1,17 @@
 node_modules/
-dist/
 .astro/
 test-results/
 playwright-report/
+relatorio-lighthouse.html
+.scratch/
 .env
 .env.production
 .DS_Store
+
+# O `dist/` **não** está aqui, e a ausência é decisão: a cópia construída é
+# versionada (ADR-0002, decisão 1), para que exista sempre uma versão que abre
+# sem Node. Quem a atualiza é o CI, no master, depois dos gates — ver o job
+# `copia-construida` em .github/workflows/ci.yml.
+#
+# Consequência no dia a dia: `npm test` reconstrói o site e deixa o `dist/` sujo
+# na árvore de trabalho. É esperado, e não é para ser ignorado de volta.

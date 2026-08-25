@@ -5,9 +5,10 @@ on:
     branches: [master]
   pull_request:
 
-# O CI inteiro nasce junto com a primeira fatia vertical, e o gate de
-# acessibilidade nasce dentro dele (ADR-0004, contexto, fato 1). Enfiado depois,
-# alguém teria de mexer no arranjo do qual todos os testes dependem.
+# Os três portões mecânicos do projeto, um por job — bytes bloqueiam,
+# acessibilidade bloqueia, Lighthouse informa (ADR-0002, decisão 5, emendada
+# pelo ADR-0004). Estão separados para que o check que reprova diga qual dos
+# três reprovou sem ninguém abrir o log.
 jobs:
   costura:
     name: Costura — navegador sobre o site construído
@@ -45,3 +46,97 @@ jobs:
             playwright-report/
             test-results/
           retention-days: 7
+
+  orcamento:
+    name: Orçamento — bytes transferidos, comprimidos
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      # Bloqueia o merge, e o número medido de cada linha vai para o resumo do
+      # job — passa/falha sozinho não deixa a regressão legível no PR.
+      - name: Gate de bytes
+        run: npm run orcamento
+
+  farol:
+    name: Farol — Lighthouse, informativo
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Navegador sem interface
+        run: npx playwright install --with-deps chromium
+
+      # Reporta LCP, CLS, TBT e score, e **nunca reprova**: o script sai sempre
+      # com 0. Se um dia ele reprovar, é bug dele, não regressão do site.
+      - name: Farol
+        run: npm run farol
+
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-lighthouse
+          path: relatorio-lighthouse.html
+          retention-days: 30
+
+  copia-construida:
+    name: dist/ versionado
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [costura, orcamento]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    permissions:
+      contents: write
+
+    # O seguro contra apodrecimento de dependência (ADR-0002, decisão 1): daqui
+    # a alguns anos, `npm install` neste projeto pode não rodar, e tem de existir
+    # uma cópia que abre sem Node.
+    #
+    # Ele roda **depois** dos gates e só no master, porque cópia velha é pior que
+    # nenhuma: parece boa. Atualizar aqui, e não à mão, é o que impede o `dist/`
+    # de divergir do commit que ele deveria representar.
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      # Push com o GITHUB_TOKEN não dispara workflow, então este commit não
+      # realimenta o CI.
+      - name: Versionar a cópia construída
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist
+          if git diff --cached --quiet; then
+            echo "O dist/ construído já é o que está versionado."
+            exit 0
+          fi
+          git commit -m "dist/: cópia construída de ${GITHUB_SHA::7}"
+          git push origin HEAD:master

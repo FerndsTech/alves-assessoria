@@ -60,6 +60,8 @@ A alternativa de renderizar os cards no cliente a partir de um objeto JS **está
 
 **Custo assumido e sua mitigação.** Build step traz toolchain Node e apodrecimento de dependência: daqui a alguns anos, `npm install` neste projeto pode não rodar. Mitigação: **o `dist/` construído é versionado no repositório**, de modo que exista sempre uma cópia que abre sem Node.
 
+> ✅ **Cumprida em 24/08/2026 pelo [#26](https://github.com/FerndsTech/alves-assessoria/issues/26).** O [#25](https://github.com/FerndsTech/alves-assessoria/issues/25) tinha posto `dist/` no `.gitignore`, contra esta decisão, e sinalizado a contradição em vez de resolvê-la em silêncio — faltava o fluxo que atualiza a cópia, e **cópia velha é pior que nenhuma, porque parece boa**. O fluxo agora existe: o job `copia-construida` reconstrói e versiona o `dist/` no master, **depois** dos gates.
+
 ### 2. Metas de Core Web Vitals
 
 > ⚠️ **Emendado em 24/08/2026 pelo [ADR-0003](0003-orcamento-folgado-para-profundidade.md).** Os números abaixo não são mais os vigentes — consulte o ADR-0003. O critério e o instrumento não mudaram, só os valores.
@@ -122,6 +124,8 @@ Somam-se: banda ilimitada no plano gratuito, build a partir do git (que o Astro 
 - **Manual, antes de publicar:** conferência dos limiares absolutos de CWV. Publicações são raras o bastante para isso ser realista.
 
 **Custo assumido:** uma regressão de LCP que não venha de bytes — uma animação cara, por exemplo — passa pelo gate duro e só é pega no Lighthouse informativo ou na conferência manual.
+
+> ✅ **Os três portões existem desde 24/08/2026** — o de acessibilidade pelo [#25](https://github.com/FerndsTech/alves-assessoria/issues/25), os de bytes e Lighthouse pelo [#26](https://github.com/FerndsTech/alves-assessoria/issues/26). Um job de CI cada, para que o check que reprova diga qual dos três reprovou sem ninguém abrir o log. O gate de bytes mede **uma variante por conjunto responsivo**, e não a soma dos arquivos do `dist/`: três larguras da mesma foto custam uma ao visitante, e um teto que ninguém consegue cumprir é um teto que se aprende a suspender.
 
 ### 6. Cache e disponibilidade
 

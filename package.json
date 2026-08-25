@@ -12,14 +12,21 @@
     "preview": "astro preview",
     "check": "astro check && tsc --noEmit -p tsconfig.tests.json",
     "test": "playwright test",
-    "placeholders": "node ./scripts/gerar-placeholders.ts"
+    "orcamento": "node ./scripts/orcamento/gate.ts",
+    "farol": "node ./scripts/farol.ts",
+    "placeholders": "node ./scripts/gerar-placeholders.ts",
+    "fontes": "node ./scripts/baixar-fontes.ts",
+    "metricas-de-fonte": "node ./scripts/metricas-de-fonte.ts"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
     "@playwright/test": "^1.49.0",
+    "@types/fontkit": "^2.0.9",
     "@types/node": "^26.3.0",
     "astro": "^7.2.6",
     "axe-core": "^4.10.0",
+    "fontkit": "^2.0.4",
+    "lighthouse": "^13.4.1",
     "sharp": "^0.35.3",
     "typescript": "^5.7.0"
   }
