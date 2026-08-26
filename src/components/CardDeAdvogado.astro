@@ -1,0 +1,87 @@
+---
+import { Image } from "astro:assets";
+import type { CollectionEntry } from "astro:content";
+import { ADVOGADOS } from "../lib/copy";
+import { marcaDePlaceholder } from "../lib/ficcao";
+import { retratoDe } from "../lib/placeholders";
+import { altDoRetrato } from "../lib/texto-alternativo";
+
+/**
+ * O card da vitrine, e ele é **enxuto de propósito**: foto · nome · OAB discreto
+ * · áreas (≤ 3) · afordância de clique. E mais nada.
+ *
+ * **WhatsApp, unidade, cidade e endereço não estão aqui** — migram para o painel
+ * (#28). A vitrine não é lista telefônica: seis blocos de contato lado a lado
+ * empurram o mapa para baixo de uma tela inteira de dado que ninguém lê em pé.
+ *
+ * **A OAB permanece**, e é a única credencial que permanece, porque o CED art.
+ * 44, caput amarra o nome ao número — a quem lê o card, ela é o que permite
+ * conferir que a pessoa existe. Concede-se hierarquia, não presença: ela é
+ * pequena e secundária, não some.
+ *
+ * **Não existe nível, medida nem barra** ao lado de `areas`. Barra e medidor
+ * caem na lista taxativa do CED art. 44, §1º — daí o contrato não ter `skills` e
+ * daí este template não ter onde renderizar um.
+ *
+ * ## A afordância
+ *
+ * **Texto visível de ação, card inteiro clicável e anel de foco.** Cursor em
+ * forma de mão não existe em celular, que é o aparelho de praticamente todo o
+ * público — então a afordância tem de ser algo que se **lê**.
+ *
+ * O card inteiro é clicável pelo `::after` do link, que se estica sobre o
+ * `article`; o anel de foco é do card e não do texto, porque a área de clique é
+ * o card. Um `<a>` envolvendo tudo daria o mesmo alvo e um rótulo acessível de
+ * três linhas.
+ *
+ * ## Por que o destino é o próprio fragmento do advogado
+ *
+ * `#<slug-do-advogado>` é endereçamento canônico do spec, e o `id` do card é o
+ * mesmo slug. Hoje, sem o painel, clicar leva ao card — que é o que o site tem
+ * para aquela pessoa. Quando o #28 chegar, ele intercepta o clique e dá
+ * `pushState` **neste mesmo fragmento**, e um link de fora que chegue com
+ * `#<slug>` abre o painel. Nada aqui muda de nome no caminho.
+ */
+
+interface Props {
+  advogado: CollectionEntry<"advogados">;
+}
+
+const { advogado } = Astro.props;
+const { nome, oab, areas, foto } = advogado.data;
+---
+
+<article class="advogado" id={advogado.id} data-placeholder={marcaDePlaceholder(oab, "copy")}>
+  <div class="advogado__moldura">
+    <Image
+      class="advogado__retrato"
+      src={retratoDe(foto)}
+      widths={[288, 384, 768]}
+      sizes="(min-width: 900px) 32vw, (min-width: 640px) 46vw, 88vw"
+      alt={altDoRetrato(nome)}
+      loading="lazy"
+      decoding="async"
+      data-orcamento="foto-de-advogado"
+      data-placeholder={marcaDePlaceholder(oab, "asset")}
+    />
+  </div>
+
+  <div class="advogado__corpo">
+    <h3 class="advogado__nome">{nome}</h3>
+    <p class="advogado__oab">OAB/{oab.uf} {oab.numero}</p>
+
+    <ul class="advogado__areas">
+      {areas.map((area) => <li>{area}</li>)}
+    </ul>
+
+    <a class="advogado__acao" href={`#${advogado.id}`}>
+      {ADVOGADOS.acaoDoCard}
+      {/*
+        O nome entra no rótulo acessível e sai da tela. Seis links dizendo
+        "Ver perfil" são seis rótulos idênticos para quem navega pulando de link
+        em link, e a tela já diz de quem é o perfil — logo acima.
+      */}
+      <span class="apenas-para-leitor"> de {nome}</span>
+    </a>
+  </div>
+</article>

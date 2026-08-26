@@ -1,0 +1,16 @@
+# Advogado **fictício** — ver o requisito escrito em
+# `ana-beatriz-vasconcelos.yaml`.
+nome: Iran Bezerra de Lima
+oab:
+  numero: "000.000"
+  uf: CE
+descricao: Graduação em Direito pela Universidade Regional do Cariri. Especialização em Direito Bancário. Atuação em contrato de empréstimo e em reserva de margem.
+areas:
+  - Direito bancário
+  - Crédito consignado
+foto: retrato-iran-bezerra-de-lima.jpg
+whatsapp: "5588999900004"
+atuacoes:
+  - unidade: juazeiro-do-norte
+    dias: [quarta, quinta, sexta]
+ordem: 4

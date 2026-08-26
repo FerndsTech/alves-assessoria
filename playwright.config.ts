@@ -10,7 +10,7 @@ import { defineConfig, devices } from "@playwright/test";
  */
 
 /** Os arquivos que não são asserção de navegador, e por isso não se repetem por largura. */
-const SEM_NAVEGADOR = [/sem-javascript\.spec\.ts$/, /orcamento\.spec\.ts$/];
+const SEM_NAVEGADOR = [/sem-javascript\.spec\.ts$/, /orcamento\.spec\.ts$/, /contrato\.spec\.ts$/];
 
 const PORTA = 4321;
 export const URL_BASE = `http://127.0.0.1:${PORTA}`;
@@ -41,6 +41,16 @@ export default defineConfig({
        */
       name: "orcamento",
       testMatch: /orcamento\.spec\.ts$/,
+    },
+    {
+      /*
+       * O contrato das duas content collections, também sem navegador nenhum e
+       * pela mesma razão que o gate de bytes: o que se afirma é o **portão**, e
+       * não a página. Um `.min(140)` apagado por acidente não reprova nada e não
+       * aparece em revisão — some, e o build para de quebrar onde deveria.
+       */
+      name: "contrato",
+      testMatch: /contrato\.spec\.ts$/,
     },
     {
       name: "desktop",

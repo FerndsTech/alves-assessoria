@@ -1,0 +1,84 @@
+---
+import { getCollection } from "astro:content";
+import { ADVOGADOS } from "../lib/copy";
+import BlocoDeCta from "./BlocoDeCta.astro";
+import CardDeAdvogado from "./CardDeAdvogado.astro";
+
+/**
+ * A seção **Advogados**, no lugar exato em que o visitante forma a pergunta *"e
+ * quem resolve isso?"* — como **resposta**, e não como alegação.
+ *
+ * **Três cards na vitrine, "ver mais" abre os seis. Grade, nunca carrossel.**
+ * Carrossel esconde conteúdo atrás de um gesto que este público não faz e que
+ * leitor de tela não anuncia; grade mostra tudo o que couber e empilha o resto.
+ *
+ * ## Os três da vitrine saem de `ordem`, não do alfabeto
+ *
+ * Quem aparece na vitrine é decisão do dono do escritório, e trocar quem aparece
+ * é **trocar um número** num arquivo. Ordenar por nome entregaria essa decisão à
+ * letra inicial.
+ *
+ * **Limitação assumida e registrada: o Zod não valida unicidade de `ordem` entre
+ * arquivos** — cada arquivo é validado sozinho e nenhum vê os outros cinco. Dois
+ * advogados com o mesmo número passam no build, e a posição entre eles passa a
+ * ser decidida pela ordem em que o loader leu o disco. É estável, mas não é
+ * escolha de ninguém.
+ *
+ * ## O "ver mais" é `<details>`, e isso é a trava de JS
+ *
+ * ADR-0003, decisão 3: **nenhum estado inicial invisível dependente de JS.** Se
+ * os três de baixo dependessem de script para aparecer, eles sumiriam de vez
+ * para os 24% de usuários rurais que não conseguem abrir aplicativo nenhum ao
+ * fim do pacote de dados. `<details>` abre com zero JS, já vem com estado
+ * anunciado a leitor de tela, e o rótulo troca por CSS.
+ *
+ * São duas grades irmãs com a mesma definição de colunas, e não uma grade
+ * cortada ao meio: as colunas coincidem porque a definição é a mesma, e o
+ * `<summary>` fica entre elas — que é onde um "ver mais" precisa estar.
+ *
+ * ## O que esta seção não acomoda
+ *
+ * Não há lugar para **depoimento, contador de resultado, caso de sucesso ou logo
+ * de cliente** — nem escondido, nem opcional, nem atrás de um `if`. Não é
+ * recorte de escopo: promessa de resultado e captação são vedação normativa
+ * (CED art. 44, §1º; Prov. 205 art. 3º), e prova social não entra num site cujo
+ * dispositivo de autoridade é ensinar o visitante a conferir o próprio extrato.
+ */
+
+const todos = (await getCollection("advogados")).sort((a, b) => a.data.ordem - b.data.ordem);
+
+const vitrine = todos.slice(0, 3);
+const resto = todos.slice(3);
+---
+
+<section class="advogados" id={ADVOGADOS.ancora}>
+  <h2 class="advogados__titulo">{ADVOGADOS.titulo}</h2>
+
+  <div class="advogados__grade">
+    {vitrine.map((advogado) => <CardDeAdvogado advogado={advogado} />)}
+  </div>
+
+  {
+    resto.length > 0 && (
+      <details class="advogados__resto">
+        <summary class="botao botao--secundario advogados__ver-mais">
+          {/*
+            Os dois rótulos existem no HTML entregue e o CSS mostra um de cada
+            vez, pelo estado do próprio `<details>`. Trocar texto por script
+            devolveria o rótulo ao lado que pode faltar.
+          */}
+          <span class="advogados__rotulo advogados__rotulo--fechado">{ADVOGADOS.verMais}</span>
+          <span class="advogados__rotulo advogados__rotulo--aberto">{ADVOGADOS.verMenos}</span>
+        </summary>
+
+        <div class="advogados__grade">
+          {resto.map((advogado) => (
+            <CardDeAdvogado advogado={advogado} />
+          ))}
+        </div>
+      </details>
+    )
+  }
+
+  <BlocoDeCta />
+</section>

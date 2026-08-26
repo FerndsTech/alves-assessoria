@@ -1,0 +1,28 @@
+# Advogado **fictício**. O sinal de ficção não é um campo: é o próprio
+# `oab.numero: "000.000"`, lido por `src/lib/ficcao.ts` e contado pelo portão de
+# lançamento do #29. Trocar por uma pessoa real é trocar as strings deste
+# arquivo — nome, OAB, descrição, áreas, foto e WhatsApp —, e nada mais.
+#
+# Requisito da descrição: prosa em **construção nominal**, de onde só se obtém
+# fato verificável. Nunca "Graduada em", nunca adjetivo sobre si — assim o texto
+# troca de pessoa sem reescrita e sem concordância de gênero.
+#
+# O nome do arquivo é o slug, e o slug é a âncora `#<slug-do-advogado>`.
+nome: Ana Beatriz Vasconcelos
+oab:
+  numero: "000.000"
+  uf: CE
+descricao: Graduação em Direito pela Universidade Federal do Ceará. Pós-graduação em Direito Bancário. Atuação em revisão de contrato de crédito consignado.
+areas:
+  - Direito bancário
+  - Crédito consignado
+  - Direito do consumidor
+foto: retrato-ana-beatriz-vasconcelos.jpg
+# Número **fictício**, em E.164 sem formatação — é o que o `wa.me` consome.
+whatsapp: "5588999900001"
+atuacoes:
+  - unidade: acopiara
+    dias: [segunda, terca, quarta]
+  - unidade: senador-pompeu
+    dias: [quinta, sexta]
+ordem: 1

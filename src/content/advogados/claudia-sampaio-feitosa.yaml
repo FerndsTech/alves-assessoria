@@ -1,0 +1,19 @@
+# Advogado **fictício** — ver o requisito escrito em
+# `ana-beatriz-vasconcelos.yaml`.
+nome: Cláudia Sampaio Feitosa
+oab:
+  numero: "000.000"
+  uf: CE
+descricao: Graduação em Direito pela Universidade Estadual do Ceará. Pós-graduação em Direito Previdenciário. Atuação em revisão de benefício e em cartão consignado.
+areas:
+  - Direito previdenciário
+  - Crédito consignado
+  - Direito bancário
+foto: retrato-claudia-sampaio-feitosa.jpg
+whatsapp: "5588999900003"
+atuacoes:
+  - unidade: fortim
+    dias: [segunda, terca]
+  - unidade: acopiara
+    dias: [quinta, sexta]
+ordem: 3

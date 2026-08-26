@@ -1,0 +1,18 @@
+# Advogado **fictício** — ver o requisito escrito em
+# `ana-beatriz-vasconcelos.yaml`.
+nome: Tarcísio Rocha Alencar
+oab:
+  numero: "000.000"
+  uf: CE
+descricao: Graduação em Direito pela Universidade de Fortaleza. Pós-graduação em Direito Processual Civil. Atuação em descontos associativos em folha de benefício.
+areas:
+  - Direito do consumidor
+  - Direito previdenciário
+foto: retrato-tarcisio-rocha-alencar.jpg
+whatsapp: "5588999900006"
+atuacoes:
+  - unidade: fortim
+    dias: [quarta, quinta, sexta]
+  - unidade: juazeiro-do-norte
+    dias: [segunda]
+ordem: 6

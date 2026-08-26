@@ -18,6 +18,14 @@ A restrição permanente do mapa é a razão da forma: **toda informação fict�
 
 **Nenhum template contém o caminho de um asset.** Componentes importam de `src/lib/placeholders.ts` e mais nada.
 
+### Asset nomeado por dado
+
+O retrato do advogado é a exceção que confirma a regra: o contrato do [#7](https://github.com/FerndsTech/alves-assessoria/issues/7) tem `foto: z.string()`, e não `image()`. A collection guarda o **nome do arquivo**, e `retratoDe()` — em `src/lib/placeholders.ts` — o resolve contra `src/assets/placeholders/` por `import.meta.glob`.
+
+As duas propriedades sobrevivem ao mesmo tempo: o dado nomeia um arquivo, e **um lugar só sabe onde arquivos moram**. Nome que não existe quebra o build, com o erro dizendo quais existem.
+
+A fachada da unidade não precisa disso — lá o campo é `image()`, e o Astro resolve o caminho relativo ao próprio arquivo de conteúdo.
+
 ## Requisitos por peça
 
 Cada entrada de `PLACEHOLDERS` carrega o requisito da peça real no bloco de comentário acima dela: proporção, teto de bytes, formato e a vedação normativa que recai sobre ela, quando houver. O teto sai da tabela do [ADR-0003](adr/0003-orcamento-folgado-para-profundidade.md) e não é repetido aqui — tabela duplicada diverge.
@@ -25,8 +33,26 @@ Cada entrada de `PLACEHOLDERS` carrega o requisito da peça real no bloco de com
 | Peça | Proporção | Teto | Formato do asset real |
 | --- | --- | --- | --- |
 | Foto de fachada (herói) | 16:9 | 400 KB, a linha da imagem de LCP | Raster, pelo pipeline do Astro |
-| Retrato de advogado | a fixar no ticket do retrato, junto com o enquadramento | 120 KB cada | Raster, pelo pipeline do Astro |
+| Foto de fachada (unidade) | 16:9 | dentro da folga do total | Raster, pelo pipeline do Astro |
+| Retrato de advogado | **3:4** | 120 KB cada | Raster, pelo pipeline do Astro |
 | Logo horizontal | ~4:1 | dentro da folga de CSS/imagem | SVG com traçados vetoriais |
+
+### O retrato é 3:4, e o enquadramento vem junto
+
+Fixado no [#27](https://github.com/FerndsTech/alves-assessoria/issues/27), que é o ticket que trouxe os seis retratos.
+
+**3:4 porque o painel manda.** O card recorta em **4:5**; o painel do advogado ([#30](https://github.com/FerndsTech/alves-assessoria/issues/30)) usa a foto num terço-e-meio de tela cheia, e é lá que ela precisa ser mais alta. Entregar em 4:5 e esticar no painel destruiria a foto; entregar em 3:4 e recortar no card tira 32px de cada lado do arquivo de 768×1024, que é o que o enquadramento já reserva.
+
+O enquadramento é **o mesmo nos seis**, e é ele que faz uma grade parecer uma grade em vez de seis fotos avulsas:
+
+- topo da cabeça a **8%** da altura,
+- olhos na **linha de um terço**,
+- corpo nos **75% centrais**,
+- **zona segura central**, para que qualquer recorte continue enquadrando o rosto.
+
+**Uma foto só por advogado.** Duas quebrariam o FLIP do painel, que só é honesto porque é literalmente a mesma imagem que cresce.
+
+**O tratamento — cor natural dessaturada ~10% — entra na geração, nunca em filtro de CSS.** Assim, trocar por foto real é trocar arquivo.
 
 ## O placeholder de foto é raster, e isso não é detalhe
 
@@ -58,3 +84,5 @@ Todo elemento que renderiza placeholder leva um atributo no HTML entregue:
 É o mesmo raciocínio de `oab.numero === "000.000"`: **a ficção se deriva do dado e nunca se armazena em paralelo**, e o portão de lançamento é mecânico em vez de disciplina. Um campo `ficticio` separado seria um segundo lugar que pode discordar do primeiro.
 
 Trocar o placeholder por conteúdo real é trocar o valor **e apagar o atributo**.
+
+Onde a peça vem de uma content collection, nem isso: o atributo **se deriva**. O card do advogado marca `data-placeholder` a partir de `eFicticio()` em `src/lib/ficcao.ts`, que é uma leitura de `oab.numero === "000.000"` e nada mais. Trocar por uma pessoa real apaga a marcação sozinha, e o mesmo predicado é o que o portão de lançamento do [#29](https://github.com/FerndsTech/alves-assessoria/issues/29) conta.

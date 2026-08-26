@@ -1,0 +1,15 @@
+# Unidade **fictícia** — ver o requisito escrito em `acopiara.yaml`.
+#
+# `bairro` está ausente, e a ausência é o caso que fez o campo ser opcional: em
+# Fortim o endereço não carrega bairro. Um campo obrigatório aqui obrigaria a
+# inventar um.
+#
+# O nome do arquivo é o slug, e o slug é a âncora: `#fortim`.
+cidade: Fortim
+uf: CE
+logradouro: Rua da Praia, 120
+geo:
+  lat: -4.4514
+  lon: -37.7936
+fachada: ../../assets/placeholders/fachada-de-fortim.jpg
+ordem: 4

@@ -1,4 +1,5 @@
 ---
+import Advogados from "../components/Advogados.astro";
 import Cabecalho from "../components/Cabecalho.astro";
 import Heroi from "../components/Heroi.astro";
 import Base from "../layouts/Base.astro";
@@ -9,9 +10,13 @@ import { NOME_DO_ESCRITORIO } from "../lib/copy";
  * fragmento, nunca rota.
  *
  * A ordem das sete seções é fixa — herói → áreas de atuação → confira seu
- * benefício → advogados → quem somos → mapa → rodapé. Existe o herói; as outras
- * seis chegam nos tickets seguintes, e os dois botões do herói apontam desde já
- * para os fragmentos que elas vão ocupar.
+ * benefício → advogados → quem somos → mapa → rodapé. Existem o herói e os
+ * advogados; as outras cinco chegam nos tickets seguintes, e o primeiro botão do
+ * herói já aponta para o fragmento que *Confira seu benefício* vai ocupar.
+ *
+ * **Advogados vem antes das duas seções que ainda faltam entre ela e o herói**,
+ * e isso é andaime, não mudança de ordem: quando *Áreas de atuação* (#33) e
+ * *Confira seu benefício* (#31) chegarem, elas entram acima daqui.
  */
 ---
 
@@ -22,5 +27,6 @@ import { NOME_DO_ESCRITORIO } from "../lib/copy";
   <Cabecalho />
   <main>
     <Heroi />
+    <Advogados />
   </main>
 </Base>
